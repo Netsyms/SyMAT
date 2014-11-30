@@ -1,0 +1,128 @@
+
+
+Version:	3.4
+CmdLine:	C:\Users\Skylar\Documents\NetBeansProjects\SyMAT\SyMAT-0.3.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Users\Skylar\Documents\NetBeansProjects\SyMAT\.
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.6
+Ignore:		1.6
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.6.0_45
+Ignore:		1.6.0_45
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.7
+Ignore:		1.7
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.7.0_40
+Check launcher:	C:\Program Files\Java\jre7\bin\javaw.exe (OK)
+Match:		1.7.0_40
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.6
+Ignore:		1.6
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.6.0_45
+Ignore:		1.6.0_45
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.7
+Ignore:		1.7
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.7.0_40
+Ignore:		1.7.0_40
+Runtime used:	1.7.0_40 (64-bit)
+Add classpath:	lib\log4j-1.2.11.jar
+Add classpath:	lib\symja-2014-11-01.jar
+Launcher:	C:\Program Files\Java\jre7\bin\javaw.exe
+Launcher args:	-classpath "C:\Users\Skylar\Documents\NetBeansProjects\SyMAT\SyMAT-0.3.exe;lib\log4j-1.2.11.jar;lib\symja-2014-11-01.jar" net.apocalypselabs.symat.MainGUI
+Args length:	154/32768 chars
+Exit code:	259
+
+
+Version:	3.4
+CmdLine:	C:\Users\Skylar\Documents\NetBeansProjects\SyMAT\SyMAT-0.3.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Users\Skylar\Documents\NetBeansProjects\SyMAT\.
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.6
+Ignore:		1.6
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.6.0_45
+Ignore:		1.6.0_45
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.7
+Ignore:		1.7
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.7.0_40
+Check launcher:	C:\Program Files\Java\jre7\bin\javaw.exe (OK)
+Match:		1.7.0_40
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.6
+Ignore:		1.6
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.6.0_45
+Ignore:		1.6.0_45
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.7
+Ignore:		1.7
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.7.0_40
+Ignore:		1.7.0_40
+Runtime used:	1.7.0_40 (64-bit)
+Add classpath:	lib\log4j-1.2.11.jar
+Add classpath:	lib\symja-2014-11-01.jar
+Launcher:	C:\Program Files\Java\jre7\bin\javaw.exe
+Launcher args:	-classpath "C:\Users\Skylar\Documents\NetBeansProjects\SyMAT\SyMAT-0.3.exe;lib\log4j-1.2.11.jar;lib\symja-2014-11-01.jar" net.apocalypselabs.symat.MainGUI
+Args length:	154/32768 chars
+Exit code:	259
+
+
+Version:	3.4
+CmdLine:	C:\Users\Skylar\Documents\NetBeansProjects\SyMAT\SyMAT-0.3.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Users\Skylar\Documents\NetBeansProjects\SyMAT\.
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.6
+Ignore:		1.6
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.6.0_45
+Ignore:		1.6.0_45
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.7
+Ignore:		1.7
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.7.0_40
+Check launcher:	C:\Program Files\Java\jre7\bin\javaw.exe (OK)
+Match:		1.7.0_40
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.6
+Ignore:		1.6
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.6.0_45
+Ignore:		1.6.0_45
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.7
+Ignore:		1.7
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.7.0_40
+Ignore:		1.7.0_40
+Runtime used:	1.7.0_40 (64-bit)
+Add classpath:	lib\log4j-1.2.11.jar
+Add classpath:	lib\symja-2014-11-01.jar
+Launcher:	C:\Program Files\Java\jre7\bin\javaw.exe
+Launcher args:	-classpath "C:\Users\Skylar\Documents\NetBeansProjects\SyMAT\SyMAT-0.3.exe;lib\log4j-1.2.11.jar;lib\symja-2014-11-01.jar" net.apocalypselabs.symat.MainGUI
+Args length:	154/32768 chars
+Exit code:	259
+
+
+Version:	3.4
+CmdLine:	C:\Users\Skylar\Documents\NetBeansProjects\SyMAT\SyMAT-0.3.exe --l4j-debug
+WOW64:		yes
+Working dir:	C:\Users\Skylar\Documents\NetBeansProjects\SyMAT\.
+64-bit search:	SOFTWARE\JavaSoft\Java Runtime Environment...
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.6
+Ignore:		1.6
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.6.0_45
+Ignore:		1.6.0_45
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.7
+Ignore:		1.7
+Check:		SOFTWARE\JavaSoft\Java Runtime Environment\1.7.0_40
+Check launcher:	C:\Program Files\Java\jre7\bin\javaw.exe (OK)
+Match:		1.7.0_40
+64-bit search:	SOFTWARE\JavaSoft\Java Development Kit...
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.6
+Ignore:		1.6
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.6.0_45
+Ignore:		1.6.0_45
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.7
+Ignore:		1.7
+Check:		SOFTWARE\JavaSoft\Java Development Kit\1.7.0_40
+Ignore:		1.7.0_40
+Runtime used:	1.7.0_40 (64-bit)
+Add classpath:	lib\log4j-1.2.11.jar
+Add classpath:	lib\symja-2014-11-01.jar
+Launcher:	C:\Program Files\Java\jre7\bin\javaw.exe
+Launcher args:	-classpath "C:\Users\Skylar\Documents\NetBeansProjects\SyMAT\SyMAT-0.3.exe;lib\log4j-1.2.11.jar;lib\symja-2014-11-01.jar" net.apocalypselabs.symat.MainGUI
+Args length:	154/32768 chars
+Exit code:	259

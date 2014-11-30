@@ -1,0 +1,23 @@
+.header {
+    
+}
+.com {
+    color: green;
+}
+
+.kwd {
+    color: blue;
+}
+
+.pln {
+    color: black;
+}
+
+.lit {
+    color: #0099cc;
+}
+
+.pun {
+    color: black;
+    font-weight: bold;
+}
