@@ -37,7 +37,7 @@ public class CodeRunner {
             // Add custom functions.
             jse.eval("importClass(net.apocalypselabs.symat.Functions);"
                     + "SyMAT_Functions = new net.apocalypselabs.symat.Functions();");
-        } catch (ScriptException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error: "
                     + "Could not properly initialize scripting engine."
                     + "\n\nSome functions may not work.\n\n"
