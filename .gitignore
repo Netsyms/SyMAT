@@ -1,0 +1,5 @@
+bin/
+dist/
+*.exe
+launch4j.log
+launch4j.cfg.xml
