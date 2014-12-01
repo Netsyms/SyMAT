@@ -42,6 +42,7 @@ public class CodeRunner {
                     + "Could not properly initialize scripting engine."
                     + "\n\nSome functions may not work.\n\n"
                     + "(" + ex.getMessage() + ")");
+            ex.printStackTrace();
         }
     }
 

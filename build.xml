@@ -7,7 +7,7 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="MeetLeeb" default="default" basedir=".">
+<project name="SyMAT" default="default" basedir=".">
     <description>Builds, tests, and runs SyMAT.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
@@ -82,7 +82,7 @@
     </unjar>
 </target>
 
-<target depends="init,compile,-pre-pre-jar,-pre-jar,-unjar-and-copy-lib-jars" name="fat-jar">
+<target depends="init,compile,jar,-pre-pre-jar,-pre-jar,-unjar-and-copy-lib-jars" name="fat-jar">
     <property location="${build.classes.dir}" name="build.classes.dir.resolved"/>
     <jar destfile="${dist.jar}">
         <fileset dir="${build.classes.dir}"/>
