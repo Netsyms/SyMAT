@@ -32,8 +32,8 @@ import javax.swing.JInternalFrame;
  */
 public class MainGUI extends javax.swing.JFrame {
 
-    public static final String APP_NAME = "SyMAT 0.5";
-    public static final double APP_CODE = 0.5;
+    public static final String APP_NAME = "SyMAT 0.5.1";
+    public static final double APP_CODE = 0.51;
 
     /**
      * Creates new form MainGUI
