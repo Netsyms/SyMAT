@@ -27,6 +27,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -67,11 +69,12 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         int font_size = 12;
         try {
             font_size = Integer.valueOf(PrefStorage.getSetting("editor-fontsize"));
-        } catch (Exception ex) { }
+        } catch (Exception ex) {
+        }
         codeBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
         TabStop[] tabs = new TabStop[30];
         for (int i = 0; i < tabs.length; i++) {
-            tabs[i] = new TabStop(15*i, TabStop.ALIGN_RIGHT, TabStop.LEAD_NONE);
+            tabs[i] = new TabStop(15 * i, TabStop.ALIGN_RIGHT, TabStop.LEAD_NONE);
         }
         TabSet tabset = new TabSet(tabs);
         StyleContext sc = StyleContext.getDefaultStyleContext();
@@ -278,13 +281,28 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                 File f = fc.getSelectedFile();
                 codeBox.setText(readFile(f.toString(), StandardCharsets.UTF_8));
                 isSaved = true;
+                lastSaved = codeBox.getText();
                 setTitle("Editor - " + f.getName());
             } catch (IOException ex) {
-                JOptionPane.showInternalMessageDialog(this, "Error:  Cannot load file: " + ex.getMessage());
+                JOptionPane.showInternalMessageDialog(this,
+                        "Error:  Cannot load file: " + ex.getMessage());
             }
         }
         codeBox.setCaretPosition(0);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    public void openFileFromString(String file) {
+        try {
+            File f = new File(file);
+            codeBox.setText(readFile(f.toString(), StandardCharsets.UTF_8));
+            isSaved = true;
+            lastSaved = codeBox.getText();
+            setTitle("Editor - " + f.getName());
+        } catch (IOException ex) {
+            JOptionPane.showInternalMessageDialog(this,
+                    "Error:  Cannot load file: " + ex.getMessage());
+        }
+    }
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         if (!isSaved) {
@@ -342,7 +360,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                     JOptionPane.QUESTION_MESSAGE));
             if (size >= 8 && size <= 36) {
                 codeBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, size));
-                PrefStorage.saveSetting("editor-fontsize", size+"");
+                PrefStorage.saveSetting("editor-fontsize", size + "");
             }
         } catch (Exception ex) {
 

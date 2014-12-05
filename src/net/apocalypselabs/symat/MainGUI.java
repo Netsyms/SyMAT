@@ -32,8 +32,9 @@ import javax.swing.JInternalFrame;
  */
 public class MainGUI extends javax.swing.JFrame {
 
-    public static final String APP_NAME = "SyMAT 0.5.1";
-    public static final double APP_CODE = 0.51;
+    public static final String APP_NAME = "SyMAT 0.5.3";
+    public static final double APP_CODE = 0.53;
+    public static String argfile = "";
 
     /**
      * Creates new form MainGUI
@@ -52,7 +53,7 @@ public class MainGUI extends javax.swing.JFrame {
             is.close();
             double version = Double.parseDouble(line);
             if (version > APP_CODE) {
-                if (PrefStorage.getSetting("update-ignore").equals(APP_CODE+"|"+version)) {
+                if (PrefStorage.getSetting("update-ignore").equals(APP_CODE + "|" + version)) {
                     System.err.println("An update was found, but has been ignored by the user.");
                 } else {
                     loadFrame(new Update(version));
@@ -60,10 +61,19 @@ public class MainGUI extends javax.swing.JFrame {
             }
         } catch (IOException | NumberFormatException e) {
             System.err.println("Fail:  Cannot check update server.  \n"
-                             + "       Assuming local copy up-to-date.");
+                    + "       Assuming local copy up-to-date.");
         }
-        Interpreter sh = new Interpreter();
-        loadFrame(sh);
+        
+        // Open shell unless prog was run with argument
+        if (argfile.equals("")) {
+            Interpreter sh = new Interpreter();
+            loadFrame(sh);
+        } else {
+            CodeEditor ed = new CodeEditor();
+            loadFrame(ed);
+            ed.openFileFromString(argfile);
+            argfile = "";
+        }
     }
 
     /**
@@ -247,6 +257,11 @@ public class MainGUI extends javax.swing.JFrame {
                 new MainGUI().setVisible(true);
             }
         });
+
+        // Trigger open passed script file
+        if (args.length == 1) {
+            argfile = args[0];
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
