@@ -41,8 +41,8 @@ import javax.swing.JInternalFrame;
  */
 public class MainGUI extends javax.swing.JFrame {
 
-    public static final String APP_NAME = "SyMAT 0.5.3";
-    public static final double APP_CODE = 0.53;
+    public static final String APP_NAME = "SyMAT 0.6";
+    public static final double APP_CODE = 0.6;
     public static String argfile = "";
 
     /**
@@ -72,7 +72,7 @@ public class MainGUI extends javax.swing.JFrame {
             System.err.println("Fail:  Cannot check update server.  \n"
                     + "       Assuming local copy up-to-date.");
         }
-        
+
         // Open shell unless prog was run with argument
         if (argfile.equals("")) {
             Interpreter sh = new Interpreter();
@@ -85,6 +85,18 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }
 
+    private static String namemark() {
+        String nbsp = "";
+        for (int i = 0; i < 8; i++) {
+            nbsp += "&nbsp;";
+        }
+        return "<html>"
+                + nbsp
+                + "<span style=\"color: gray; font-size: 130%;\"><i>"
+                + APP_NAME
+                + "</i></span>&nbsp;&nbsp;";
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -93,14 +105,19 @@ public class MainGUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         mainPane = new javax.swing.JDesktopPane();
-        jToolBar1 = new javax.swing.JToolBar();
+        tabs = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
         shellBtn = new javax.swing.JButton();
         editorBtn = new javax.swing.JButton();
         graphBtn = new javax.swing.JButton();
-        helpBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        helpBtn = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(APP_NAME);
@@ -116,19 +133,16 @@ public class MainGUI extends javax.swing.JFrame {
         mainPane.setLayout(mainPaneLayout);
         mainPaneLayout.setHorizontalGroup(
             mainPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 690, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         mainPaneLayout.setVerticalGroup(
             mainPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 416, Short.MAX_VALUE)
+            .addGap(0, 407, Short.MAX_VALUE)
         );
-
-        jToolBar1.setFloatable(false);
-        jToolBar1.setRollover(true);
 
         shellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/shell.png"))); // NOI18N
         shellBtn.setText("Shell");
-        shellBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        shellBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         shellBtn.setFocusable(false);
         shellBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         shellBtn.setOpaque(false);
@@ -138,11 +152,10 @@ public class MainGUI extends javax.swing.JFrame {
                 shellBtnActionPerformed(evt);
             }
         });
-        jToolBar1.add(shellBtn);
 
         editorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/editor.png"))); // NOI18N
         editorBtn.setText("Editor");
-        editorBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        editorBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         editorBtn.setFocusable(false);
         editorBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         editorBtn.setOpaque(false);
@@ -152,11 +165,10 @@ public class MainGUI extends javax.swing.JFrame {
                 editorBtnActionPerformed(evt);
             }
         });
-        jToolBar1.add(editorBtn);
 
         graphBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/graph.png"))); // NOI18N
         graphBtn.setText("Graph");
-        graphBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        graphBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         graphBtn.setFocusable(false);
         graphBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         graphBtn.setOpaque(false);
@@ -166,11 +178,42 @@ public class MainGUI extends javax.swing.JFrame {
                 graphBtnActionPerformed(evt);
             }
         });
-        jToolBar1.add(graphBtn);
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel1.setText(namemark());
+        jLabel1.setFocusable(false);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(shellBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(editorBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(graphBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(shellBtn)
+                    .addComponent(editorBtn))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(graphBtn))
+        );
+
+        tabs.addTab("Apps", jPanel1);
 
         helpBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/help.png"))); // NOI18N
         helpBtn.setText("Help");
-        helpBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        helpBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         helpBtn.setFocusable(false);
         helpBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         helpBtn.setOpaque(false);
@@ -180,24 +223,48 @@ public class MainGUI extends javax.swing.JFrame {
                 helpBtnActionPerformed(evt);
             }
         });
-        jToolBar1.add(helpBtn);
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("<html>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color: gray; font-size: 130%;\"><i>"+APP_NAME+"</i></span>");
-        jToolBar1.add(jLabel1);
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel3.setText(namemark());
+        jLabel3.setFocusable(false);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(helpBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(helpBtn)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        tabs.addTab("Tools", jPanel2);
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel2.setText(namemark());
+        jLabel2.setFocusable(false);
+        tabs.addTab("Settings", jLabel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(mainPane)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(tabs)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(mainPane))
         );
 
@@ -219,14 +286,14 @@ public class MainGUI extends javax.swing.JFrame {
         loadFrame(g);
     }//GEN-LAST:event_graphBtnActionPerformed
 
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        setLocationRelativeTo(null);
+    }//GEN-LAST:event_formComponentShown
+
     private void helpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBtnActionPerformed
         Help h = new Help();
         loadFrame(h);
     }//GEN-LAST:event_helpBtnActionPerformed
-
-    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        setLocationRelativeTo(null);
-    }//GEN-LAST:event_formComponentShown
 
     public static void loadFrame(JInternalFrame frame) {
         mainPane.add(frame);
@@ -278,8 +345,12 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JButton graphBtn;
     private javax.swing.JButton helpBtn;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     public static javax.swing.JDesktopPane mainPane;
     private javax.swing.JButton shellBtn;
+    private javax.swing.JTabbedPane tabs;
     // End of variables declaration//GEN-END:variables
 }
