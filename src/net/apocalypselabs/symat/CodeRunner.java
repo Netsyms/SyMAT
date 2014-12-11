@@ -78,8 +78,9 @@ public class CodeRunner {
     }
 
     /**
-     * Allows use of Math.blah() as just blah().  
-     * Also gives access to SyMAT Java functions.
+     * Allows use of Math.blah() as just blah(). Also gives access to SyMAT Java
+     * functions.
+     *
      * @param eval input string
      * @return wrapped input
      */
@@ -111,5 +112,14 @@ public class CodeRunner {
         } catch (Exception e) {
         }
         return text;
+    }
+
+    // TODO: Run Javascript in separate thread from rest of app.
+    private class JsThread extends Thread {
+
+        @Override
+        public void run() {
+
+        }
     }
 }

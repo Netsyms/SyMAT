@@ -48,4 +48,11 @@ public class PrefStorage {
     public static String getSetting(String key, String emptyResponse) {
         return prefs.get(key, emptyResponse);
     }
+
+    // xkcd 221 compliance.
+    int getRandomNumber()
+    {
+        return 4; // chosen by fair dice roll.
+                  // guaranteed to be random.
+    }
 }
