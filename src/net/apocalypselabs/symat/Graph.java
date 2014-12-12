@@ -120,6 +120,8 @@ public class Graph extends javax.swing.JInternalFrame {
         setTitle("Graph");
         setToolTipText("");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/graph.png"))); // NOI18N
+        setMaximumSize(new java.awt.Dimension(336, 406));
+        setMinimumSize(new java.awt.Dimension(336, 406));
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 formMouseDragged(evt);

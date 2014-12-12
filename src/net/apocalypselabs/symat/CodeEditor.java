@@ -143,6 +143,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Editor");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/editor.png"))); // NOI18N
+        setMinimumSize(new java.awt.Dimension(125, 50));
 
         jSplitPane1.setDividerLocation(275);
         jSplitPane1.setDividerSize(3);
