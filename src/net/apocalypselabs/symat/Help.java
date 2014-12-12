@@ -27,8 +27,10 @@
  */
 package net.apocalypselabs.symat;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import javax.swing.UIDefaults;
 
 /**
  *
@@ -41,6 +43,27 @@ public class Help extends javax.swing.JInternalFrame {
      */
     public Help() {
         initComponents();
+        if (PrefStorage.getSetting("theme").equals("dark")) {
+            setBackgroundOfBrowser(Color.BLACK);
+            setBackgroundOfBrowser(Color.WHITE);
+            topicList.setBackground(Color.BLACK);
+            topicList.setForeground(Color.WHITE);
+            setBackground(Color.DARK_GRAY);
+        } else {
+            setBackgroundOfBrowser(Color.WHITE);
+            setBackgroundOfBrowser(Color.BLACK);
+            topicList.setBackground(Color.WHITE);
+            topicList.setForeground(Color.BLACK);
+            setBackground(Color.LIGHT_GRAY);
+        }
+    }
+
+    private void setBackgroundOfBrowser(Color c) {
+        UIDefaults defaults = new UIDefaults();
+        defaults.put("EditorPane.backgroundPainter", c);
+        topicBrowser.putClientProperty("Nimbus.Overrides", defaults);
+        topicBrowser.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+        topicBrowser.setBackground(c);
     }
 
     public void loadTopic(String name) {
@@ -49,18 +72,19 @@ public class Help extends javax.swing.JInternalFrame {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(
                             CodeRunner.class
-                            .getResourceAsStream("help/"+name+".html")));
+                            .getResourceAsStream("help/" + name + ".html")));
             String line;
             while ((line = reader.readLine()) != null) {
                 text += line;
             }
             topicBrowser.setText(text);
             topicBrowser.setCaretPosition(0);
+            setTitle("Manual (" + topicList.getSelectedValue().toString() + ")");
         } catch (Exception e) {
             //JOptionPane.showInternalMessageDialog(MainGUI.mainPane, 
             //"Error: Cannot load help topic "+name+".\n\n"+e.getMessage());
             topicBrowser.setText("<html><head></head><body><p><b>Error:</b><br>Cannot get help topic \""
-                    +name+"\".<br>("+e.getMessage()+")</p></body></html>");
+                    + name + "\".<br>(" + e.getMessage() + ")</p></body></html>");
         }
     }
 
@@ -83,7 +107,7 @@ public class Help extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Help");
+        setTitle("Manual");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/help.png"))); // NOI18N
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -101,6 +125,7 @@ public class Help extends javax.swing.JInternalFrame {
             public Object getElementAt(int i) { return strings[i]; }
         });
         topicList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        topicList.setSelectedIndex(0);
         topicList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 topicListValueChanged(evt);
@@ -136,9 +161,9 @@ public class Help extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_topicListValueChanged
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        topicList.setSelectedIndex(0);
         loadTopic("welcome");
     }//GEN-LAST:event_formComponentShown
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

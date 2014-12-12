@@ -43,6 +43,7 @@ public class Update extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Update
+     *
      * @param latest The new version.
      */
     public Update(double latest) {
@@ -155,10 +156,9 @@ public class Update extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        PrefStorage.saveSetting("update-ignore", MainGUI.APP_CODE+"|"+latestVersion);
+        PrefStorage.saveSetting("update-ignore", MainGUI.APP_CODE + "|" + latestVersion);
         dispose();
     }//GEN-LAST:event_jLabel5MouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

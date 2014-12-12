@@ -1,7 +1,7 @@
-/* 
+/*
  * Apocalypse Laboratories
  * Open Source License
- * 
+ *
  * Source code can be used for any purpose, as long as:
  *  - Compiled binaries are rebranded and trademarks are not
  *    visible by the end user at any time, except to give
@@ -14,7 +14,7 @@
  *  - and you provide your modified source code for download,
  *    under the terms of the GNU LGPL v3 or a comparable
  *    license.
- * 
+ *
  * Compiled binaries cannot be redistributed or mirrored,
  * unless:
  *  - You have written permission from Apocalypse Laboratories;
@@ -22,13 +22,13 @@
  *    not even behind a paywall or other blocking mechanism;
  *  - or you have received a multi-computer license, in which
  *    case you should take measures to prevent unauthorized
- *    downloads, such as preventing download access from the 
+ *    downloads, such as preventing download access from the
  *    Internet.
  */
 package net.apocalypselabs.symat;
 
+import java.awt.Color;
 import java.awt.Font;
-import javax.swing.JOptionPane;
 import javax.swing.text.DefaultCaret;
 
 /**
@@ -38,6 +38,7 @@ import javax.swing.text.DefaultCaret;
 public class Interpreter extends javax.swing.JInternalFrame {
 
     private final CodeRunner cr = new CodeRunner();
+
     /**
      * Creates new form Interpreter
      */
@@ -45,13 +46,28 @@ public class Interpreter extends javax.swing.JInternalFrame {
         initComponents();
         int font_size = 12;
         try {
-            font_size = Integer.valueOf(PrefStorage.getSetting("shell-fontsize"));
-        } catch (Exception ex) { }
-        jTextArea1.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setWrapStyleWord(true);
-        jTextArea1.setText(">>");
-        jTextField1.requestFocus();
+            font_size = Integer.valueOf(PrefStorage.getSetting("editfont"));
+        } catch (Exception ex) {
+        }
+        mainBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
+        inputBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
+        if (PrefStorage.getSetting("theme").equals("dark")) {
+            mainBox.setBackground(Color.BLACK);
+            mainBox.setForeground(Color.WHITE);
+            inputBox.setBackground(Color.BLACK);
+            inputBox.setForeground(Color.WHITE);
+            setBackground(Color.DARK_GRAY);
+        } else {
+            mainBox.setBackground(Color.WHITE);
+            mainBox.setForeground(Color.BLACK);
+            inputBox.setBackground(Color.WHITE);
+            inputBox.setForeground(Color.BLACK);
+            setBackground(Color.LIGHT_GRAY);
+        }
+        mainBox.setLineWrap(true);
+        mainBox.setWrapStyleWord(true);
+        mainBox.setText(">>");
+        inputBox.requestFocus();
     }
 
     /**
@@ -64,13 +80,10 @@ public class Interpreter extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        mainBox = new javax.swing.JTextArea();
+        inputBox = new javax.swing.JTextField();
+        runBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
 
         setClosable(true);
         setIconifiable(true);
@@ -79,44 +92,30 @@ public class Interpreter extends javax.swing.JInternalFrame {
         setTitle("Shell");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/shell.png"))); // NOI18N
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Courier New", 0, 15)); // NOI18N
-        jTextArea1.setRows(5);
-        jTextArea1.setTabSize(4);
-        DefaultCaret caret = (DefaultCaret)jTextArea1.getCaret();
+        mainBox.setEditable(false);
+        mainBox.setColumns(20);
+        mainBox.setFont(new java.awt.Font("Courier New", 0, 15)); // NOI18N
+        mainBox.setRows(5);
+        mainBox.setTabSize(4);
+        DefaultCaret caret = (DefaultCaret)mainBox.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        jScrollPane1.setViewportView(jTextArea1);
+        jScrollPane1.setViewportView(mainBox);
 
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+        inputBox.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField1KeyTyped(evt);
+                inputBoxKeyTyped(evt);
             }
         });
 
-        jButton1.setText("Run");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        runBtn.setText("Run");
+        runBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                runBtnActionPerformed(evt);
             }
         });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText(">>");
-
-        jMenu2.setText("Edit");
-
-        jMenuItem1.setText("Font size...");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem1);
-
-        jMenuBar1.add(jMenu2);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -126,71 +125,53 @@ public class Interpreter extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1)
+                .addComponent(inputBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1))
+                .addComponent(runBtn))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(runBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addComponent(inputBox, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addGap(2, 2, 2))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void runBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runBtnActionPerformed
         doRunCode();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_runBtnActionPerformed
 
-    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+    private void inputBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputBoxKeyTyped
         if (evt.getKeyChar() == '\n') {
             doRunCode();
         }
-    }//GEN-LAST:event_jTextField1KeyTyped
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        try {
-            int size = Integer.parseInt(JOptionPane.showInternalInputDialog(this,
-                    "New font size (8-36):",
-                    "Font Size",
-                    JOptionPane.QUESTION_MESSAGE));
-            if (size >= 8 && size <= 36) {
-                jTextArea1.setFont(new Font(Font.MONOSPACED, Font.PLAIN, size));
-                PrefStorage.saveSetting("shell-fontsize", size+"");
-            }
-        } catch (Exception ex) {
-
-        }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_inputBoxKeyTyped
 
     private void doRunCode() {
-        String code = jTextField1.getText();
-        jTextArea1.append(" "+code+"\n");
+        String code = inputBox.getText();
+        mainBox.append(" " + code + "\n");
         try {
-            jTextArea1.append(cr.evalString(code).toString()+"\n");
+            mainBox.append(cr.evalString(code).toString() + "\n");
         } catch (NullPointerException ex) {
-            
+
         }
-        jTextArea1.append(">>");
-        jTextField1.setText("");
+        mainBox.append(">>");
+        inputBox.setText("");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField inputBox;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextArea mainBox;
+    private javax.swing.JButton runBtn;
     // End of variables declaration//GEN-END:variables
 }

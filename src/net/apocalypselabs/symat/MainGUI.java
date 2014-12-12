@@ -27,14 +27,16 @@
  */
 package net.apocalypselabs.symat;
 
-import java.awt.Rectangle;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import javax.swing.ImageIcon;
-import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 
 /**
@@ -85,6 +87,19 @@ public class MainGUI extends javax.swing.JFrame {
             ed.openFileFromString(argfile);
             argfile = "";
         }
+        updateDisplay();
+    }
+
+    /**
+     * (Re)load display settings.
+     */
+    public static void updateDisplay() {
+        mainPane.paintImmediately(0, 0, mainPane.getWidth(), mainPane.getHeight());
+        if (PrefStorage.getSetting("theme").equals("dark")) {
+            tabs.setBackground(Color.BLACK);
+        } else {
+            tabs.setBackground(new Color(240, 240, 240));
+        }
     }
 
     private static String namemark() {
@@ -122,21 +137,39 @@ public class MainGUI extends javax.swing.JFrame {
         arrangeWindowsBtn = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        mainPane = new javax.swing.JDesktopPane();
+        displaySettingsBtn = new javax.swing.JButton();
+        mainPane = mainPane = new javax.swing.JDesktopPane() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (PrefStorage.getSetting("theme").equals("dark")) {
+                    g.setColor(Color.DARK_GRAY);
+                } else {
+                    g.setColor(Color.LIGHT_GRAY);
+                }
+                g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        }
+        ;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(APP_NAME);
-        setMinimumSize(new java.awt.Dimension(600, 500));
-        setPreferredSize(new java.awt.Dimension(700, 500));
+        setMinimumSize(new java.awt.Dimension(300, 400));
+        setPreferredSize(new java.awt.Dimension(700, 575));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
         });
 
-        jPanel4.setEnabled(false);
+        tabs.setBackground(new Color(240,240,240));
+        tabs.setOpaque(true);
+
+        jPanel4.setFocusable(false);
         jPanel4.setLayout(null);
-        tabs.addTab("", jPanel4);
+        tabs.addTab("", new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icon16.png")), jPanel4); // NOI18N
+
+        jPanel1.setOpaque(false);
 
         shellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/shell.png"))); // NOI18N
         shellBtn.setText("Shell");
@@ -193,7 +226,7 @@ public class MainGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(graphBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 494, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,8 +241,10 @@ public class MainGUI extends javax.swing.JFrame {
 
         tabs.addTab("Apps", jPanel1);
 
+        jPanel2.setOpaque(false);
+
         helpBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/help.png"))); // NOI18N
-        helpBtn.setText("Help");
+        helpBtn.setText("Manual");
         helpBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         helpBtn.setFocusable(false);
         helpBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -225,8 +260,8 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel3.setText(namemark());
         jLabel3.setFocusable(false);
 
-        arrangeWindowsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/help.png"))); // NOI18N
-        arrangeWindowsBtn.setText("Arrange");
+        arrangeWindowsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/cascade.png"))); // NOI18N
+        arrangeWindowsBtn.setText("Cascade");
         arrangeWindowsBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         arrangeWindowsBtn.setFocusable(false);
         arrangeWindowsBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -248,7 +283,7 @@ public class MainGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(arrangeWindowsBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE))
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -260,21 +295,39 @@ public class MainGUI extends javax.swing.JFrame {
 
         tabs.addTab("Tools", jPanel2);
 
+        jPanel3.setOpaque(false);
+
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText(namemark());
         jLabel4.setFocusable(false);
+
+        displaySettingsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/display.png"))); // NOI18N
+        displaySettingsBtn.setText("Display");
+        displaySettingsBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        displaySettingsBtn.setFocusable(false);
+        displaySettingsBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        displaySettingsBtn.setOpaque(false);
+        displaySettingsBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        displaySettingsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                displaySettingsBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(displaySettingsBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(displaySettingsBtn)
         );
 
         tabs.addTab("Settings", jPanel3);
@@ -294,7 +347,7 @@ public class MainGUI extends javax.swing.JFrame {
         );
         mainPaneLayout.setVerticalGroup(
             mainPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 481, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -345,6 +398,11 @@ public class MainGUI extends javax.swing.JFrame {
         cascade();
     }//GEN-LAST:event_arrangeWindowsBtnActionPerformed
 
+    private void displaySettingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displaySettingsBtnActionPerformed
+        Display d = new Display();
+        loadFrame(d);
+    }//GEN-LAST:event_displaySettingsBtnActionPerformed
+
     /**
      * Adds the given JInternalFrame to the mainPane. Automatically does layout
      * and sets visible as well.
@@ -373,13 +431,14 @@ public class MainGUI extends javax.swing.JFrame {
             frame.setLocation(frame.getLocation().x, 0);
         }
         frame.setVisible(true);
+        //updateDisplay();
     }
 
     public static void cascade() {
         JInternalFrame[] frames = mainPane.getAllFrames();
         int x = 12;
         int y = 24;
-        Debug.println("Cascading "+frames.length+" frames...");
+        Debug.println("Cascading " + frames.length + " frames...");
         for (int i = 0; i < frames.length; i++) {
             if (frames[i].isVisible()) {
                 Debug.println("Frame: " + frames[i].getTitle() + ", Times: " + i + ", Xpos: " + x * i + ", Ypos: " + y * i);
@@ -427,19 +486,20 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton arrangeWindowsBtn;
-    private javax.swing.JButton editorBtn;
-    private javax.swing.JButton graphBtn;
-    private javax.swing.JButton helpBtn;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
+    public static javax.swing.JButton arrangeWindowsBtn;
+    public static javax.swing.JButton displaySettingsBtn;
+    public static javax.swing.JButton editorBtn;
+    public static javax.swing.JButton graphBtn;
+    public static javax.swing.JButton helpBtn;
+    public static javax.swing.JLabel jLabel1;
+    public static javax.swing.JLabel jLabel3;
+    public static javax.swing.JLabel jLabel4;
+    public static javax.swing.JPanel jPanel1;
+    public static javax.swing.JPanel jPanel2;
+    public static javax.swing.JPanel jPanel3;
+    public static javax.swing.JPanel jPanel4;
     public static javax.swing.JDesktopPane mainPane;
-    private javax.swing.JButton shellBtn;
-    private javax.swing.JTabbedPane tabs;
+    public static javax.swing.JButton shellBtn;
+    public static javax.swing.JTabbedPane tabs;
     // End of variables declaration//GEN-END:variables
 }

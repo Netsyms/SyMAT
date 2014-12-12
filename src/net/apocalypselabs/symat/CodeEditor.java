@@ -27,6 +27,7 @@
  */
 package net.apocalypselabs.symat;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,12 +37,11 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.UIDefaults;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AttributeSet;
@@ -77,10 +77,24 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         fc.addChoosableFileFilter(filter);
         int font_size = 12;
         try {
-            font_size = Integer.valueOf(PrefStorage.getSetting("editor-fontsize"));
+            font_size = Integer.valueOf(PrefStorage.getSetting("editfont"));
         } catch (Exception ex) {
         }
         codeBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
+        outputBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
+        if (PrefStorage.getSetting("theme").equals("dark")) {
+            setBackgroundOfEditor(Color.BLACK);
+            codeBox.setForeground(Color.WHITE);
+            outputBox.setBackground(Color.BLACK);
+            outputBox.setForeground(Color.WHITE);
+            setBackground(Color.DARK_GRAY);
+        } else {
+            setBackgroundOfEditor(Color.WHITE);
+            codeBox.setForeground(Color.BLACK);
+            outputBox.setBackground(Color.WHITE);
+            outputBox.setForeground(Color.BLACK);
+            setBackground(Color.LIGHT_GRAY);
+        }
         TabStop[] tabs = new TabStop[30];
         for (int i = 0; i < tabs.length; i++) {
             tabs[i] = new TabStop(15 * i, TabStop.ALIGN_RIGHT, TabStop.LEAD_NONE);
@@ -95,6 +109,14 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         codeBox.setVisible(true);
         tln.setVisible(true);
         codeBox.requestFocus();
+    }
+
+    private void setBackgroundOfEditor(Color c) {
+        UIDefaults defaults = new UIDefaults();
+        defaults.put("TextPane[Enabled].backgroundPainter", c);
+        codeBox.putClientProperty("Nimbus.Overrides", defaults);
+        codeBox.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
+        codeBox.setBackground(c);
     }
 
     /**
@@ -116,7 +138,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        outputPane = new javax.swing.JTextArea();
+        outputBox = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -125,7 +147,6 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
 
@@ -145,20 +166,22 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/editor.png"))); // NOI18N
         setMinimumSize(new java.awt.Dimension(125, 50));
 
-        jSplitPane1.setDividerLocation(275);
-        jSplitPane1.setDividerSize(3);
+        jSplitPane1.setDividerLocation(220);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane1.setResizeWeight(0.7);
 
+        scrollPane.setOpaque(false);
         scrollPane.setRequestFocusEnabled(false);
         jSplitPane1.setTopComponent(scrollPane);
 
         jLabel1.setText("Output:");
 
-        outputPane.setEditable(false);
-        outputPane.setColumns(20);
-        outputPane.setRows(5);
-        jScrollPane1.setViewportView(outputPane);
+        outputBox.setEditable(false);
+        outputBox.setColumns(20);
+        outputBox.setLineWrap(true);
+        outputBox.setRows(3);
+        outputBox.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(outputBox);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -174,7 +197,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(jPanel2);
@@ -187,7 +210,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
         );
 
         jMenu1.setText("File");
@@ -239,14 +262,6 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             }
         });
         jMenu5.add(jMenuItem6);
-
-        jMenuItem7.setText("Font size...");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
-            }
-        });
-        jMenu5.add(jMenuItem7);
 
         jMenuBar1.add(jMenu5);
 
@@ -352,30 +367,15 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         CodeRunner cr = new CodeRunner();
         Object result = cr.evalString(codeBox.getText());
         try {
-            outputPane.append(result.toString() + "\n");
+            outputBox.append(result.toString() + "\n");
         } catch (NullPointerException ex) {
 
         }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        outputPane.setText("");
+        outputBox.setText("");
     }//GEN-LAST:event_jMenuItem6ActionPerformed
-
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        try {
-            int size = Integer.parseInt(JOptionPane.showInternalInputDialog(this,
-                    "New font size (8-36):",
-                    "Font Size",
-                    JOptionPane.QUESTION_MESSAGE));
-            if (size >= 8 && size <= 36) {
-                codeBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, size));
-                PrefStorage.saveSetting("editor-fontsize", size + "");
-            }
-        } catch (Exception ex) {
-
-        }
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         CodeExport ce = new CodeExport(codeBox.getText());
@@ -431,13 +431,12 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTextArea outputPane;
+    private javax.swing.JTextArea outputBox;
     private javax.swing.JScrollPane scrollPane;
     // End of variables declaration//GEN-END:variables
 }

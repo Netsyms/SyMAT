@@ -384,7 +384,7 @@ public class Graph extends javax.swing.JInternalFrame {
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         try {
-            int size = Integer.parseInt(JOptionPane.showInternalInputDialog(this, 
+            int size = Integer.parseInt(JOptionPane.showInternalInputDialog(this,
                     "Graph scale, -1 to 3 (-1 least detail, 3 most detail):",
                     "Scale",
                     JOptionPane.QUESTION_MESSAGE));

@@ -41,6 +41,13 @@ public class PrefStorage {
         prefs.put(key, value);
     }
 
+    public static boolean isset(String key) {
+        if (!getSetting(key, "NULL").equals("NULL")) {
+            return true;
+        }
+        return false;
+    }
+
     public static String getSetting(String key) {
         return prefs.get(key, "");
     }
@@ -50,9 +57,8 @@ public class PrefStorage {
     }
 
     // xkcd 221 compliance.
-    int getRandomNumber()
-    {
+    int getRandomNumber() {
         return 4; // chosen by fair dice roll.
-                  // guaranteed to be random.
+        // guaranteed to be random.
     }
 }

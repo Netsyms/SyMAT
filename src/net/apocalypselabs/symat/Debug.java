@@ -29,18 +29,23 @@ package net.apocalypselabs.symat;
 
 /**
  * This class handles DEBUG logging, so it's easy to disable.
- * 
+ *
  * @author Skylar
  */
 public class Debug {
+
     // If output should be on or off
     public static final boolean DEBUG = true;
-    
+
     public static void println(Object data) {
-        if (DEBUG) System.out.println(data);
+        if (DEBUG) {
+            System.out.println(data);
+        }
     }
-    
+
     public static void printerr(Object data) {
-        if (DEBUG) System.err.println(data);
+        if (DEBUG) {
+            System.err.println(data);
+        }
     }
 }
