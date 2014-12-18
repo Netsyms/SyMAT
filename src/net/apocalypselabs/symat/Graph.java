@@ -120,20 +120,10 @@ public class Graph extends javax.swing.JInternalFrame {
         setTitle("Graph");
         setToolTipText("");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/graph.png"))); // NOI18N
-        setMaximumSize(new java.awt.Dimension(336, 406));
-        setMinimumSize(new java.awt.Dimension(336, 406));
-        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-                formMouseDragged(evt);
-            }
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                formMouseMoved(evt);
-            }
-        });
+        setMaximumSize(new java.awt.Dimension(326, 402));
+        setMinimumSize(new java.awt.Dimension(326, 402));
+        setPreferredSize(new java.awt.Dimension(326, 402));
         addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentMoved(java.awt.event.ComponentEvent evt) {
-                formComponentMoved(evt);
-            }
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
@@ -226,7 +216,7 @@ public class Graph extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
                     .addComponent(gLbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,7 +228,7 @@ public class Graph extends javax.swing.JInternalFrame {
                     .addComponent(inBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jButton1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -334,18 +324,6 @@ public class Graph extends javax.swing.JInternalFrame {
             jButton1ActionPerformed(null);
         }
     }//GEN-LAST:event_inBoxKeyTyped
-
-    private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentMoved
-
-    }//GEN-LAST:event_formComponentMoved
-
-    private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_formMouseMoved
-
-    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
-
-    }//GEN-LAST:event_formMouseDragged
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         gpnl = new BufferedImage(300, 300, BufferedImage.TYPE_INT_ARGB);

@@ -90,8 +90,6 @@ public class Interpreter extends javax.swing.JInternalFrame {
         }
         
         // Misc. setup
-        mainBox.setLineWrap(true);
-        mainBox.setWrapStyleWord(true);
         mainBox.setText(">>");
         inputBox.requestFocus();
     }
@@ -132,8 +130,11 @@ public class Interpreter extends javax.swing.JInternalFrame {
         mainBox.setEditable(false);
         mainBox.setColumns(20);
         mainBox.setFont(new java.awt.Font("Courier New", 0, 15)); // NOI18N
+        mainBox.setLineWrap(true);
         mainBox.setRows(5);
         mainBox.setTabSize(4);
+        mainBox.setToolTipText("");
+        mainBox.setWrapStyleWord(true);
         DefaultCaret caret = (DefaultCaret)mainBox.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         jScrollPane1.setViewportView(mainBox);
@@ -229,7 +230,6 @@ public class Interpreter extends javax.swing.JInternalFrame {
     private void inputBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputBoxKeyTyped
         if (evt.getKeyChar() == '\n') {
             doRunCode();
-            return;
         }
     }//GEN-LAST:event_inputBoxKeyTyped
 
