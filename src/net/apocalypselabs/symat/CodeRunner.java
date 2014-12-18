@@ -31,7 +31,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import javax.script.*;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.swing.JOptionPane;
 
 /**
@@ -85,9 +87,10 @@ public class CodeRunner {
         this(lang);
         isShell = shell;
     }
-    
+
     /**
      * Inits the Python engine.
+     *
      * @param fakeInit Set it to true.
      */
     public CodeRunner(boolean fakeInit) {
@@ -101,7 +104,6 @@ public class CodeRunner {
                 + "Could not properly initialize " + scriptLang + " scripting engine."
                 + "\n\nSome functions may not work.\n\n"
                 + "(" + ex.getMessage() + ")");
-        ex.printStackTrace();
     }
 
     /**

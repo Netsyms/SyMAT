@@ -245,10 +245,10 @@ public class Display extends javax.swing.JInternalFrame {
         }
         if (!PrefStorage.save()) {
             // Something dun goofed...
-            JOptionPane.showInternalMessageDialog(this, 
+            JOptionPane.showInternalMessageDialog(this,
                     "Error: Problem occured while saving settings.  "
-                            + "This error is outside the control of "
-                            + "the application.");
+                    + "This error is outside the control of "
+                    + "the application.");
         }
         MainGUI.updateDisplay();
         dispose();

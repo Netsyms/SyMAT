@@ -51,20 +51,20 @@ public class Interpreter extends javax.swing.JInternalFrame {
      */
     public Interpreter(String useLang) {
         initComponents();
-        
+
         // Setup code runner
         lang = useLang;
         if (lang.equals("default")) {
             lang = PrefStorage.getSetting("shellLang", "javascript");
         }
         cr = new CodeRunner(lang, true);
-        
+
         // Set selected lang menu
         if (lang.equals("python")) {
             javascriptMenu.setSelected(false);
             pythonMenu.setSelected(true);
         }
-        
+
         // Set font
         int font_size = 12;
         try {
@@ -73,7 +73,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
         }
         mainBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
         inputBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
-        
+
         // Set theme
         if (PrefStorage.getSetting("theme").equals("dark")) {
             mainBox.setBackground(Color.BLACK);
@@ -88,7 +88,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
             inputBox.setForeground(Color.BLACK);
             setBackground(Color.LIGHT_GRAY);
         }
-        
+
         // Misc. setup
         mainBox.setText(">>");
         inputBox.requestFocus();

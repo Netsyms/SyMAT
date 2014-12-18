@@ -494,7 +494,6 @@ public class MainGUI extends javax.swing.JFrame {
         //</editor-fold>
 
         //</editor-fold>
-
         // Command line args
         for (String arg : args) {
             if (arg.equals("skippython")) {
@@ -503,7 +502,7 @@ public class MainGUI extends javax.swing.JFrame {
                 argfile = args[0];
             }
         }
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
