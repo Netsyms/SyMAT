@@ -29,6 +29,8 @@ package net.apocalypselabs.symat;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import javax.script.*;
 import javax.swing.JOptionPane;
 
@@ -38,21 +40,58 @@ import javax.swing.JOptionPane;
  */
 public class CodeRunner {
 
-    ScriptEngine jse = new ScriptEngineManager().getEngineByName("rhino");
-    boolean isJava8 = false;
+    private ScriptEngine se;
+
+    // If we need to wrap code around input to make everything nice.
+    private boolean wrapRequired = false;
+    // What codez are we speaking?
+    private String scriptLang = "";
+
+    private boolean isShell = false;
 
     public CodeRunner() {
-        try {
-            // Add custom functions.
-            jse.eval("importClass(net.apocalypselabs.symat.Functions);"
-                    + "SyMAT_Functions = new net.apocalypselabs.symat.Functions();");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error: "
-                    + "Could not properly initialize scripting engine."
-                    + "\n\nSome functions may not work.\n\n"
-                    + "(" + ex.getMessage() + ")");
-            ex.printStackTrace();
+        this("javascript");
+    }
+
+    public CodeRunner(String lang) {
+        scriptLang = lang;
+        switch (lang) {
+            case "javascript":
+                se = new ScriptEngineManager().getEngineByName("rhino");
+                wrapRequired = true;
+                try {
+                    // Add custom functions.
+                    se.eval("importClass(net.apocalypselabs.symat.Functions);"
+                            + "SyMAT_Functions = new net.apocalypselabs.symat.Functions();"
+                            + jsFunctions());
+                } catch (Exception ex) {
+                    initError(ex);
+                }
+                break;
+            case "python":
+                se = new ScriptEngineManager().getEngineByName("python");
+                try {
+                    se.eval("from net.apocalypselabs.symat import Functions\n_=Functions()\n");
+                } catch (Exception ex) {
+                    initError(ex);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Script language " + lang + " not supported.");
         }
+    }
+
+    public CodeRunner(String lang, boolean shell) {
+        this(lang);
+        isShell = shell;
+    }
+
+    private void initError(Exception ex) {
+        JOptionPane.showMessageDialog(null, "Error: "
+                + "Could not properly initialize " + scriptLang + " scripting engine."
+                + "\n\nSome functions may not work.\n\n"
+                + "(" + ex.getMessage() + ")");
+        ex.printStackTrace();
     }
 
     /**
@@ -63,7 +102,15 @@ public class CodeRunner {
      */
     public Object evalString(String eval) {
         try {
-            return jse.eval(wrapMath(eval));
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            se.getContext().setWriter(pw);
+            Object res = se.eval(wrapMath(eval));
+            if (res == null) {
+                res = "";
+            }
+            String result = res + sw.getBuffer().toString().trim();
+            return result;
         } catch (ScriptException ex) {
             return formatEx(ex);
         }
@@ -85,17 +132,20 @@ public class CodeRunner {
      * @return wrapped input
      */
     private String wrapMath(String eval) {
-        String with = "with(SyMAT_Functions){with(Math){" + eval + "}}";
-        //System.out.println(with);
-        return with;
+        if (wrapRequired) {
+            String with = "with(SyMAT_Functions){with(Math){" + eval + "}}";
+            //System.out.println(with);
+            return with;
+        }
+        return eval;
     }
 
     public void setVar(String var, Object val) {
-        jse.put(var, val);
+        se.put(var, val);
     }
 
     public Object getVar(String var) {
-        return jse.get(var);
+        return se.get(var);
     }
 
     private String jsFunctions() {

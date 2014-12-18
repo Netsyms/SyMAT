@@ -82,6 +82,7 @@
     </Container>
     <Component class="javax.swing.JTextField" name="inputBox">
       <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="inputBoxKeyPressed"/>
         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="inputBoxKeyTyped"/>
       </Events>
     </Component>

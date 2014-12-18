@@ -27,6 +27,9 @@
  */
 package net.apocalypselabs.symat;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 /**
@@ -35,17 +38,18 @@ import java.util.prefs.Preferences;
  */
 public class PrefStorage {
 
-    private static Preferences prefs = Preferences.userNodeForPackage(PrefStorage.class);
+    private static final Preferences prefs = Preferences.userNodeForPackage(PrefStorage.class);
 
     public static void saveSetting(String key, String value) {
         prefs.put(key, value);
     }
 
     public static boolean isset(String key) {
-        if (!getSetting(key, "NULL").equals("NULL")) {
-            return true;
-        }
-        return false;
+        return !getSetting(key, "NULL").equals("NULL");
+    }
+    
+    public static void unset(String key) {
+        prefs.remove(key);
     }
 
     public static String getSetting(String key) {
@@ -54,6 +58,16 @@ public class PrefStorage {
 
     public static String getSetting(String key, String emptyResponse) {
         return prefs.get(key, emptyResponse);
+    }
+    
+    public static boolean save() {
+        try {
+            prefs.flush();
+        } catch (BackingStoreException ex) {
+            System.err.println("Settings could not be saved!");
+            return false;
+        }
+        return true;
     }
 
     // xkcd 221 compliance.

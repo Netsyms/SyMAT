@@ -54,14 +54,10 @@ public class Functions {
         return JOptionPane.showInternalInputDialog(MainGUI.mainPane, question);
     }
 
-    public void write(String content) {
-        // TODO: enable output logging
-    }
-
     /*
      Math commands
      */
-    public String d(String function, String idv) {
+    public String D(String function, String idv) {
         return util.evaluate("diff(" + function + "," + idv + ")").toString();
     }
 

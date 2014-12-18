@@ -58,6 +58,7 @@ import syntaxhighlight.ParseResult;
  */
 public class CodeExport extends javax.swing.JInternalFrame {
 
+    private String codeLang = "js";
     private String html;
     private final String origCode;
     private final JFileChooser fc = new JFileChooser();
@@ -65,7 +66,7 @@ public class CodeExport extends javax.swing.JInternalFrame {
     /**
      * Creates new form CodeExport
      *
-     * @param code
+     * @param code The code.
      */
     public CodeExport(String code) {
         origCode = code;
@@ -73,6 +74,17 @@ public class CodeExport extends javax.swing.JInternalFrame {
         html = genHtml(code);
         previewPane.setText(html);
         previewPane.setCaretPosition(0);
+    }
+    
+    /**
+     * Create CodeExport window with a set language for syntax highlighting.
+     * 
+     * @param code The code.
+     * @param lang Options are "js" or "python".
+     */
+    public CodeExport(String code, String lang) {
+        this(code);
+        codeLang = lang;
     }
 
     private String genHtml(String code) {
@@ -107,7 +119,7 @@ public class CodeExport extends javax.swing.JInternalFrame {
             html += "<p class=\"header\">" + headerBox.getText() + "</p>";
         }
         PrettifyParser parser = new PrettifyParser();
-        List<ParseResult> parseResults = parser.parse("js", code);
+        List<ParseResult> parseResults = parser.parse(codeLang, code);
         html += PrettifyToHtml.toHtml(code, parseResults);
         html += "</body></html>";
         html = html.replace("\t", "<span class=\"tab\">&nbsp;&nbsp;&nbsp;&nbsp;</span>");

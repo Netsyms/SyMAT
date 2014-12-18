@@ -1,7 +1,7 @@
-/* 
+/*
  * Apocalypse Laboratories
  * Open Source License
- * 
+ *
  * Source code can be used for any purpose, as long as:
  *  - Compiled binaries are rebranded and trademarks are not
  *    visible by the end user at any time, except to give
@@ -14,7 +14,7 @@
  *  - and you provide your modified source code for download,
  *    under the terms of the GNU LGPL v3 or a comparable
  *    license.
- * 
+ *
  * Compiled binaries cannot be redistributed or mirrored,
  * unless:
  *  - You have written permission from Apocalypse Laboratories;
@@ -22,7 +22,7 @@
  *    not even behind a paywall or other blocking mechanism;
  *  - or you have received a multi-computer license, in which
  *    case you should take measures to prevent unauthorized
- *    downloads, such as preventing download access from the 
+ *    downloads, such as preventing download access from the
  *    Internet.
  */
 package net.apocalypselabs.symat;
@@ -68,12 +68,19 @@ public class CodeEditor extends javax.swing.JInternalFrame {
      */
     public CodeEditor() {
         initComponents();
-        FileFilter filter = new FileNameExtensionFilter("SyMAT script (.symt)", "symt");
+
+        if (!PrefStorage.isset("advancedcontrols")) {
+            runMenu.remove(codeLangMenu);
+        }
+
+        FileFilter filter = new FileNameExtensionFilter("SyMAT JavaScript (.syjs)", "syjs");
         fc.setFileFilter(filter);
+        fc.addChoosableFileFilter(filter);
+        filter = new FileNameExtensionFilter("SyMAT Python (.sypy)", "sypy");
         fc.addChoosableFileFilter(filter);
         filter = new FileNameExtensionFilter("JavaScript file (.js)", "js");
         fc.addChoosableFileFilter(filter);
-        filter = new FileNameExtensionFilter("MeetLeeb script (.mls)", "mls");
+        filter = new FileNameExtensionFilter("Python script (.py)", "py");
         fc.addChoosableFileFilter(filter);
         int font_size = 12;
         try {
@@ -132,6 +139,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
+        langBtnGroup = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         scrollPane = new JScrollPane(codeBox);
@@ -140,14 +148,17 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         outputBox = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        fileMenu = new javax.swing.JMenu();
+        openMenu = new javax.swing.JMenuItem();
+        saveMenu = new javax.swing.JMenuItem();
+        saveAsMenu = new javax.swing.JMenuItem();
+        exportMenu = new javax.swing.JMenuItem();
+        editMenu = new javax.swing.JMenu();
+        clrOutputMenu = new javax.swing.JMenuItem();
+        codeLangMenu = new javax.swing.JMenu();
+        javascriptOption = new javax.swing.JRadioButtonMenuItem();
+        pythonOption = new javax.swing.JRadioButtonMenuItem();
+        runMenu = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
 
         jMenuItem4.setText("jMenuItem4");
@@ -213,62 +224,76 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("File");
+        fileMenu.setText("File");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Open...");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        openMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        openMenu.setText("Open...");
+        openMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                openMenuActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        fileMenu.add(openMenu);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setText("Save...");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        saveMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveMenu.setText("Save...");
+        saveMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                saveMenuActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        fileMenu.add(saveMenu);
 
-        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem3.setText("Save as...");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        saveAsMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        saveAsMenu.setText("Save as...");
+        saveAsMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                saveAsMenuActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
+        fileMenu.add(saveAsMenu);
 
-        jMenuItem8.setText("Export...");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+        exportMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        exportMenu.setText("Export...");
+        exportMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
+                exportMenuActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem8);
+        fileMenu.add(exportMenu);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(fileMenu);
 
-        jMenu5.setText("Edit");
+        editMenu.setText("Edit");
 
-        jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem6.setText("Clear output");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        clrOutputMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
+        clrOutputMenu.setText("Clear output");
+        clrOutputMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                clrOutputMenuActionPerformed(evt);
             }
         });
-        jMenu5.add(jMenuItem6);
+        editMenu.add(clrOutputMenu);
 
-        jMenuBar1.add(jMenu5);
+        codeLangMenu.setText("Language");
 
-        jMenu2.setText("Run");
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+        langBtnGroup.add(javascriptOption);
+        javascriptOption.setSelected(true);
+        javascriptOption.setText("Javascript");
+        codeLangMenu.add(javascriptOption);
+
+        langBtnGroup.add(pythonOption);
+        pythonOption.setText("Python");
+        codeLangMenu.add(pythonOption);
+
+        editMenu.add(codeLangMenu);
+
+        jMenuBar1.add(editMenu);
+
+        runMenu.setText("Run");
+        runMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu2ActionPerformed(evt);
+                runMenuActionPerformed(evt);
             }
         });
 
@@ -279,9 +304,9 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                 jMenuItem5ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem5);
+        runMenu.add(jMenuItem5);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(runMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -299,7 +324,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void openMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuActionPerformed
         int r = fc.showOpenDialog(this);
         if (r == JFileChooser.APPROVE_OPTION) {
             try {
@@ -314,7 +339,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             }
         }
         codeBox.setCaretPosition(0);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_openMenuActionPerformed
 
     public void openFileFromString(String file) {
         try {
@@ -323,13 +348,20 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             isSaved = true;
             lastSaved = codeBox.getText();
             setTitle("Editor - " + f.getName());
+            if (file.matches(".*\\.(js|mls|symt|syjs)")) {
+                javascriptOption.setSelected(true);
+                pythonOption.setSelected(false);
+            } else if (file.matches(".*\\.(sypy|py)")) {
+                javascriptOption.setSelected(false);
+                pythonOption.setSelected(true);
+            }
         } catch (IOException ex) {
             JOptionPane.showInternalMessageDialog(this,
                     "Error:  Cannot load file: " + ex.getMessage());
         }
     }
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void saveMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuActionPerformed
         if (!isSaved) {
             int r = fc.showSaveDialog(this);
             if (r == JFileChooser.APPROVE_OPTION) {
@@ -346,41 +378,58 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                 JOptionPane.showInternalMessageDialog(this, "Error:  Cannot save file: " + ex.getMessage());
             }
         }
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_saveMenuActionPerformed
 
     private String addSaveExt(String path) {
-        if (!path.matches(".*\\.(js|mls|symt)")) {
-            path += ".symt";
+        if (!path.matches(".*\\.(js|mls|symt|syjs|sypy|py)")) {
+            if (pythonOption.isSelected()) {
+                path += ".sypy";
+            } else {
+                path += ".syjs";
+            }
         }
         return path;
     }
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void saveAsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuActionPerformed
         isSaved = false; // Reset saved status, force dialog
-        jMenuItem2ActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+        saveMenuActionPerformed(evt);
+    }//GEN-LAST:event_saveAsMenuActionPerformed
 
-    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+    private void runMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMenuActionPerformed
 
-    }//GEN-LAST:event_jMenu2ActionPerformed
+    }//GEN-LAST:event_runMenuActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        CodeRunner cr = new CodeRunner();
+        if (javascriptOption.isSelected()) {
+            execCode("javascript");
+        } else if (pythonOption.isSelected()) {
+            execCode("python");
+        }
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void execCode(String lang) {
+        CodeRunner cr = new CodeRunner(lang);
+        System.out.println(lang);
+        System.out.println(codeBox.getText());
         Object result = cr.evalString(codeBox.getText());
         try {
             outputBox.append(result.toString() + "\n");
         } catch (NullPointerException ex) {
 
         }
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
-
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+    }
+    private void clrOutputMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clrOutputMenuActionPerformed
         outputBox.setText("");
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
+    }//GEN-LAST:event_clrOutputMenuActionPerformed
 
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        CodeExport ce = new CodeExport(codeBox.getText());
+    private void exportMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuActionPerformed
+        String lang = "js";
+        if (pythonOption.isSelected()) {
+            lang = "python";
+        }
+        CodeExport ce = new CodeExport(codeBox.getText(), lang);
         MainGUI.loadFrame(ce);
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
+    }//GEN-LAST:event_exportMenuActionPerformed
 
     private void saveFile(String content, String path)
             throws IOException {
@@ -405,7 +454,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             if (p == JOptionPane.YES_OPTION) {
                 dispose();
             } else {
-                jMenuItem3ActionPerformed(null);
+                saveMenuActionPerformed(null);
             }
         }
     }
@@ -417,26 +466,30 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem clrOutputMenu;
+    private javax.swing.JMenu codeLangMenu;
+    private javax.swing.JMenu editMenu;
+    private javax.swing.JMenuItem exportMenu;
+    private javax.swing.JMenu fileMenu;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JRadioButtonMenuItem javascriptOption;
+    private javax.swing.ButtonGroup langBtnGroup;
+    private javax.swing.JMenuItem openMenu;
     private javax.swing.JTextArea outputBox;
+    private javax.swing.JRadioButtonMenuItem pythonOption;
+    private javax.swing.JMenu runMenu;
+    private javax.swing.JMenuItem saveAsMenu;
+    private javax.swing.JMenuItem saveMenu;
     private javax.swing.JScrollPane scrollPane;
     // End of variables declaration//GEN-END:variables
 }

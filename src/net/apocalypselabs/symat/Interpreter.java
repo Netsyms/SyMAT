@@ -29,6 +29,7 @@ package net.apocalypselabs.symat;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
 import javax.swing.text.DefaultCaret;
 
 /**
@@ -37,7 +38,9 @@ import javax.swing.text.DefaultCaret;
  */
 public class Interpreter extends javax.swing.JInternalFrame {
 
-    private final CodeRunner cr = new CodeRunner();
+    private final CodeRunner cr = new CodeRunner("javascript", true);
+    private String[] history = new String[10]; // Command history buffer
+    private int historyIndex = 0; // For going back in time and keeping things straight
 
     /**
      * Creates new form Interpreter
@@ -102,6 +105,9 @@ public class Interpreter extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(mainBox);
 
         inputBox.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                inputBoxKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 inputBoxKeyTyped(evt);
             }
@@ -152,8 +158,34 @@ public class Interpreter extends javax.swing.JInternalFrame {
     private void inputBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputBoxKeyTyped
         if (evt.getKeyChar() == '\n') {
             doRunCode();
+            return;
         }
     }//GEN-LAST:event_inputBoxKeyTyped
+
+    private void inputBoxKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputBoxKeyPressed
+        switch (evt.getKeyCode()) {
+            case KeyEvent.VK_UP:
+                if (historyIndex < 9) {
+                    if (historyIndex < 0) {
+                        historyIndex++;
+                    }
+                    inputBox.setText(history[historyIndex]);
+                    historyIndex++;
+                }
+                break;
+            case KeyEvent.VK_DOWN:
+                if (historyIndex >= 0) {
+                    historyIndex--;
+                    if (historyIndex < 0) {
+                        historyIndex = 0;
+                        inputBox.setText("");
+                    } else {
+                        inputBox.setText(history[historyIndex]);
+                    }
+                }
+                break;
+        }
+    }//GEN-LAST:event_inputBoxKeyPressed
 
     private void doRunCode() {
         String code = inputBox.getText();
@@ -164,7 +196,12 @@ public class Interpreter extends javax.swing.JInternalFrame {
 
         }
         mainBox.append(">>");
+        for (int i = 9; i > 0; i--) {
+            history[i] = history[i - 1];
+        }
+        history[0] = code;
         inputBox.setText("");
+        historyIndex = -1;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
