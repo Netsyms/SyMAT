@@ -85,6 +85,16 @@ public class CodeRunner {
         this(lang);
         isShell = shell;
     }
+    
+    /**
+     * Inits the Python engine.
+     * @param fakeInit Set it to true.
+     */
+    public CodeRunner(boolean fakeInit) {
+        if (fakeInit) {
+            se = new ScriptEngineManager().getEngineByName("python");
+        }
+    }
 
     private void initError(Exception ex) {
         JOptionPane.showMessageDialog(null, "Error: "

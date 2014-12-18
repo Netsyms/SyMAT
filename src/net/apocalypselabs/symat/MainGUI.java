@@ -1,7 +1,7 @@
-/* 
+/*
  * Apocalypse Laboratories
  * Open Source License
- * 
+ *
  * Source code can be used for any purpose, as long as:
  *  - Compiled binaries are rebranded and trademarks are not
  *    visible by the end user at any time, except to give
@@ -14,7 +14,7 @@
  *  - and you provide your modified source code for download,
  *    under the terms of the GNU LGPL v3 or a comparable
  *    license.
- * 
+ *
  * Compiled binaries cannot be redistributed or mirrored,
  * unless:
  *  - You have written permission from Apocalypse Laboratories;
@@ -22,15 +22,14 @@
  *    not even behind a paywall or other blocking mechanism;
  *  - or you have received a multi-computer license, in which
  *    case you should take measures to prevent unauthorized
- *    downloads, such as preventing download access from the 
+ *    downloads, such as preventing download access from the
  *    Internet.
  */
 package net.apocalypselabs.symat;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
 import java.awt.Graphics;
+import java.beans.PropertyVetoException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,9 +44,10 @@ import javax.swing.JInternalFrame;
  */
 public class MainGUI extends javax.swing.JFrame {
 
-    public static final String APP_NAME = "SyMAT 0.6";
-    public static final double APP_CODE = 0.6;
+    public static final String APP_NAME = "SyMAT 0.7";
+    public static final double APP_CODE = 0.7;
     public static String argfile = "";
+    public static boolean skipPython = false; // Skip python init on start?
 
     /**
      * Creates new form MainGUI
@@ -122,7 +122,6 @@ public class MainGUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         tabs = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
@@ -135,6 +134,7 @@ public class MainGUI extends javax.swing.JFrame {
         helpBtn = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         arrangeWindowsBtn = new javax.swing.JButton();
+        closeAllBtn = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         displaySettingsBtn = new javax.swing.JButton();
@@ -155,7 +155,6 @@ public class MainGUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(APP_NAME);
         setMinimumSize(new java.awt.Dimension(300, 400));
-        setPreferredSize(new java.awt.Dimension(700, 575));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -273,6 +272,19 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
+        closeAllBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/closeall.png"))); // NOI18N
+        closeAllBtn.setText("Close All");
+        closeAllBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        closeAllBtn.setFocusable(false);
+        closeAllBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        closeAllBtn.setOpaque(false);
+        closeAllBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        closeAllBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeAllBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -282,15 +294,17 @@ public class MainGUI extends javax.swing.JFrame {
                 .addComponent(helpBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(arrangeWindowsBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(closeAllBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE))
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(helpBtn)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(helpBtn)
+            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(arrangeWindowsBtn)
+            .addComponent(closeAllBtn)
         );
 
         tabs.addTab("Tools", jPanel2);
@@ -403,6 +417,16 @@ public class MainGUI extends javax.swing.JFrame {
         loadFrame(d);
     }//GEN-LAST:event_displaySettingsBtnActionPerformed
 
+    private void closeAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeAllBtnActionPerformed
+        for (JInternalFrame ji : mainPane.getAllFrames()) {
+            try {
+                ji.setClosed(true);
+            } catch (PropertyVetoException ex) {
+                ji.dispose();
+            }
+        }
+    }//GEN-LAST:event_closeAllBtnActionPerformed
+
     /**
      * Adds the given JInternalFrame to the mainPane. Automatically does layout
      * and sets visible as well.
@@ -471,22 +495,27 @@ public class MainGUI extends javax.swing.JFrame {
 
         //</editor-fold>
 
+        // Command line args
+        for (String arg : args) {
+            if (arg.equals("skippython")) {
+                skipPython = true;
+            } else {
+                argfile = args[0];
+            }
+        }
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MainGUI().setVisible(true);
+                new SplashScreen().setVisible(true);
             }
         });
-
-        // Trigger open passed script file
-        if (args.length == 1) {
-            argfile = args[0];
-        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton arrangeWindowsBtn;
+    public static javax.swing.JButton closeAllBtn;
     public static javax.swing.JButton displaySettingsBtn;
     public static javax.swing.JButton editorBtn;
     public static javax.swing.JButton graphBtn;
