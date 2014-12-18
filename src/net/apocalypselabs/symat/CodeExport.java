@@ -1,7 +1,7 @@
-/* 
+/*
  * Apocalypse Laboratories
  * Open Source License
- * 
+ *
  * Source code can be used for any purpose, as long as:
  *  - Compiled binaries are rebranded and trademarks are not
  *    visible by the end user at any time, except to give
@@ -14,7 +14,7 @@
  *  - and you provide your modified source code for download,
  *    under the terms of the GNU LGPL v3 or a comparable
  *    license.
- * 
+ *
  * Compiled binaries cannot be redistributed or mirrored,
  * unless:
  *  - You have written permission from Apocalypse Laboratories;
@@ -22,7 +22,7 @@
  *    not even behind a paywall or other blocking mechanism;
  *  - or you have received a multi-computer license, in which
  *    case you should take measures to prevent unauthorized
- *    downloads, such as preventing download access from the 
+ *    downloads, such as preventing download access from the
  *    Internet.
  */
 package net.apocalypselabs.symat;
@@ -75,10 +75,10 @@ public class CodeExport extends javax.swing.JInternalFrame {
         previewPane.setText(html);
         previewPane.setCaretPosition(0);
     }
-    
+
     /**
      * Create CodeExport window with a set language for syntax highlighting.
-     * 
+     *
      * @param code The code.
      * @param lang Options are "js" or "python".
      */
@@ -351,6 +351,7 @@ public class CodeExport extends javax.swing.JInternalFrame {
                 htmlWorker.setStyleSheet(styles);
                 htmlWorker.parse(new StringReader(k));
                 document.close();
+                savedMsg();
             }
         } catch (IOException | DocumentException e) {
             JOptionPane.showInternalMessageDialog(this, "Error saving: " + e.getMessage());
@@ -361,9 +362,14 @@ public class CodeExport extends javax.swing.JInternalFrame {
         try {
             PrintStream out = new PrintStream(new FileOutputStream(path));
             out.print(content);
+            savedMsg();
         } catch (Exception ex) {
             JOptionPane.showInternalMessageDialog(this, "Error saving: " + ex.getMessage());
         }
+    }
+
+    private void savedMsg() {
+        JOptionPane.showInternalMessageDialog(this, "Export complete!");
     }
 
     private String addSaveExt(String path, String format) {

@@ -159,7 +159,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         javascriptOption = new javax.swing.JRadioButtonMenuItem();
         pythonOption = new javax.swing.JRadioButtonMenuItem();
         runMenu = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        runCodeBtn = new javax.swing.JMenuItem();
 
         jMenuItem4.setText("jMenuItem4");
 
@@ -297,14 +297,14 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             }
         });
 
-        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
-        jMenuItem5.setText("Run code");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        runCodeBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
+        runCodeBtn.setText("Run code");
+        runCodeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                runCodeBtnActionPerformed(evt);
             }
         });
-        runMenu.add(jMenuItem5);
+        runMenu.add(runCodeBtn);
 
         jMenuBar1.add(runMenu);
 
@@ -399,13 +399,27 @@ public class CodeEditor extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_runMenuActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void runCodeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runCodeBtnActionPerformed
         if (javascriptOption.isSelected()) {
-            execCode("javascript");
+            new RunThread("javascript").start();
         } else if (pythonOption.isSelected()) {
-            execCode("python");
+            new RunThread("python").start();
         }
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_runCodeBtnActionPerformed
+
+    private class RunThread extends Thread {
+
+        String lang = "";
+
+        public RunThread(String codelang) {
+            lang = codelang;
+        }
+
+        @Override
+        public void run() {
+            execCode(lang);
+        }
+    }
 
     private void execCode(String lang) {
         CodeRunner cr = new CodeRunner(lang);
@@ -477,7 +491,6 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -487,6 +500,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem openMenu;
     private javax.swing.JTextArea outputBox;
     private javax.swing.JRadioButtonMenuItem pythonOption;
+    private javax.swing.JMenuItem runCodeBtn;
     private javax.swing.JMenu runMenu;
     private javax.swing.JMenuItem saveAsMenu;
     private javax.swing.JMenuItem saveMenu;
