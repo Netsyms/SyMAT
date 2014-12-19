@@ -170,7 +170,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         jPanel1.setOpaque(false);
 
-        shellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/shell.png"))); // NOI18N
+        shellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/shell.png"))); // NOI18N
         shellBtn.setText("Shell");
         shellBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         shellBtn.setFocusable(false);
@@ -183,7 +183,7 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
-        editorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/editor.png"))); // NOI18N
+        editorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/editor.png"))); // NOI18N
         editorBtn.setText("Editor");
         editorBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         editorBtn.setFocusable(false);
@@ -196,7 +196,7 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
-        graphBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/graph.png"))); // NOI18N
+        graphBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/graph.png"))); // NOI18N
         graphBtn.setText("Graph");
         graphBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         graphBtn.setFocusable(false);
@@ -242,7 +242,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         jPanel2.setOpaque(false);
 
-        helpBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/help.png"))); // NOI18N
+        helpBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/help.png"))); // NOI18N
         helpBtn.setText("Manual");
         helpBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         helpBtn.setFocusable(false);
@@ -259,7 +259,7 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel3.setText(namemark());
         jLabel3.setFocusable(false);
 
-        arrangeWindowsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/cascade.png"))); // NOI18N
+        arrangeWindowsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/cascade.png"))); // NOI18N
         arrangeWindowsBtn.setText("Cascade");
         arrangeWindowsBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         arrangeWindowsBtn.setFocusable(false);
@@ -272,7 +272,7 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
-        closeAllBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/closeall.png"))); // NOI18N
+        closeAllBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/closeall.png"))); // NOI18N
         closeAllBtn.setText("Close All");
         closeAllBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         closeAllBtn.setFocusable(false);
@@ -315,7 +315,7 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel4.setText(namemark());
         jLabel4.setFocusable(false);
 
-        displaySettingsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/display.png"))); // NOI18N
+        displaySettingsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/display.png"))); // NOI18N
         displaySettingsBtn.setText("Display");
         displaySettingsBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         displaySettingsBtn.setFocusable(false);
@@ -494,6 +494,7 @@ public class MainGUI extends javax.swing.JFrame {
         //</editor-fold>
 
         //</editor-fold>
+
         // Command line args
         for (String arg : args) {
             if (arg.equals("skippython")) {
@@ -502,7 +503,7 @@ public class MainGUI extends javax.swing.JFrame {
                 argfile = args[0];
             }
         }
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override

@@ -45,7 +45,7 @@ public class PrefStorage {
     public static boolean isset(String key) {
         return !getSetting(key, "NULL").equals("NULL");
     }
-
+    
     public static void unset(String key) {
         prefs.remove(key);
     }
@@ -57,7 +57,7 @@ public class PrefStorage {
     public static String getSetting(String key, String emptyResponse) {
         return prefs.get(key, emptyResponse);
     }
-
+    
     public static boolean save() {
         try {
             prefs.flush();

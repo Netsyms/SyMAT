@@ -125,7 +125,7 @@
             <Component class="javax.swing.JButton" name="shellBtn">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/net/apocalypselabs/symat/shell.png"/>
+                  <Image iconType="3" name="/net/apocalypselabs/symat/images/shell.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Shell"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -145,7 +145,7 @@
             <Component class="javax.swing.JButton" name="editorBtn">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/net/apocalypselabs/symat/editor.png"/>
+                  <Image iconType="3" name="/net/apocalypselabs/symat/images/editor.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Editor"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -165,7 +165,7 @@
             <Component class="javax.swing.JButton" name="graphBtn">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/net/apocalypselabs/symat/graph.png"/>
+                  <Image iconType="3" name="/net/apocalypselabs/symat/images/graph.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Graph"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -233,7 +233,7 @@
             <Component class="javax.swing.JButton" name="helpBtn">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/net/apocalypselabs/symat/help.png"/>
+                  <Image iconType="3" name="/net/apocalypselabs/symat/images/help.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Manual"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -262,7 +262,7 @@
             <Component class="javax.swing.JButton" name="arrangeWindowsBtn">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/net/apocalypselabs/symat/cascade.png"/>
+                  <Image iconType="3" name="/net/apocalypselabs/symat/images/cascade.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Cascade"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -282,7 +282,7 @@
             <Component class="javax.swing.JButton" name="closeAllBtn">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/net/apocalypselabs/symat/closeall.png"/>
+                  <Image iconType="3" name="/net/apocalypselabs/symat/images/closeall.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Close All"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -344,7 +344,7 @@
             <Component class="javax.swing.JButton" name="displaySettingsBtn">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/net/apocalypselabs/symat/display.png"/>
+                  <Image iconType="3" name="/net/apocalypselabs/symat/images/display.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Display"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
