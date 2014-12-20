@@ -54,7 +54,7 @@ public class SplashScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jProgressBar1 = new javax.swing.JProgressBar();
+        progBar = new javax.swing.JProgressBar();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -68,12 +68,12 @@ public class SplashScreen extends javax.swing.JFrame {
             }
         });
 
-        jProgressBar1.setIndeterminate(true);
-        jProgressBar1.setMaximumSize(new java.awt.Dimension(32767, 20));
-        jProgressBar1.setMinimumSize(new java.awt.Dimension(10, 20));
-        jProgressBar1.setPreferredSize(new java.awt.Dimension(146, 20));
-        jProgressBar1.setString("");
-        jProgressBar1.setStringPainted(true);
+        progBar.setIndeterminate(true);
+        progBar.setMaximumSize(new java.awt.Dimension(32767, 20));
+        progBar.setMinimumSize(new java.awt.Dimension(10, 20));
+        progBar.setPreferredSize(new java.awt.Dimension(146, 20));
+        progBar.setString("");
+        progBar.setStringPainted(true);
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/splash.png"))); // NOI18N
 
@@ -81,7 +81,7 @@ public class SplashScreen extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(progBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel5)
         );
         layout.setVerticalGroup(
@@ -89,7 +89,7 @@ public class SplashScreen extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel5)
                 .addGap(0, 0, 0)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(progBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -132,9 +132,9 @@ public class SplashScreen extends javax.swing.JFrame {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    jProgressBar1.setIndeterminate(false);
-                    jProgressBar1.setValue(prog);
-                    jProgressBar1.setString(lbl);
+                    progBar.setIndeterminate(false);
+                    progBar.setValue(prog);
+                    progBar.setString(lbl);
                 }
             });
         }
@@ -149,15 +149,15 @@ public class SplashScreen extends javax.swing.JFrame {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            String val = jProgressBar1.getString();
+                            String val = progBar.getString();
                             if (val.endsWith("...")) {
-                                jProgressBar1.setString(val.replace("...", ""));
+                                progBar.setString(val.replace("...", ""));
                             } else if (val.endsWith("..")) {
-                                jProgressBar1.setString(val.replace("..", "..."));
+                                progBar.setString(val.replace("..", "..."));
                             } else if (val.endsWith(".")) {
-                                jProgressBar1.setString(val.replace(".", ".."));
+                                progBar.setString(val.replace(".", ".."));
                             } else if (!val.endsWith(".")) {
-                                jProgressBar1.setString(val+".");
+                                progBar.setString(val+".");
                             }
                         }
                     });
@@ -176,6 +176,6 @@ public class SplashScreen extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JProgressBar progBar;
     // End of variables declaration//GEN-END:variables
 }

@@ -130,7 +130,7 @@ public class CodeExport extends javax.swing.JInternalFrame {
         html = new SimpleHtmlSerializer(props).getAsString(node);
         html = html.replace("&apos;", "'");
         html = html.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "");
-        System.out.println(html);
+        Debug.println(html);
         return html;
     }
 
