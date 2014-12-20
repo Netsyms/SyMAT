@@ -28,6 +28,7 @@
 package net.apocalypselabs.symat;
 
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -71,6 +72,8 @@ public class SplashScreen extends javax.swing.JFrame {
         jProgressBar1.setMaximumSize(new java.awt.Dimension(32767, 20));
         jProgressBar1.setMinimumSize(new java.awt.Dimension(10, 20));
         jProgressBar1.setPreferredSize(new java.awt.Dimension(146, 20));
+        jProgressBar1.setString("");
+        jProgressBar1.setStringPainted(true);
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/splash.png"))); // NOI18N
 
@@ -103,17 +106,72 @@ public class SplashScreen extends javax.swing.JFrame {
 
         @Override
         public void run() {
+            setProgress(10, "Starting up");
+            DotThread dt = new DotThread();
+            dt.start();
             if (!MainGUI.skipPython) {
                 // Python laggggsss when used for first time, this fixes the wait later.
                 System.out.println("Warming up Python engine, to skip run with argument 'skippython'");
+                setProgress(20, "Initializing Python engine");
                 try {
                     CodeRunner python = new CodeRunner(true);
                 } catch (Exception ex) {
                     // Ignore
                 }
             }
+            setProgress(70, "Loading main interface");
             new MainGUI().setVisible(true);
+            dt.kill();
+            setProgress(100, "Done!");
             dispose();
+        }
+
+        private void setProgress(int progress, String label) {
+            final int prog = progress;
+            final String lbl = label;
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    jProgressBar1.setIndeterminate(false);
+                    jProgressBar1.setValue(prog);
+                    jProgressBar1.setString(lbl);
+                }
+            });
+        }
+
+        private class DotThread extends Thread {
+
+            private boolean doRun = true;
+
+            @Override
+            public void run() {
+                while (doRun) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            String val = jProgressBar1.getString();
+                            if (val.endsWith("...")) {
+                                jProgressBar1.setString(val.replace("...", ""));
+                            } else if (val.endsWith("..")) {
+                                jProgressBar1.setString(val.replace("..", "..."));
+                            } else if (val.endsWith(".")) {
+                                jProgressBar1.setString(val.replace(".", ".."));
+                            } else if (!val.endsWith(".")) {
+                                jProgressBar1.setString(val+".");
+                            }
+                        }
+                    });
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ex) {
+                        
+                    }
+                }
+            }
+
+            public void kill() {
+                doRun = false;
+            }
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
