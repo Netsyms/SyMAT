@@ -30,6 +30,7 @@ package net.apocalypselabs.symat;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
+import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultCaret;
 
 /**
@@ -51,20 +52,20 @@ public class Interpreter extends javax.swing.JInternalFrame {
      */
     public Interpreter(String useLang) {
         initComponents();
-        
+
         // Setup code runner
         lang = useLang;
         if (lang.equals("default")) {
             lang = PrefStorage.getSetting("shellLang", "javascript");
         }
         cr = new CodeRunner(lang, true);
-        
+
         // Set selected lang menu
         if (lang.equals("python")) {
             javascriptMenu.setSelected(false);
             pythonMenu.setSelected(true);
         }
-        
+
         // Set font
         int font_size = 12;
         try {
@@ -73,7 +74,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
         }
         mainBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
         inputBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
-        
+
         // Set theme
         if (PrefStorage.getSetting("theme").equals("dark")) {
             mainBox.setBackground(Color.BLACK);
@@ -88,7 +89,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
             inputBox.setForeground(Color.BLACK);
             setBackground(Color.LIGHT_GRAY);
         }
-        
+
         // Misc. setup
         mainBox.setText(">>");
         inputBox.requestFocus();
@@ -284,18 +285,52 @@ public class Interpreter extends javax.swing.JInternalFrame {
     private void doRunCode() {
         String code = inputBox.getText();
         mainBox.append(" " + code + "\n");
-        try {
-            mainBox.append(cr.evalString(code).toString() + "\n");
-        } catch (NullPointerException ex) {
+        new EvalThread(code).start();
+    }
 
+    private class EvalThread extends Thread {
+
+        private String code = "";
+
+        public EvalThread(String cmd) {
+            code = cmd;
         }
-        mainBox.append(">>");
-        for (int i = 9; i > 0; i--) {
-            history[i] = history[i - 1];
+
+        @Override
+        public void run() {
+            try {
+
+                append(cr.evalString(code).toString() + "\n");
+            } catch (NullPointerException ex) {
+
+            }
+            append(">>");
+            for (int i = 9; i > 0; i--) {
+                history[i] = history[i - 1];
+            }
+            history[0] = code;
+            clrInput();
+            historyIndex = -1;
         }
-        history[0] = code;
-        inputBox.setText("");
-        historyIndex = -1;
+
+        private void clrInput() {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    inputBox.setText("");
+                }
+            });
+        }
+
+        private void append(String out) {
+            final String output = out;
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    mainBox.append(output);
+                }
+            });
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
