@@ -57,7 +57,7 @@ public class SplashScreen extends javax.swing.JFrame {
         progBar = new javax.swing.JProgressBar();
         jLabel5 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(MainGUI.APP_NAME);
         setMaximumSize(new java.awt.Dimension(320, 260));
         setMinimumSize(new java.awt.Dimension(320, 260));
@@ -100,7 +100,7 @@ public class SplashScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentShown
 
     /**
-     * Load things that take a while.
+     * Bootstrapping everything.
      */
     private class Loader extends Thread {
 
@@ -112,7 +112,7 @@ public class SplashScreen extends javax.swing.JFrame {
             if (!MainGUI.skipPython) {
                 // Python laggggsss when used for first time, this fixes the wait later.
                 System.out.println("Warming up Python engine, to skip run with argument 'skippython'");
-                setProgress(20, "Initializing Python engine");
+                setProgress(20, "Initializing code engine");
                 try {
                     CodeRunner python = new CodeRunner(true);
                 } catch (Exception ex) {
@@ -126,6 +126,11 @@ public class SplashScreen extends javax.swing.JFrame {
             dispose();
         }
 
+        /**
+         * Set the progress bar.
+         * @param progress how full to make it (0 <= progress <= 100)
+         * @param label The String to put on the label.
+         */
         private void setProgress(int progress, String label) {
             final int prog = progress;
             final String lbl = label;
@@ -139,6 +144,11 @@ public class SplashScreen extends javax.swing.JFrame {
             });
         }
 
+        /**
+         * Animate the dots on the progress bar label.
+         * 
+         * This way people know it's not "frozen", so they don't "let it go".
+         */
         private class DotThread extends Thread {
 
             private boolean doRun = true;
@@ -151,16 +161,17 @@ public class SplashScreen extends javax.swing.JFrame {
                         public void run() {
                             String val = progBar.getString();
                             if (val.endsWith("...")) {
-                                progBar.setString(val.replace("...", ""));
-                            } else if (val.endsWith("..")) {
-                                progBar.setString(val.replace("..", "..."));
-                            } else if (val.endsWith(".")) {
-                                progBar.setString(val.replace(".", ".."));
-                            } else if (!val.endsWith(".")) {
-                                progBar.setString(val+".");
+                                progBar.setString(val.replace("...", "   "));
+                            } else if (val.endsWith(".. ")) {
+                                progBar.setString(val.replace(".. ", "..."));
+                            } else if (val.endsWith(".  ")) {
+                                progBar.setString(val.replace(".  ", ".. "));
+                            } else if (!val.endsWith(" ")) {
+                                progBar.setString(val+".  ");
                             }
                         }
                     });
+                    Debug.println("dotsupdate");
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException ex) {

@@ -39,14 +39,14 @@ import javax.swing.JOptionPane;
  */
 public class Update extends javax.swing.JInternalFrame {
 
-    private final double latestVersion;
+    private final String latestVersion;
 
     /**
      * Creates new form Update
      *
      * @param latest The new version.
      */
-    public Update(double latest) {
+    public Update(String latest) {
         latestVersion = latest;
         initComponents();
     }
@@ -82,11 +82,11 @@ public class Update extends javax.swing.JInternalFrame {
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Latest version: "+String.valueOf(latestVersion));
+        jLabel3.setText("Latest version: "+latestVersion);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Your version: "+String.valueOf(MainGUI.APP_CODE));
+        jLabel4.setText("Your version: "+MainGUI.VERSION_NAME);
 
         jButton1.setBackground(new java.awt.Color(51, 153, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
@@ -146,12 +146,12 @@ public class Update extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (Desktop.isDesktopSupported()) {
             try {
-                Desktop.getDesktop().browse(new URI("http://symat.aplabs.us/"));
+                Desktop.getDesktop().browse(new URI("http://symatapp.com/"));
             } catch (IOException | URISyntaxException ex) {
-                JOptionPane.showInternalMessageDialog(this, "Cannot open browser.  Please go to symat.aplabs.us.");
+                JOptionPane.showInternalMessageDialog(this, "Cannot open browser.  Please go to symatapp.com.");
             }
         } else {
-            JOptionPane.showInternalMessageDialog(this, "Cannot open browser.  Please go to symat.aplabs.us.");
+            JOptionPane.showInternalMessageDialog(this, "Cannot open browser.  Please go to symatapp.com.");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

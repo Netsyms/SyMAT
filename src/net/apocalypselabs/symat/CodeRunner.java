@@ -145,7 +145,6 @@ public class CodeRunner {
     private String wrapMath(String eval) {
         if (wrapRequired) {
             String with = "with(SyMAT_Functions){with(Math){" + eval + "}}";
-            //System.out.println(with);
             return with;
         }
         return eval;

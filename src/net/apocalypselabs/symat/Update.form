@@ -96,7 +96,7 @@
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="&quot;Latest version: &quot;+String.valueOf(latestVersion)" type="code"/>
+          <Connection code="&quot;Latest version: &quot;+latestVersion" type="code"/>
         </Property>
       </Properties>
     </Component>
@@ -107,7 +107,7 @@
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="&quot;Your version: &quot;+String.valueOf(MainGUI.APP_CODE)" type="code"/>
+          <Connection code="&quot;Your version: &quot;+MainGUI.VERSION_NAME" type="code"/>
         </Property>
       </Properties>
     </Component>

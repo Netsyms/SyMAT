@@ -423,8 +423,8 @@ public class CodeEditor extends javax.swing.JInternalFrame {
 
     private void execCode(String lang) {
         CodeRunner cr = new CodeRunner(lang);
-        System.out.println(lang);
-        System.out.println(codeBox.getText());
+        Debug.println(lang);
+        Debug.println(codeBox.getText());
         Object result = cr.evalString(codeBox.getText());
         try {
             outputBox.append(result.toString() + "\n");

@@ -45,7 +45,8 @@ import javax.swing.JInternalFrame;
 public class MainGUI extends javax.swing.JFrame {
 
     public static final String APP_NAME = "SyMAT 0.7";
-    public static final double APP_CODE = 0.7;
+    public static final double APP_CODE = 7;
+    public static final String VERSION_NAME = "0.7";
     public static String argfile = "";
     public static boolean skipPython = false; // Skip python init on start?
 
@@ -57,24 +58,25 @@ public class MainGUI extends javax.swing.JFrame {
         setIconImage((new ImageIcon(getClass().getResource("icon.png"))).getImage());
         setLocationRelativeTo(null);
         try {
-            URL url = new URL("http://symat.aplabs.us/version.txt");
+            URL url = new URL("http://symatapp.com/version.txt");
             InputStream is = url.openStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             String line = br.readLine();
             br.close();
             is.close();
-            double version = Double.parseDouble(line);
+            double version = Double.parseDouble(line.split("\\|")[0]);
             if (version > APP_CODE) {
                 if (PrefStorage.getSetting("update-ignore").equals(APP_CODE + "|" + version)) {
                     System.out.println("An update was found, but has been ignored by the user.");
                 } else {
-                    loadFrame(new Update(version));
+                    loadFrame(new Update(line.split("\\|")[1]));
                 }
             }
         } catch (IOException | NumberFormatException e) {
             System.err.println("Fail:  Cannot check update server.  \n"
                     + "       Assuming local copy up-to-date.");
+            e.printStackTrace();
         }
 
         // Open shell unless prog was run with argument
