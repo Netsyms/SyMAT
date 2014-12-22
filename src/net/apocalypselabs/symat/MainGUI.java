@@ -67,7 +67,7 @@ public class MainGUI extends javax.swing.JFrame {
             is.close();
             double version = Double.parseDouble(line.split("\\|")[0]);
             if (version > APP_CODE) {
-                if (PrefStorage.getSetting("update-ignore").equals(APP_CODE + "|" + version)) {
+                if (PrefStorage.getSetting("update-ignore").equals(VERSION_NAME + "|" + line.split("\\|")[1])) {
                     System.out.println("An update was found, but has been ignored by the user.");
                 } else {
                     loadFrame(new Update(line.split("\\|")[1]));

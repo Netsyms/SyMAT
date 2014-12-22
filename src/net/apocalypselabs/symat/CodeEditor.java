@@ -39,17 +39,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.UIDefaults;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
-import javax.swing.text.TabSet;
-import javax.swing.text.TabStop;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.Theme;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 /**
  *
@@ -59,8 +54,8 @@ public class CodeEditor extends javax.swing.JInternalFrame {
 
     private final JFileChooser fc = new JFileChooser();
     private boolean isSaved = false;
-    private final JTextPane codeBox = new JTextPane();
-    private final TextLineNumber tln;
+    private RSyntaxTextArea codeBox = new RSyntaxTextArea();
+    private RTextScrollPane sp;
     private String lastSaved = "";
 
     /**
@@ -68,10 +63,6 @@ public class CodeEditor extends javax.swing.JInternalFrame {
      */
     public CodeEditor() {
         initComponents();
-
-        if (!PrefStorage.isset("advancedcontrols")) {
-            runMenu.remove(codeLangMenu);
-        }
 
         FileFilter filter = new FileNameExtensionFilter("SyMAT JavaScript (.syjs)", "syjs");
         fc.setFileFilter(filter);
@@ -82,6 +73,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         fc.addChoosableFileFilter(filter);
         filter = new FileNameExtensionFilter("Python script (.py)", "py");
         fc.addChoosableFileFilter(filter);
+
         int font_size = 12;
         try {
             font_size = Integer.valueOf(PrefStorage.getSetting("editfont"));
@@ -89,41 +81,37 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         }
         codeBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
         outputBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
+        
         if (PrefStorage.getSetting("theme").equals("dark")) {
-            setBackgroundOfEditor(Color.BLACK);
-            codeBox.setForeground(Color.WHITE);
-            outputBox.setBackground(Color.BLACK);
+            outputBox.setBackground(new Color(41,49,52));
             outputBox.setForeground(Color.WHITE);
             setBackground(Color.DARK_GRAY);
+            setEditorTheme("dark");
         } else {
-            setBackgroundOfEditor(Color.WHITE);
-            codeBox.setForeground(Color.BLACK);
             outputBox.setBackground(Color.WHITE);
             outputBox.setForeground(Color.BLACK);
             setBackground(Color.LIGHT_GRAY);
+            setEditorTheme("default");
         }
-        TabStop[] tabs = new TabStop[30];
-        for (int i = 0; i < tabs.length; i++) {
-            tabs[i] = new TabStop(15 * i, TabStop.ALIGN_RIGHT, TabStop.LEAD_NONE);
-        }
-        TabSet tabset = new TabSet(tabs);
-        StyleContext sc = StyleContext.getDefaultStyleContext();
-        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY,
-                StyleConstants.TabSet, tabset);
-        codeBox.setParagraphAttributes(aset, false);
-        tln = new TextLineNumber(codeBox);
-        scrollPane.setRowHeaderView(tln);
+
+        codeBox.setCodeFoldingEnabled(true);
+        codeBox.setAntiAliasingEnabled(true);
+        codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        sp = new RTextScrollPane(codeBox);
+        sp.setFoldIndicatorEnabled(true);
+        editPanel.add(sp);
+        sp.setVisible(true);
         codeBox.setVisible(true);
-        tln.setVisible(true);
         codeBox.requestFocus();
     }
 
-    private void setBackgroundOfEditor(Color c) {
-        UIDefaults defaults = new UIDefaults();
-        defaults.put("TextPane[Enabled].backgroundPainter", c);
-        codeBox.putClientProperty("Nimbus.Overrides", defaults);
-        codeBox.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
-        codeBox.setBackground(c);
+    private void setEditorTheme(String themeName) {
+        try {
+            Theme theme = Theme.load(CodeEditor.class
+                    .getResourceAsStream("resources/" + themeName + ".xml"));
+            theme.apply(codeBox);
+        } catch (Exception e) {
+        }
     }
 
     /**
@@ -142,11 +130,11 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         langBtnGroup = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
-        scrollPane = new JScrollPane(codeBox);
-        jPanel2 = new javax.swing.JPanel();
+        outputPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         outputBox = new javax.swing.JTextArea();
+        editPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenu = new javax.swing.JMenuItem();
@@ -176,14 +164,11 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         setTitle("Editor");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/editor.png"))); // NOI18N
         setMinimumSize(new java.awt.Dimension(125, 50));
+        setPreferredSize(new java.awt.Dimension(550, 375));
 
-        jSplitPane1.setDividerLocation(220);
+        jSplitPane1.setDividerLocation(200);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane1.setResizeWeight(0.7);
-
-        scrollPane.setOpaque(false);
-        scrollPane.setRequestFocusEnabled(false);
-        jSplitPane1.setTopComponent(scrollPane);
 
         jLabel1.setText("Output:");
 
@@ -194,24 +179,27 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         outputBox.setWrapStyleWord(true);
         jScrollPane1.setViewportView(outputBox);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout outputPanelLayout = new javax.swing.GroupLayout(outputPanel);
+        outputPanel.setLayout(outputPanelLayout);
+        outputPanelLayout.setHorizontalGroup(
+            outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(outputPanelLayout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        outputPanelLayout.setVerticalGroup(
+            outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(outputPanelLayout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))
         );
 
-        jSplitPane1.setRightComponent(jPanel2);
+        jSplitPane1.setRightComponent(outputPanel);
+
+        editPanel.setLayout(new java.awt.BorderLayout());
+        jSplitPane1.setLeftComponent(editPanel);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -221,7 +209,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+            .addComponent(jSplitPane1)
         );
 
         fileMenu.setText("File");
@@ -280,10 +268,20 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         langBtnGroup.add(javascriptOption);
         javascriptOption.setSelected(true);
         javascriptOption.setText("Javascript");
+        javascriptOption.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                javascriptOptionActionPerformed(evt);
+            }
+        });
         codeLangMenu.add(javascriptOption);
 
         langBtnGroup.add(pythonOption);
         pythonOption.setText("Python");
+        pythonOption.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pythonOptionActionPerformed(evt);
+            }
+        });
         codeLangMenu.add(pythonOption);
 
         editMenu.add(codeLangMenu);
@@ -291,11 +289,6 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         jMenuBar1.add(editMenu);
 
         runMenu.setText("Run");
-        runMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                runMenuActionPerformed(evt);
-            }
-        });
 
         runCodeBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         runCodeBtn.setText("Run code");
@@ -351,9 +344,11 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             if (file.matches(".*\\.(js|mls|symt|syjs)")) {
                 javascriptOption.setSelected(true);
                 pythonOption.setSelected(false);
+                codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
             } else if (file.matches(".*\\.(sypy|py)")) {
                 javascriptOption.setSelected(false);
                 pythonOption.setSelected(true);
+                codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
             }
         } catch (IOException ex) {
             JOptionPane.showInternalMessageDialog(this,
@@ -394,10 +389,6 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         isSaved = false; // Reset saved status, force dialog
         saveMenuActionPerformed(evt);
     }//GEN-LAST:event_saveAsMenuActionPerformed
-
-    private void runMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runMenuActionPerformed
-
-    }//GEN-LAST:event_runMenuActionPerformed
 
     private void runCodeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runCodeBtnActionPerformed
         if (javascriptOption.isSelected()) {
@@ -445,6 +436,14 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         MainGUI.loadFrame(ce);
     }//GEN-LAST:event_exportMenuActionPerformed
 
+    private void javascriptOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javascriptOptionActionPerformed
+        codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+    }//GEN-LAST:event_javascriptOptionActionPerformed
+
+    private void pythonOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pythonOptionActionPerformed
+        codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
+    }//GEN-LAST:event_pythonOptionActionPerformed
+
     private void saveFile(String content, String path)
             throws IOException {
         try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
@@ -483,6 +482,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem clrOutputMenu;
     private javax.swing.JMenu codeLangMenu;
     private javax.swing.JMenu editMenu;
+    private javax.swing.JPanel editPanel;
     private javax.swing.JMenuItem exportMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JLabel jLabel1;
@@ -492,18 +492,17 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JRadioButtonMenuItem javascriptOption;
     private javax.swing.ButtonGroup langBtnGroup;
     private javax.swing.JMenuItem openMenu;
     private javax.swing.JTextArea outputBox;
+    private javax.swing.JPanel outputPanel;
     private javax.swing.JRadioButtonMenuItem pythonOption;
     private javax.swing.JMenuItem runCodeBtn;
     private javax.swing.JMenu runMenu;
     private javax.swing.JMenuItem saveAsMenu;
     private javax.swing.JMenuItem saveMenu;
-    private javax.swing.JScrollPane scrollPane;
     // End of variables declaration//GEN-END:variables
 }

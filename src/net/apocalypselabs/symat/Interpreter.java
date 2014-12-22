@@ -77,9 +77,9 @@ public class Interpreter extends javax.swing.JInternalFrame {
 
         // Set theme
         if (PrefStorage.getSetting("theme").equals("dark")) {
-            mainBox.setBackground(Color.BLACK);
+            mainBox.setBackground(new Color(41,49,52));
             mainBox.setForeground(Color.WHITE);
-            inputBox.setBackground(Color.BLACK);
+            inputBox.setBackground(new Color(41,49,52));
             inputBox.setForeground(Color.WHITE);
             setBackground(Color.DARK_GRAY);
         } else {

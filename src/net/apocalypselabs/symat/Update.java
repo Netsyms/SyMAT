@@ -156,7 +156,7 @@ public class Update extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        PrefStorage.saveSetting("update-ignore", MainGUI.APP_CODE + "|" + latestVersion);
+        PrefStorage.saveSetting("update-ignore", MainGUI.VERSION_NAME + "|" + latestVersion);
         dispose();
     }//GEN-LAST:event_jLabel5MouseClicked
 
