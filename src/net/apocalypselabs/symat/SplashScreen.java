@@ -75,7 +75,7 @@ public class SplashScreen extends javax.swing.JFrame {
         progBar.setString("");
         progBar.setStringPainted(true);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/splash.png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/splash0.8.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
