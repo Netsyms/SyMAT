@@ -106,22 +106,24 @@ public class SplashScreen extends javax.swing.JFrame {
 
         @Override
         public void run() {
-            setProgress(10, "Starting up");
-            DotThread dt = new DotThread();
-            dt.start();
+            setProgress(10, "Starting up...");
             if (!MainGUI.skipPython) {
                 // Python laggggsss when used for first time, this fixes the wait later.
                 System.out.println("Warming up Python engine, to skip run with argument 'skippython'");
-                setProgress(20, "Initializing code engine");
+                setProgress(20, "Initializing code engine...");
                 try {
                     CodeRunner python = new CodeRunner(true);
                 } catch (Exception ex) {
                     // Ignore
                 }
             }
-            setProgress(70, "Loading main interface");
+            
+            setProgress(50, "Preparing editor...");
+            // Get editor going too
+            CodeEditor edit = new CodeEditor();
+            
+            setProgress(70, "Loading main interface...");
             new MainGUI().setVisible(true);
-            dt.kill();
             setProgress(100, "Done!");
             dispose();
         }
