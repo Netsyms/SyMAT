@@ -44,9 +44,9 @@ import javax.swing.JInternalFrame;
  */
 public class MainGUI extends javax.swing.JFrame {
 
-    public static final String APP_NAME = "SyMAT 0.7";
-    public static final double APP_CODE = 7;
-    public static final String VERSION_NAME = "0.7";
+    public static final String APP_NAME = "SyMAT 0.8";
+    public static final double APP_CODE = 8;
+    public static final String VERSION_NAME = "0.8";
     public static String argfile = "";
     public static boolean skipPython = false; // Skip python init on start?
 

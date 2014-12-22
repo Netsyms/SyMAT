@@ -27,6 +27,8 @@
  */
 package net.apocalypselabs.symat;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.swing.JOptionPane;
 import org.matheclipse.core.eval.EvalUtilities;
 import org.matheclipse.parser.client.math.MathException;
@@ -40,7 +42,8 @@ import org.matheclipse.parser.client.math.MathException;
  */
 public class Functions {
 
-    EvalUtilities util = new EvalUtilities(false, true);
+    private ScriptEngine symja = new ScriptEngineManager().getEngineByExtension("m");
+    private EvalUtilities util = new EvalUtilities(true, true);
     Graph graphwin = new Graph(true);
 
     /*
@@ -57,8 +60,26 @@ public class Functions {
     /*
      Math commands
      */
+    
+    // Derivative of function with respect to idv
     public String D(String function, String idv) {
         return util.evaluate("diff(" + function + "," + idv + ")").toString();
+    }
+    
+    public double cos(Object expression) {
+        return Double.parseDouble(util.evaluate("Cos("+expression+")").toString());
+    }
+    
+    public double sin(Object expression) {
+        return Double.parseDouble(util.evaluate("Sin("+expression+")").toString());
+    }
+    
+    public double tan(Object expression) {
+        return Double.parseDouble(util.evaluate("Tan("+expression+")").toString());
+    }
+    
+    public String factor(String function) {
+        return sym("Factor(" + function + ")");
     }
 
     public String sym(String input) {
