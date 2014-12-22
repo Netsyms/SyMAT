@@ -81,18 +81,8 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         }
         codeBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
         outputBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
-        
-        if (PrefStorage.getSetting("theme").equals("dark")) {
-            outputBox.setBackground(new Color(41,49,52));
-            outputBox.setForeground(Color.WHITE);
-            setBackground(Color.DARK_GRAY);
-            setEditorTheme("dark");
-        } else {
-            outputBox.setBackground(Color.WHITE);
-            outputBox.setForeground(Color.BLACK);
-            setBackground(Color.LIGHT_GRAY);
-            setEditorTheme("default");
-        }
+
+        loadTheme();
 
         codeBox.setCodeFoldingEnabled(true);
         codeBox.setAntiAliasingEnabled(true);
@@ -100,6 +90,12 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         sp = new RTextScrollPane(codeBox);
         sp.setFoldIndicatorEnabled(true);
         editPanel.add(sp);
+        codeBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
         sp.setVisible(true);
         codeBox.setVisible(true);
         codeBox.requestFocus();
@@ -111,6 +107,20 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                     .getResourceAsStream("resources/" + themeName + ".xml"));
             theme.apply(codeBox);
         } catch (Exception e) {
+        }
+    }
+
+    private void loadTheme() {
+        if (PrefStorage.getSetting("theme").equals("dark")) {
+            outputBox.setBackground(new Color(41, 49, 52));
+            outputBox.setForeground(Color.WHITE);
+            setBackground(Color.DARK_GRAY);
+            setEditorTheme("dark");
+        } else {
+            outputBox.setBackground(Color.WHITE);
+            outputBox.setForeground(Color.BLACK);
+            setBackground(Color.LIGHT_GRAY);
+            setEditorTheme("default");
         }
     }
 
@@ -165,6 +175,11 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/editor.png"))); // NOI18N
         setMinimumSize(new java.awt.Dimension(125, 50));
         setPreferredSize(new java.awt.Dimension(550, 375));
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
 
         jSplitPane1.setDividerLocation(200);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -177,6 +192,11 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         outputBox.setLineWrap(true);
         outputBox.setRows(3);
         outputBox.setWrapStyleWord(true);
+        outputBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                outputBoxMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(outputBox);
 
         javax.swing.GroupLayout outputPanelLayout = new javax.swing.GroupLayout(outputPanel);
@@ -443,6 +463,14 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private void pythonOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pythonOptionActionPerformed
         codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
     }//GEN-LAST:event_pythonOptionActionPerformed
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        loadTheme();
+    }//GEN-LAST:event_formMouseClicked
+
+    private void outputBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outputBoxMouseClicked
+        formMouseClicked(evt);
+    }//GEN-LAST:event_outputBoxMouseClicked
 
     private void saveFile(String content, String path)
             throws IOException {

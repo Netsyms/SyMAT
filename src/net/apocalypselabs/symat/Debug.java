@@ -48,4 +48,10 @@ public class Debug {
             System.err.println(data);
         }
     }
+
+    public static void stacktrace(Exception e) {
+        if (DEBUG) {
+            e.printStackTrace();
+        }
+    }
 }

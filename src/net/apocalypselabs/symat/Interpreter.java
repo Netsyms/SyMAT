@@ -76,19 +76,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
         inputBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
 
         // Set theme
-        if (PrefStorage.getSetting("theme").equals("dark")) {
-            mainBox.setBackground(new Color(41,49,52));
-            mainBox.setForeground(Color.WHITE);
-            inputBox.setBackground(new Color(41,49,52));
-            inputBox.setForeground(Color.WHITE);
-            setBackground(Color.DARK_GRAY);
-        } else {
-            mainBox.setBackground(Color.WHITE);
-            mainBox.setForeground(Color.BLACK);
-            inputBox.setBackground(Color.WHITE);
-            inputBox.setForeground(Color.BLACK);
-            setBackground(Color.LIGHT_GRAY);
-        }
+        loadTheme();
 
         // Misc. setup
         mainBox.setText(">>");
@@ -127,6 +115,11 @@ public class Interpreter extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Shell");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/shell.png"))); // NOI18N
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
 
         mainBox.setEditable(false);
         mainBox.setColumns(20);
@@ -138,8 +131,18 @@ public class Interpreter extends javax.swing.JInternalFrame {
         mainBox.setWrapStyleWord(true);
         DefaultCaret caret = (DefaultCaret)mainBox.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        mainBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                mainBoxMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(mainBox);
 
+        inputBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inputBoxMouseClicked(evt);
+            }
+        });
         inputBox.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 inputBoxKeyPressed(evt);
@@ -150,6 +153,11 @@ public class Interpreter extends javax.swing.JInternalFrame {
         });
 
         runBtn.setText("Run");
+        runBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                runBtnMouseClicked(evt);
+            }
+        });
         runBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 runBtnActionPerformed(evt);
@@ -228,6 +236,22 @@ public class Interpreter extends javax.swing.JInternalFrame {
         doRunCode();
     }//GEN-LAST:event_runBtnActionPerformed
 
+    private void loadTheme() {
+        if (PrefStorage.getSetting("theme").equals("dark")) {
+            mainBox.setBackground(new Color(41,49,52));
+            mainBox.setForeground(Color.WHITE);
+            inputBox.setBackground(new Color(41,49,52));
+            inputBox.setForeground(Color.WHITE);
+            setBackground(Color.DARK_GRAY);
+        } else {
+            mainBox.setBackground(Color.WHITE);
+            mainBox.setForeground(Color.BLACK);
+            inputBox.setBackground(Color.WHITE);
+            inputBox.setForeground(Color.BLACK);
+            setBackground(Color.LIGHT_GRAY);
+        }
+    }
+    
     private void inputBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputBoxKeyTyped
         if (evt.getKeyChar() == '\n') {
             doRunCode();
@@ -281,6 +305,22 @@ public class Interpreter extends javax.swing.JInternalFrame {
             dispose();
         }
     }//GEN-LAST:event_pythonMenuActionPerformed
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        loadTheme();
+    }//GEN-LAST:event_formMouseClicked
+
+    private void mainBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainBoxMouseClicked
+        formMouseClicked(evt);
+    }//GEN-LAST:event_mainBoxMouseClicked
+
+    private void inputBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inputBoxMouseClicked
+        formMouseClicked(evt);
+    }//GEN-LAST:event_inputBoxMouseClicked
+
+    private void runBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_runBtnMouseClicked
+        formMouseClicked(evt);
+    }//GEN-LAST:event_runBtnMouseClicked
 
     private void doRunCode() {
         String code = inputBox.getText();

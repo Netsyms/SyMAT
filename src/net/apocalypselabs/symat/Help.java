@@ -43,6 +43,10 @@ public class Help extends javax.swing.JInternalFrame {
      */
     public Help() {
         initComponents();
+        loadTheme();
+    }
+
+    private void loadTheme() {
         if (PrefStorage.getSetting("theme").equals("dark")) {
             setBackgroundOfBrowser(Color.BLACK);
             setBackgroundOfBrowser(Color.WHITE);
@@ -57,13 +61,13 @@ public class Help extends javax.swing.JInternalFrame {
             setBackground(Color.LIGHT_GRAY);
         }
     }
-
+    
     private void setBackgroundOfBrowser(Color c) {
-        UIDefaults defaults = new UIDefaults();
+        /*UIDefaults defaults = new UIDefaults();
         defaults.put("EditorPane.backgroundPainter", c);
         topicBrowser.putClientProperty("Nimbus.Overrides", defaults);
         topicBrowser.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
-        topicBrowser.setBackground(c);
+        topicBrowser.setBackground(c);*/
     }
 
     public void loadTopic(String name) {
@@ -126,6 +130,11 @@ public class Help extends javax.swing.JInternalFrame {
         });
         topicList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         topicList.setSelectedIndex(0);
+        topicList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                topicListMouseClicked(evt);
+            }
+        });
         topicList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 topicListValueChanged(evt);
@@ -164,6 +173,10 @@ public class Help extends javax.swing.JInternalFrame {
         topicList.setSelectedIndex(0);
         loadTopic("welcome");
     }//GEN-LAST:event_formComponentShown
+
+    private void topicListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_topicListMouseClicked
+        loadTheme();
+    }//GEN-LAST:event_topicListMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

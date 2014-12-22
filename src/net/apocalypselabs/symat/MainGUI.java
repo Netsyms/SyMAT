@@ -29,6 +29,7 @@ package net.apocalypselabs.symat;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,6 +38,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -76,8 +78,10 @@ public class MainGUI extends javax.swing.JFrame {
         } catch (IOException | NumberFormatException e) {
             System.err.println("Fail:  Cannot check update server.  \n"
                     + "       Assuming local copy up-to-date.");
-            e.printStackTrace();
+            Debug.stacktrace(e);
         }
+        
+        setButtonShortcuts();
 
         // Open shell unless prog was run with argument
         if (argfile.equals("")) {
@@ -92,6 +96,19 @@ public class MainGUI extends javax.swing.JFrame {
         updateDisplay();
     }
 
+    /**
+     * Set keyboard shortcuts for buttons.
+     */
+    private void setButtonShortcuts() {
+        shellBtn.setMnemonic(KeyEvent.VK_S);
+        editorBtn.setMnemonic(KeyEvent.VK_D);
+        graphBtn.setMnemonic(KeyEvent.VK_G);
+        helpBtn.setMnemonic(KeyEvent.VK_M);
+        tabs.setMnemonicAt(1, KeyEvent.VK_A);
+        tabs.setMnemonicAt(2, KeyEvent.VK_T);
+        tabs.setMnemonicAt(3, KeyEvent.VK_E);
+    }
+    
     /**
      * (Re)load display settings.
      */
