@@ -28,17 +28,22 @@
 package net.apocalypselabs.symat;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -148,6 +153,9 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenu = new javax.swing.JMenuItem();
+        openSampleBtn = new javax.swing.JMenu();
+        sampleHelloWorld = new javax.swing.JMenuItem();
+        sampleGraph = new javax.swing.JMenuItem();
         saveMenu = new javax.swing.JMenuItem();
         saveAsMenu = new javax.swing.JMenuItem();
         exportMenu = new javax.swing.JMenuItem();
@@ -242,6 +250,26 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             }
         });
         fileMenu.add(openMenu);
+
+        openSampleBtn.setText("Open Code Sample");
+
+        sampleHelloWorld.setText("helloworld");
+        sampleHelloWorld.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sampleHelloWorldActionPerformed(evt);
+            }
+        });
+        openSampleBtn.add(sampleHelloWorld);
+
+        sampleGraph.setText("graph");
+        sampleGraph.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sampleGraphActionPerformed(evt);
+            }
+        });
+        openSampleBtn.add(sampleGraph);
+
+        fileMenu.add(openSampleBtn);
 
         saveMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveMenu.setText("Save...");
@@ -354,25 +382,40 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         codeBox.setCaretPosition(0);
     }//GEN-LAST:event_openMenuActionPerformed
 
-    public void openFileFromString(String file) {
+    /**
+     * Open a file given its path as a String.
+     *
+     * @param file The path to the file.
+     */
+    public void openFileFromName(String file) {
         try {
             File f = new File(file);
-            codeBox.setText(readFile(f.toString(), StandardCharsets.UTF_8));
-            isSaved = true;
-            lastSaved = codeBox.getText();
-            setTitle("Editor - " + f.getName());
-            if (file.matches(".*\\.(js|mls|symt|syjs)")) {
-                javascriptOption.setSelected(true);
-                pythonOption.setSelected(false);
-                codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-            } else if (file.matches(".*\\.(sypy|py)")) {
-                javascriptOption.setSelected(false);
-                pythonOption.setSelected(true);
-                codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
-            }
+            openString(readFile(f.toString(), StandardCharsets.UTF_8), f.getName(), true);
         } catch (IOException ex) {
             JOptionPane.showInternalMessageDialog(this,
                     "Error:  Cannot load file: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Open a file.
+     *
+     * @param data The file contents
+     * @param file Name of the file (ex. "foobar.syjs")
+     */
+    private void openString(String data, String file, boolean saved) {
+        codeBox.setText(data);
+        isSaved = saved;
+        lastSaved = codeBox.getText();
+        setTitle("Editor - " + file);
+        if (file.matches(".*\\.(js|mls|symt|syjs)")) {
+            javascriptOption.setSelected(true);
+            pythonOption.setSelected(false);
+            codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        } else if (file.matches(".*\\.(sypy|py)")) {
+            javascriptOption.setSelected(false);
+            pythonOption.setSelected(true);
+            codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
         }
     }
 
@@ -418,6 +461,9 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_runCodeBtnActionPerformed
 
+    /**
+     * This thread runs the code.
+     */
     private class RunThread extends Thread {
 
         String lang = "";
@@ -428,7 +474,33 @@ public class CodeEditor extends javax.swing.JInternalFrame {
 
         @Override
         public void run() {
+            setRunning(true);
             execCode(lang);
+            setRunning(false);
+        }
+        
+        public void setRunning(boolean isRunning) {
+            final boolean running = isRunning;
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    if (running) {
+                        runMenu.setText("Running...");
+                        codeBox.setEnabled(false);
+                        for (Component mu : jMenuBar1.getComponents()) {
+                            mu.setEnabled(false);
+                        }
+                        jMenuBar1.setEnabled(false);
+                    } else {
+                        runMenu.setText("Run");
+                        codeBox.setEnabled(true);
+                        for (Component mu : jMenuBar1.getComponents()) {
+                            mu.setEnabled(true);
+                        }
+                        jMenuBar1.setEnabled(true);
+                    }
+                }
+            });
         }
     }
 
@@ -471,6 +543,46 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private void outputBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_outputBoxMouseClicked
         formMouseClicked(evt);
     }//GEN-LAST:event_outputBoxMouseClicked
+
+    private void sampleHelloWorldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleHelloWorldActionPerformed
+        openSample("helloworld");
+    }//GEN-LAST:event_sampleHelloWorldActionPerformed
+
+    private void sampleGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleGraphActionPerformed
+        openSample("graph");
+    }//GEN-LAST:event_sampleGraphActionPerformed
+
+    /**
+     * Open a sample code file with the given name.<p>
+     * Uses the current language.
+     *
+     * @param name Name of file in codesamples package without extension
+     */
+    private void openSample(String name) {
+        String ext = "js";
+        if (!javascriptOption.isSelected()) {
+            ext = "py";
+        }
+        String text = "";
+        try {
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            CodeEditor.class
+                            .getResourceAsStream("codesamples/" + name + "." + ext)));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                text += line + "\n";
+            }
+        } catch (Exception e) {
+            text = "Error: Could not open embedded sample file.";
+            if (ext.equals("js")) {
+                text = "/* " + text + " */";
+            } else {
+                text = "# " + text;
+            }
+        }
+        openString(text, name + "." + ext, false);
+    }
 
     private void saveFile(String content, String path)
             throws IOException {
@@ -525,11 +637,14 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButtonMenuItem javascriptOption;
     private javax.swing.ButtonGroup langBtnGroup;
     private javax.swing.JMenuItem openMenu;
+    private javax.swing.JMenu openSampleBtn;
     private javax.swing.JTextArea outputBox;
     private javax.swing.JPanel outputPanel;
     private javax.swing.JRadioButtonMenuItem pythonOption;
     private javax.swing.JMenuItem runCodeBtn;
     private javax.swing.JMenu runMenu;
+    private javax.swing.JMenuItem sampleGraph;
+    private javax.swing.JMenuItem sampleHelloWorld;
     private javax.swing.JMenuItem saveAsMenu;
     private javax.swing.JMenuItem saveMenu;
     // End of variables declaration//GEN-END:variables

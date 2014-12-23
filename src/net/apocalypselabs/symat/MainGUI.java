@@ -90,7 +90,7 @@ public class MainGUI extends javax.swing.JFrame {
         } else {
             CodeEditor ed = new CodeEditor();
             loadFrame(ed);
-            ed.openFileFromString(argfile);
+            ed.openFileFromName(argfile);
             argfile = "";
         }
         updateDisplay();
