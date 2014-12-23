@@ -111,7 +111,7 @@ public class Functions {
      Graphing interfaces
      */
     public void plot(String function) {
-        graphwin.setVisible(true);
+        showGraph();
         graphwin.graphFunction(function);
     }
 
@@ -124,12 +124,15 @@ public class Functions {
     }
 
     public void plotname(String t) {
-        graphwin.setVisible(true);
         graphwin.setWindowTitle(t);
     }
 
     public String plotname() {
         return graphwin.getTitle();
+    }
+    
+    public void plot() {
+        showGraph();
     }
 
     public void plotclr() {
@@ -145,12 +148,12 @@ public class Functions {
     }
 
     public void plotscale(int level) {
-        graphwin.setVisible(true);
+        showGraph();
         graphwin.setZoom(level);
     }
 
     public void drawdot(double x, double y) {
-        graphwin.setVisible(true);
+        showGraph();
         graphwin.drawDot(x, y);
     }
 
@@ -165,10 +168,17 @@ public class Functions {
         return info;
     }
 
+    /**
+     * Make sure the graph window shows.
+     */
+    private void showGraph() {
+        graphwin.setVisible(true);
+        graphwin.toFront();
+    }
     /*
      Constructor.
      */
     public Functions() {
-        MainGUI.mainPane.add(graphwin);
+        MainGUI.loadFrame(graphwin, false);
     }
 }

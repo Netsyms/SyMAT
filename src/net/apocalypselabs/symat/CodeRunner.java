@@ -73,7 +73,7 @@ public class CodeRunner {
             case "python":
                 se = new ScriptEngineManager().getEngineByName("python");
                 try {
-                    se.eval("from net.apocalypselabs.symat import Functions\n_=Functions()\n");
+                    se.eval("from math import *\nfrom net.apocalypselabs.symat import Functions\n_=Functions()\n");
                 } catch (Exception ex) {
                     initError(ex);
                 }

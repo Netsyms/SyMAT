@@ -448,11 +448,12 @@ public class MainGUI extends javax.swing.JFrame {
 
     /**
      * Adds the given JInternalFrame to the mainPane. Automatically does layout
-     * and sets visible as well.
+     * and sets visible (if show==true).
      *
-     * @param frame
+     * @param frame The frame
+     * @param show Should the frame be visible?
      */
-    public static void loadFrame(JInternalFrame frame) {
+    public static void loadFrame(JInternalFrame frame, boolean show) {
         int w = frame.getWidth();
         int h = frame.getHeight();
         int pw = mainPane.getWidth();
@@ -473,8 +474,14 @@ public class MainGUI extends javax.swing.JFrame {
         if (frame.getLocation().y < 0) {
             frame.setLocation(frame.getLocation().x, 0);
         }
-        frame.setVisible(true);
+        if (show) {
+            frame.setVisible(true);
+        }
         //updateDisplay();
+    }
+    
+    public static void loadFrame(JInternalFrame frame) {
+        loadFrame(frame, true);
     }
 
     public static void cascade() {
