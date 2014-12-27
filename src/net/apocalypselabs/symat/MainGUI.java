@@ -38,7 +38,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
-import javax.swing.KeyStroke;
 
 /**
  *
@@ -51,6 +50,7 @@ public class MainGUI extends javax.swing.JFrame {
     public static final String VERSION_NAME = "0.8";
     public static String argfile = "";
     public static boolean skipPython = false; // Skip python init on start?
+    public static boolean skipEditor = false; // Skip editor init on start?
 
     /**
      * Creates new form MainGUI
@@ -525,7 +525,12 @@ public class MainGUI extends javax.swing.JFrame {
         for (String arg : args) {
             if (arg.equals("skippython")) {
                 skipPython = true;
-            } else {
+            } else if (arg.equals("skipeditor")) {
+                skipEditor = true;
+            } else if (arg.equals("quickstart")) {
+                skipPython = true;
+                skipEditor = true;
+            }else {
                 argfile = args[0];
             }
         }

@@ -117,11 +117,13 @@ public class SplashScreen extends javax.swing.JFrame {
                     // Ignore
                 }
             }
-            
-            setProgress(50, "Preparing editor...");
-            // Get editor going too
-            CodeEditor edit = new CodeEditor();
-            
+
+            if (!MainGUI.skipEditor) {
+                System.out.println("Preparing editor, to skip run with argument 'skipeditor'");
+                setProgress(50, "Preparing editor...");
+                // Get editor going too
+                CodeEditor edit = new CodeEditor();
+            }
             setProgress(70, "Loading main interface...");
             new MainGUI().setVisible(true);
             setProgress(100, "Done!");
@@ -130,6 +132,7 @@ public class SplashScreen extends javax.swing.JFrame {
 
         /**
          * Set the progress bar.
+         *
          * @param progress how full to make it (0 <= progress <= 100)
          * @param label The String to put on the label.
          */
@@ -148,7 +151,7 @@ public class SplashScreen extends javax.swing.JFrame {
 
         /**
          * Animate the dots on the progress bar label.
-         * 
+         *
          * This way people know it's not "frozen", so they don't "let it go".
          */
         private class DotThread extends Thread {
@@ -169,7 +172,7 @@ public class SplashScreen extends javax.swing.JFrame {
                             } else if (val.endsWith(".  ")) {
                                 progBar.setString(val.replace(".  ", ".. "));
                             } else if (!val.endsWith(" ")) {
-                                progBar.setString(val+".  ");
+                                progBar.setString(val + ".  ");
                             }
                         }
                     });
@@ -177,7 +180,7 @@ public class SplashScreen extends javax.swing.JFrame {
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException ex) {
-                        
+
                     }
                 }
             }
