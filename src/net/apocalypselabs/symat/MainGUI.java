@@ -53,12 +53,16 @@ public class MainGUI extends javax.swing.JFrame {
     public static boolean skipEditor = false; // Skip editor init on start?
 
     /**
-     * Creates new form MainGUI
+     * Creates the main app window and does some quick things that aren't
+     * threaded in SplashScreen.
      */
     public MainGUI() {
         initComponents();
-        setIconImage((new ImageIcon(getClass().getResource("icon.png"))).getImage());
+        setIconImage((new ImageIcon(
+                getClass().getResource("icon.png"))).getImage());
         setLocationRelativeTo(null);
+
+        // Check for updates.
         try {
             URL url = new URL("http://symatapp.com/version.txt");
             InputStream is = url.openStream();
@@ -69,8 +73,10 @@ public class MainGUI extends javax.swing.JFrame {
             is.close();
             double version = Double.parseDouble(line.split("\\|")[0]);
             if (version > APP_CODE) {
-                if (PrefStorage.getSetting("update-ignore").equals(VERSION_NAME + "|" + line.split("\\|")[1])) {
-                    System.out.println("An update was found, but has been ignored by the user.");
+                if (PrefStorage.getSetting("update-ignore")
+                        .equals(VERSION_NAME + "|" + line.split("\\|")[1])) {
+                    System.out.println("An update was found, "
+                            + "but has been ignored by the user.");
                 } else {
                     loadFrame(new Update(line.split("\\|")[1]));
                 }
@@ -83,7 +89,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         setButtonShortcuts();
 
-        // Open shell unless prog was run with argument
+        // Open shell unless launched with file as argument
         if (argfile.equals("")) {
             Interpreter sh = new Interpreter();
             loadFrame(sh);
@@ -113,14 +119,20 @@ public class MainGUI extends javax.swing.JFrame {
      * (Re)load display settings.
      */
     public static void updateDisplay() {
-        mainPane.paintImmediately(0, 0, mainPane.getWidth(), mainPane.getHeight());
+        mainPane.paintImmediately(0, 0,
+                mainPane.getWidth(), mainPane.getHeight());
         if (PrefStorage.getSetting("theme").equals("dark")) {
-            tabs.setBackground(Color.BLACK);
+            tabs.setBackground(new Color(41, 49, 52));
         } else {
             tabs.setBackground(new Color(240, 240, 240));
         }
     }
 
+    /**
+     * Get the markup for the watermark thing on the Ribbon.
+     *
+     * @return HTML for a JLabel.
+     */
     private static String namemark() {
         String nbsp = "";
         for (int i = 0; i < 8; i++) {
@@ -406,6 +418,10 @@ public class MainGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /*
+     This section has all the buttons!
+     */
+
     private void shellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shellBtnActionPerformed
         loadFrame(new Interpreter());
     }//GEN-LAST:event_shellBtnActionPerformed
@@ -455,6 +471,9 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tabsStateChanged
 
+    /*
+     End the button handlers.
+     */
     /**
      * Adds the given JInternalFrame to the mainPane. Automatically does layout
      * and sets visible (if show==true).
@@ -486,7 +505,6 @@ public class MainGUI extends javax.swing.JFrame {
         if (show) {
             frame.setVisible(true);
         }
-        //updateDisplay();
     }
 
     /**
@@ -499,6 +517,10 @@ public class MainGUI extends javax.swing.JFrame {
         loadFrame(frame, true);
     }
 
+    /**
+     * Cascade all the frames in a stack. Somehow reverses the order each time
+     * around, I have no idea why but it's a "feature" now!
+     */
     public static void cascade() {
         JInternalFrame[] frames = mainPane.getAllFrames();
         int x = 12;
@@ -506,8 +528,15 @@ public class MainGUI extends javax.swing.JFrame {
         Debug.println("Cascading " + frames.length + " frames...");
         for (int i = 0; i < frames.length; i++) {
             if (frames[i].isVisible()) {
-                Debug.println("Frame: " + frames[i].getTitle() + ", Times: " + i + ", Xpos: " + x * i + ", Ypos: " + y * i);
-                frames[i].setBounds(x * i, y * i, frames[i].getWidth(), frames[i].getHeight());
+                Debug.println("Frame: "
+                        + frames[i].getTitle()
+                        + ", Times: " + i
+                        + ", Xpos: " + x * i
+                        + ", Ypos: " + y * i);
+                frames[i].setBounds(x * i,
+                        y * i,
+                        frames[i].getWidth(),
+                        frames[i].getHeight());
                 frames[i].toFront();
             }
         }
@@ -537,15 +566,20 @@ public class MainGUI extends javax.swing.JFrame {
         //</editor-fold>
         // Command line args
         for (String arg : args) {
-            if (arg.equals("skippython")) {
-                skipPython = true;
-            } else if (arg.equals("skipeditor")) {
-                skipEditor = true;
-            } else if (arg.equals("quickstart")) {
-                skipPython = true;
-                skipEditor = true;
-            } else {
-                argfile = args[0];
+            switch (arg) {
+                case "skippython":
+                    skipPython = true;
+                    break;
+                case "skipeditor":
+                    skipEditor = true;
+                    break;
+                case "quickstart":
+                    skipPython = true;
+                    skipEditor = true;
+                    break;
+                default:
+                    argfile = args[0];
+                    break;
             }
         }
 
