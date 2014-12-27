@@ -55,9 +55,9 @@
         <Property name="selectedIndex" type="int" value="1"/>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="tabs.setEnabledAt(0, false);"/>
-      </AuxValues>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="tabsStateChanged"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>

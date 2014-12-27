@@ -30,13 +30,16 @@ package net.apocalypselabs.symat;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import javax.swing.UIDefaults;
+import java.util.Calendar;
 
 /**
  *
  * @author Skylar
  */
 public class Help extends javax.swing.JInternalFrame {
+
+    // True if this is a manual, false if about window
+    private boolean topicOnLoad = true;
 
     /**
      * Creates new form Help
@@ -46,49 +49,74 @@ public class Help extends javax.swing.JInternalFrame {
         loadTheme();
     }
 
+    /**
+     * Load the About window.
+     *
+     * @param about set it to whatever.
+     */
+    public Help(boolean about) {
+        initComponents();
+        setSize(450,352);
+        jSplitPane1.setDividerSize(0);
+        jSplitPane1.setDividerLocation(0.0);
+        jSplitPane1.setResizeWeight(0.0);
+        topicOnLoad = false;
+        loadTopic("about");
+    }
+
     private void loadTheme() {
         if (PrefStorage.getSetting("theme").equals("dark")) {
-            setBackgroundOfBrowser(Color.BLACK);
-            setBackgroundOfBrowser(Color.WHITE);
             topicList.setBackground(Color.BLACK);
             topicList.setForeground(Color.WHITE);
             setBackground(Color.DARK_GRAY);
         } else {
-            setBackgroundOfBrowser(Color.WHITE);
-            setBackgroundOfBrowser(Color.BLACK);
             topicList.setBackground(Color.WHITE);
             topicList.setForeground(Color.BLACK);
             setBackground(Color.LIGHT_GRAY);
         }
     }
-    
-    private void setBackgroundOfBrowser(Color c) {
-        /*UIDefaults defaults = new UIDefaults();
-        defaults.put("EditorPane.backgroundPainter", c);
-        topicBrowser.putClientProperty("Nimbus.Overrides", defaults);
-        topicBrowser.putClientProperty("Nimbus.Overrides.InheritDefaults", true);
-        topicBrowser.setBackground(c);*/
-    }
 
     public void loadTopic(String name) {
-        try {
-            String text = "";
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(
-                            CodeRunner.class
-                            .getResourceAsStream("help/" + name + ".html")));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                text += line;
-            }
+        if (name.equals("about")) {
+            String text = "<html><head><title>About SyMAT</title></head>"
+                    + "<body>"
+                    + "<h1>About</h1>"
+                    + "<p>This is SyMAT version "
+                    + MainGUI.VERSION_NAME + " (" + (int)MainGUI.APP_CODE + ")."
+                    + "</p>"
+                    + "<p>SyMAT is copyright &copy; "
+                    + Calendar.getInstance().get(Calendar.YEAR)
+                    + " Apocalypse Laboratories.  Some rights reserved."
+                    + "</p>"
+                    + "<p>Internal help documentation is "
+                    + "licensed under the Creative Commons Attribution "
+                    + "license (CC-BY). You can use it in part or in whole "
+                    + "for any purpose, including commercial, as long as "
+                    + "you attribute Apocalypse Laboratories.</p>"
+                    + "";
             topicBrowser.setText(text);
             topicBrowser.setCaretPosition(0);
-            setTitle("Manual (" + topicList.getSelectedValue().toString() + ")");
-        } catch (Exception e) {
-            //JOptionPane.showInternalMessageDialog(MainGUI.mainPane, 
-            //"Error: Cannot load help topic "+name+".\n\n"+e.getMessage());
-            topicBrowser.setText("<html><head></head><body><p><b>Error:</b><br>Cannot get help topic \""
-                    + name + "\".<br>(" + e.getMessage() + ")</p></body></html>");
+            setTitle("About SyMAT");
+        } else {
+            try {
+                String text = "";
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(
+                                CodeRunner.class
+                                .getResourceAsStream("help/" + name + ".html")));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    text += line;
+                }
+                topicBrowser.setText(text);
+                topicBrowser.setCaretPosition(0);
+                setTitle("Manual (" + topicList.getSelectedValue().toString() + ")");
+            } catch (Exception e) {
+                //JOptionPane.showInternalMessageDialog(MainGUI.mainPane, 
+                //"Error: Cannot load help topic "+name+".\n\n"+e.getMessage());
+                topicBrowser.setText("<html><head></head><body><p><b>Error:</b><br>Cannot get help topic \""
+                        + name + "\".<br>(" + e.getMessage() + ")</p></body></html>");
+            }
         }
     }
 
@@ -114,6 +142,9 @@ public class Help extends javax.swing.JInternalFrame {
         setTitle("Manual");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/help.png"))); // NOI18N
         addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
@@ -171,12 +202,21 @@ public class Help extends javax.swing.JInternalFrame {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         topicList.setSelectedIndex(0);
-        loadTopic("welcome");
+        if (topicOnLoad) {
+            loadTopic("welcome");
+        }
     }//GEN-LAST:event_formComponentShown
 
     private void topicListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_topicListMouseClicked
         loadTheme();
     }//GEN-LAST:event_topicListMouseClicked
+
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        if (!topicOnLoad) {
+            jSplitPane1.setDividerLocation(0.0);
+            jSplitPane1.setResizeWeight(0.0);
+        }
+    }//GEN-LAST:event_formComponentResized
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

@@ -46,8 +46,8 @@ import javax.swing.JInternalFrame;
 public class MainGUI extends javax.swing.JFrame {
 
     public static final String APP_NAME = "SyMAT 0.8";
-    public static final double APP_CODE = 8;
-    public static final String VERSION_NAME = "0.8";
+    public static final double APP_CODE = 9;
+    public static final String VERSION_NAME = "0.8.2";
     public static String argfile = "";
     public static boolean skipPython = false; // Skip python init on start?
     public static boolean skipEditor = false; // Skip editor init on start?
@@ -80,7 +80,7 @@ public class MainGUI extends javax.swing.JFrame {
                     + "       Assuming local copy up-to-date.");
             Debug.stacktrace(e);
         }
-        
+
         setButtonShortcuts();
 
         // Open shell unless prog was run with argument
@@ -108,7 +108,7 @@ public class MainGUI extends javax.swing.JFrame {
         tabs.setMnemonicAt(2, KeyEvent.VK_T);
         tabs.setMnemonicAt(3, KeyEvent.VK_E);
     }
-    
+
     /**
      * (Re)load display settings.
      */
@@ -182,6 +182,11 @@ public class MainGUI extends javax.swing.JFrame {
 
         tabs.setBackground(new Color(240,240,240));
         tabs.setOpaque(true);
+        tabs.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tabsStateChanged(evt);
+            }
+        });
 
         jPanel4.setFocusable(false);
         jPanel4.setLayout(null);
@@ -398,24 +403,19 @@ public class MainGUI extends javax.swing.JFrame {
                 .addComponent(mainPane))
         );
 
-        tabs.setEnabledAt(0, false);
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void shellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shellBtnActionPerformed
-        Interpreter i = new Interpreter();
-        loadFrame(i);
+        loadFrame(new Interpreter());
     }//GEN-LAST:event_shellBtnActionPerformed
 
     private void editorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editorBtnActionPerformed
-        CodeEditor e = new CodeEditor();
-        loadFrame(e);
+        loadFrame(new CodeEditor());
     }//GEN-LAST:event_editorBtnActionPerformed
 
     private void graphBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphBtnActionPerformed
-        Graph g = new Graph();
-        loadFrame(g);
+        loadFrame(new Graph());
     }//GEN-LAST:event_graphBtnActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -423,8 +423,7 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentShown
 
     private void helpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBtnActionPerformed
-        Help h = new Help();
-        loadFrame(h);
+        loadFrame(new Help());
     }//GEN-LAST:event_helpBtnActionPerformed
 
     private void arrangeWindowsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrangeWindowsBtnActionPerformed
@@ -432,8 +431,7 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_arrangeWindowsBtnActionPerformed
 
     private void displaySettingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displaySettingsBtnActionPerformed
-        Display d = new Display();
-        loadFrame(d);
+        loadFrame(new Display());
     }//GEN-LAST:event_displaySettingsBtnActionPerformed
 
     private void closeAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeAllBtnActionPerformed
@@ -445,6 +443,17 @@ public class MainGUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_closeAllBtnActionPerformed
+
+    private void tabsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabsStateChanged
+        if (tabs.getSelectedIndex() == 0) {
+            try {
+                tabs.setSelectedIndex(1);
+            } catch (Exception ex) {
+
+            }
+            loadFrame(new Help(true));
+        }
+    }//GEN-LAST:event_tabsStateChanged
 
     /**
      * Adds the given JInternalFrame to the mainPane. Automatically does layout
@@ -479,7 +488,13 @@ public class MainGUI extends javax.swing.JFrame {
         }
         //updateDisplay();
     }
-    
+
+    /**
+     * Adds the given JInternalFrame to the mainPane. Automatically does layout
+     * and sets visible.
+     *
+     * @param frame The frame
+     */
     public static void loadFrame(JInternalFrame frame) {
         loadFrame(frame, true);
     }
@@ -520,7 +535,6 @@ public class MainGUI extends javax.swing.JFrame {
         //</editor-fold>
 
         //</editor-fold>
-
         // Command line args
         for (String arg : args) {
             if (arg.equals("skippython")) {
@@ -530,11 +544,11 @@ public class MainGUI extends javax.swing.JFrame {
             } else if (arg.equals("quickstart")) {
                 skipPython = true;
                 skipEditor = true;
-            }else {
+            } else {
                 argfile = args[0];
             }
         }
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
