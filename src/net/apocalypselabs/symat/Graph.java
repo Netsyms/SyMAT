@@ -62,9 +62,13 @@ public class Graph extends javax.swing.JInternalFrame {
     // If a graph is being drawn, set to true, else false
     boolean graphing = false;
 
+    // Graph scaling data.
     private double xtimes = 15;
     private double ytimes = 15;
     private double scale = 1;
+    
+    // The current value for the zoom/scale, as entered by the user
+    private int scaleLevel = 0;
 
     /**
      * Creates new form Graph
@@ -334,20 +338,36 @@ public class Graph extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_formComponentShown
 
     /**
+     * Get the zoom ratio.
+     *
+     * @param zoomLevel The zoom level to calculate from.
+     * @return The ratio.
+     */
+    public static double getScale(int zoomLevel) {
+        double gscale = 15.0;
+        if (zoomLevel >= 0) {
+            gscale = 1.0 / (zoomLevel + 1.0);
+        } else {
+            gscale = 1.0 * (abs(zoomLevel) + 1.0);
+        }
+        return gscale;
+    }
+
+    /**
      * Set the zoom level. The larger the int, the more zoomed it is.
      *
      * @param zoomLevel Level to zoom. 0 is default (10x10).
      */
     public void setZoom(int zoomLevel) {
+        scaleLevel = zoomLevel;
         if (zoomLevel >= 0) {
             xtimes = 15.0 * (zoomLevel + 1.0);
             ytimes = 15.0 * (zoomLevel + 1.0);
-            scale = 1.0 / (zoomLevel + 1.0);
         } else {
             xtimes = 15.0 / (abs(zoomLevel) + 1.0);
             ytimes = 15.0 / (abs(zoomLevel) + 1.0);
-            scale = 1.0 * (abs(zoomLevel) + 1.0);
         }
+        scale = getScale(zoomLevel);
         scaleLbl.setText("Scale: 1 to " + scale);
         Debug.println("Scaled to xtimes=" + xtimes + ", ytimes=" + ytimes + ", scale=1to" + scale);
         clearDraw(false);
@@ -363,7 +383,6 @@ public class Graph extends javax.swing.JInternalFrame {
             new GraphThread(history.split("\n")).start();
             inBox.setText("");
         }
-
     }
 
     private void dispGraph() {
@@ -413,15 +432,17 @@ public class Graph extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        try {
-            int size = Integer.parseInt(JOptionPane.showInternalInputDialog(this,
-                    "Graph scale (negative numbers less detail, positive more detail):",
-                    "Scale",
-                    JOptionPane.QUESTION_MESSAGE));
+        GraphScale gs = new GraphScale(scaleLevel);
+        int size = 0;
+        int result = JOptionPane.showInternalConfirmDialog(this,
+                gs,
+                "Graph Scale",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            size = gs.getScale();
             Debug.println("Scaling to: " + size);
             setZoom(size);
-        } catch (Exception ex) {
-
         }
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
