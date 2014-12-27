@@ -31,7 +31,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- *
+ * This is a panel for scale settings.  It is shown in a JOptionPane.
  * @author Skylar
  */
 public class GraphScale extends javax.swing.JPanel {

@@ -45,7 +45,7 @@ import javax.swing.JInternalFrame;
  */
 public class MainGUI extends javax.swing.JFrame {
 
-    public static final String APP_NAME = "SyMAT 0.8";
+    public static final String APP_NAME = "SyMAT 0.8.2";
     public static final double APP_CODE = 9;
     public static final String VERSION_NAME = "0.8.2";
     public static String argfile = "";
