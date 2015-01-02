@@ -149,6 +149,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         outputBox = new javax.swing.JTextArea();
+        clearBtn = new javax.swing.JButton();
         editPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
@@ -160,12 +161,14 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         saveAsMenu = new javax.swing.JMenuItem();
         exportMenu = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
-        clrOutputMenu = new javax.swing.JMenuItem();
+        copyBtn = new javax.swing.JMenuItem();
+        cutBtn = new javax.swing.JMenuItem();
+        pasteBtn = new javax.swing.JMenuItem();
+        runMenu = new javax.swing.JMenu();
+        runCodeBtn = new javax.swing.JMenuItem();
         codeLangMenu = new javax.swing.JMenu();
         javascriptOption = new javax.swing.JRadioButtonMenuItem();
         pythonOption = new javax.swing.JRadioButtonMenuItem();
-        runMenu = new javax.swing.JMenu();
-        runCodeBtn = new javax.swing.JMenuItem();
 
         jMenuItem4.setText("jMenuItem4");
 
@@ -207,21 +210,32 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(outputBox);
 
+        clearBtn.setText("Clear");
+        clearBtn.setToolTipText("");
+        clearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout outputPanelLayout = new javax.swing.GroupLayout(outputPanel);
         outputPanel.setLayout(outputPanelLayout);
         outputPanelLayout.setHorizontalGroup(
             outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(outputPanelLayout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(clearBtn))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
         );
         outputPanelLayout.setVerticalGroup(
             outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(outputPanelLayout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))
+                .addGroup(outputPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(outputPanel);
@@ -302,14 +316,45 @@ public class CodeEditor extends javax.swing.JInternalFrame {
 
         editMenu.setText("Edit");
 
-        clrOutputMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        clrOutputMenu.setText("Clear output");
-        clrOutputMenu.addActionListener(new java.awt.event.ActionListener() {
+        copyBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        copyBtn.setText("Copy");
+        copyBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clrOutputMenuActionPerformed(evt);
+                copyBtnActionPerformed(evt);
             }
         });
-        editMenu.add(clrOutputMenu);
+        editMenu.add(copyBtn);
+
+        cutBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
+        cutBtn.setText("Cut");
+        cutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cutBtnActionPerformed(evt);
+            }
+        });
+        editMenu.add(cutBtn);
+
+        pasteBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
+        pasteBtn.setText("Paste");
+        pasteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasteBtnActionPerformed(evt);
+            }
+        });
+        editMenu.add(pasteBtn);
+
+        jMenuBar1.add(editMenu);
+
+        runMenu.setText("Run");
+
+        runCodeBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
+        runCodeBtn.setText("Run code");
+        runCodeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runCodeBtnActionPerformed(evt);
+            }
+        });
+        runMenu.add(runCodeBtn);
 
         codeLangMenu.setText("Language");
 
@@ -332,20 +377,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         });
         codeLangMenu.add(pythonOption);
 
-        editMenu.add(codeLangMenu);
-
-        jMenuBar1.add(editMenu);
-
-        runMenu.setText("Run");
-
-        runCodeBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
-        runCodeBtn.setText("Run code");
-        runCodeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                runCodeBtnActionPerformed(evt);
-            }
-        });
-        runMenu.add(runCodeBtn);
+        runMenu.add(codeLangMenu);
 
         jMenuBar1.add(runMenu);
 
@@ -515,17 +547,12 @@ public class CodeEditor extends javax.swing.JInternalFrame {
 
         }
     }
-    private void clrOutputMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clrOutputMenuActionPerformed
-        outputBox.setText("");
-    }//GEN-LAST:event_clrOutputMenuActionPerformed
-
     private void exportMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuActionPerformed
         String lang = "js";
         if (pythonOption.isSelected()) {
             lang = "python";
         }
-        CodeExport ce = new CodeExport(codeBox.getText(), lang);
-        MainGUI.loadFrame(ce);
+        MainGUI.loadFrame(new CodeExport(codeBox.getText(), lang));
     }//GEN-LAST:event_exportMenuActionPerformed
 
     private void javascriptOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javascriptOptionActionPerformed
@@ -551,6 +578,22 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private void sampleGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sampleGraphActionPerformed
         openSample("graph");
     }//GEN-LAST:event_sampleGraphActionPerformed
+
+    private void pasteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteBtnActionPerformed
+        codeBox.paste();
+    }//GEN-LAST:event_pasteBtnActionPerformed
+
+    private void copyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyBtnActionPerformed
+        codeBox.copy();
+    }//GEN-LAST:event_copyBtnActionPerformed
+
+    private void cutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutBtnActionPerformed
+        codeBox.cut();
+    }//GEN-LAST:event_cutBtnActionPerformed
+
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+        outputBox.setText("");
+    }//GEN-LAST:event_clearBtnActionPerformed
 
     /**
      * Open a sample code file with the given name.<p>
@@ -619,8 +662,10 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem clrOutputMenu;
+    private javax.swing.JButton clearBtn;
     private javax.swing.JMenu codeLangMenu;
+    private javax.swing.JMenuItem copyBtn;
+    private javax.swing.JMenuItem cutBtn;
     private javax.swing.JMenu editMenu;
     private javax.swing.JPanel editPanel;
     private javax.swing.JMenuItem exportMenu;
@@ -640,6 +685,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private javax.swing.JMenu openSampleBtn;
     private javax.swing.JTextArea outputBox;
     private javax.swing.JPanel outputPanel;
+    private javax.swing.JMenuItem pasteBtn;
     private javax.swing.JRadioButtonMenuItem pythonOption;
     private javax.swing.JMenuItem runCodeBtn;
     private javax.swing.JMenu runMenu;
