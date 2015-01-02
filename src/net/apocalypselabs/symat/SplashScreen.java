@@ -59,8 +59,9 @@ public class SplashScreen extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(MainGUI.APP_NAME);
-        setMaximumSize(new java.awt.Dimension(320, 260));
-        setMinimumSize(new java.awt.Dimension(320, 260));
+        setMaximumSize(new java.awt.Dimension(204, 260));
+        setMinimumSize(new java.awt.Dimension(204, 260));
+        setUndecorated(true);
         setResizable(false);
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -75,7 +76,7 @@ public class SplashScreen extends javax.swing.JFrame {
         progBar.setString("");
         progBar.setStringPainted(true);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/splash0.8.png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/anim-splash.gif"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

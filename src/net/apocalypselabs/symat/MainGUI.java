@@ -45,9 +45,9 @@ import javax.swing.JInternalFrame;
  */
 public class MainGUI extends javax.swing.JFrame {
 
-    public static final String APP_NAME = "SyMAT 0.8.2";
-    public static final double APP_CODE = 9;
-    public static final String VERSION_NAME = "0.8.2";
+    public static final String APP_NAME = "SyMAT 0.9";
+    public static final double APP_CODE = 10;
+    public static final String VERSION_NAME = "0.9";
     public static String argfile = "";
     public static boolean skipPython = false; // Skip python init on start?
     public static boolean skipEditor = false; // Skip editor init on start?
@@ -110,9 +110,8 @@ public class MainGUI extends javax.swing.JFrame {
         editorBtn.setMnemonic(KeyEvent.VK_D);
         graphBtn.setMnemonic(KeyEvent.VK_G);
         helpBtn.setMnemonic(KeyEvent.VK_M);
-        tabs.setMnemonicAt(1, KeyEvent.VK_A);
-        tabs.setMnemonicAt(2, KeyEvent.VK_T);
-        tabs.setMnemonicAt(3, KeyEvent.VK_E);
+        tabs.setMnemonicAt(0, KeyEvent.VK_A);
+        tabs.setMnemonicAt(1, KeyEvent.VK_V);
     }
 
     /**
@@ -156,18 +155,15 @@ public class MainGUI extends javax.swing.JFrame {
 
         tabs = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
         shellBtn = new javax.swing.JButton();
         editorBtn = new javax.swing.JButton();
         graphBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
         helpBtn = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         arrangeWindowsBtn = new javax.swing.JButton();
         closeAllBtn = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
         displaySettingsBtn = new javax.swing.JButton();
         mainPane = mainPane = new javax.swing.JDesktopPane() {
             @Override
@@ -194,17 +190,9 @@ public class MainGUI extends javax.swing.JFrame {
 
         tabs.setBackground(new Color(240,240,240));
         tabs.setOpaque(true);
-        tabs.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                tabsStateChanged(evt);
-            }
-        });
 
         jPanel4.setFocusable(false);
-        jPanel4.setLayout(null);
-        tabs.addTab("", new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icon16.png")), jPanel4); // NOI18N
-
-        jPanel1.setOpaque(false);
+        jPanel4.setOpaque(false);
 
         shellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/shell.png"))); // NOI18N
         shellBtn.setText("Shell");
@@ -249,35 +237,6 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel1.setText(namemark());
         jLabel1.setFocusable(false);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(shellBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(editorBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(graphBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(shellBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(editorBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(graphBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, 0))
-        );
-
-        tabs.addTab("Apps", jPanel1);
-
-        jPanel2.setOpaque(false);
-
         helpBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/help.png"))); // NOI18N
         helpBtn.setText("Manual");
         helpBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -290,6 +249,43 @@ public class MainGUI extends javax.swing.JFrame {
                 helpBtnActionPerformed(evt);
             }
         });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(shellBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(editorBtn)
+                .addGap(12, 12, 12)
+                .addComponent(graphBtn)
+                .addGap(11, 11, 11)
+                .addComponent(helpBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(shellBtn)
+                    .addComponent(editorBtn)
+                    .addComponent(graphBtn))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(helpBtn)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
+        tabs.addTab("Apps", jPanel4);
+
+        jPanel2.setOpaque(false);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText(namemark());
@@ -321,38 +317,8 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(helpBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(arrangeWindowsBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(closeAllBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(helpBtn)
-            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(arrangeWindowsBtn)
-            .addComponent(closeAllBtn)
-        );
-
-        tabs.addTab("Tools", jPanel2);
-
-        jPanel3.setOpaque(false);
-
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel4.setText(namemark());
-        jLabel4.setFocusable(false);
-
         displaySettingsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/display.png"))); // NOI18N
-        displaySettingsBtn.setText("Display");
+        displaySettingsBtn.setText("Theme");
         displaySettingsBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         displaySettingsBtn.setFocusable(false);
         displaySettingsBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -364,25 +330,32 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(displaySettingsBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(arrangeWindowsBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(closeAllBtn)
+                .addGap(94, 94, 94)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(displaySettingsBtn)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(arrangeWindowsBtn)
+                    .addComponent(closeAllBtn)
+                    .addComponent(displaySettingsBtn))
+                .addContainerGap())
         );
 
-        tabs.addTab("Settings", jPanel3);
-
-        tabs.setSelectedIndex(1);
+        tabs.addTab("View", jPanel2);
 
         mainPane.setBackground(new java.awt.Color(204, 204, 204));
         mainPane.setAutoscrolls(true);
@@ -418,33 +391,13 @@ public class MainGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /*
-     This section has all the buttons!
-     */
-
-    private void shellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shellBtnActionPerformed
-        loadFrame(new Interpreter());
-    }//GEN-LAST:event_shellBtnActionPerformed
-
-    private void editorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editorBtnActionPerformed
-        loadFrame(new CodeEditor());
-    }//GEN-LAST:event_editorBtnActionPerformed
-
-    private void graphBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphBtnActionPerformed
-        loadFrame(new Graph());
-    }//GEN-LAST:event_graphBtnActionPerformed
-
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         setLocationRelativeTo(null);
     }//GEN-LAST:event_formComponentShown
 
-    private void helpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBtnActionPerformed
-        loadFrame(new Help());
-    }//GEN-LAST:event_helpBtnActionPerformed
-
-    private void arrangeWindowsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrangeWindowsBtnActionPerformed
-        cascade();
-    }//GEN-LAST:event_arrangeWindowsBtnActionPerformed
+    /*
+     This section has all the buttons!
+     */
 
     private void displaySettingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displaySettingsBtnActionPerformed
         loadFrame(new Display());
@@ -460,16 +413,25 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_closeAllBtnActionPerformed
 
-    private void tabsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabsStateChanged
-        if (tabs.getSelectedIndex() == 0) {
-            try {
-                tabs.setSelectedIndex(1);
-            } catch (Exception ex) {
+    private void arrangeWindowsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrangeWindowsBtnActionPerformed
+        cascade();
+    }//GEN-LAST:event_arrangeWindowsBtnActionPerformed
 
-            }
-            loadFrame(new Help(true));
-        }
-    }//GEN-LAST:event_tabsStateChanged
+    private void helpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBtnActionPerformed
+        loadFrame(new Help());
+    }//GEN-LAST:event_helpBtnActionPerformed
+
+    private void graphBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphBtnActionPerformed
+        loadFrame(new Graph());
+    }//GEN-LAST:event_graphBtnActionPerformed
+
+    private void editorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editorBtnActionPerformed
+        loadFrame(new CodeEditor());
+    }//GEN-LAST:event_editorBtnActionPerformed
+
+    private void shellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shellBtnActionPerformed
+        loadFrame(new Interpreter());
+    }//GEN-LAST:event_shellBtnActionPerformed
 
     /*
      End the button handlers.
@@ -601,10 +563,7 @@ public class MainGUI extends javax.swing.JFrame {
     public static javax.swing.JButton helpBtn;
     public static javax.swing.JLabel jLabel1;
     public static javax.swing.JLabel jLabel3;
-    public static javax.swing.JLabel jLabel4;
-    public static javax.swing.JPanel jPanel1;
     public static javax.swing.JPanel jPanel2;
-    public static javax.swing.JPanel jPanel3;
     public static javax.swing.JPanel jPanel4;
     public static javax.swing.JDesktopPane mainPane;
     public static javax.swing.JButton shellBtn;

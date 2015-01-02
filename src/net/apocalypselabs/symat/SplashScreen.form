@@ -7,11 +7,12 @@
       <Connection code="MainGUI.APP_NAME" type="code"/>
     </Property>
     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[320, 260]"/>
+      <Dimension value="[204, 260]"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[320, 260]"/>
+      <Dimension value="[204, 260]"/>
     </Property>
+    <Property name="undecorated" type="boolean" value="true"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
@@ -70,7 +71,7 @@
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/net/apocalypselabs/symat/splash0.8.png"/>
+          <Image iconType="3" name="/net/apocalypselabs/symat/anim-splash.gif"/>
         </Property>
       </Properties>
     </Component>

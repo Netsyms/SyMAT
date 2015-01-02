@@ -56,7 +56,7 @@ public class Help extends javax.swing.JInternalFrame {
      */
     public Help(boolean about) {
         initComponents();
-        setSize(450,352);
+        setSize(450, 352);
         jSplitPane1.setDividerSize(0);
         jSplitPane1.setDividerLocation(0.0);
         jSplitPane1.setResizeWeight(0.0);
@@ -82,7 +82,7 @@ public class Help extends javax.swing.JInternalFrame {
                     + "<body>"
                     + "<h1>About</h1>"
                     + "<p>This is SyMAT version "
-                    + MainGUI.VERSION_NAME + " (" + (int)MainGUI.APP_CODE + ")."
+                    + MainGUI.VERSION_NAME + " (" + (int) MainGUI.APP_CODE + ")."
                     + "</p>"
                     + "<p>SyMAT is copyright &copy; "
                     + Calendar.getInstance().get(Calendar.YEAR)
