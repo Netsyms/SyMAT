@@ -40,8 +40,9 @@ import javax.swing.text.html.StyleSheet;
  */
 public class Help extends javax.swing.JInternalFrame {
 
-    // True if this is a manual, false if about window
-    private boolean topicOnLoad = true;
+    /*
+     Some styling stuff.
+     */
     private final HTMLEditorKit kit;
     private final StyleSheet styleSheet;
     private final StyleSheet dark = new StyleSheet();
@@ -58,6 +59,9 @@ public class Help extends javax.swing.JInternalFrame {
         loadTheme();
     }
 
+    /**
+     * Load the styles for the main box.
+     */
     private void loadStyleSheets() {
         dark.addRule("body { background-color: #293134; }");
         dark.addRule("h1 { color: #ffffff; }");
@@ -69,6 +73,9 @@ public class Help extends javax.swing.JInternalFrame {
         light.addRule("p { color: #000000; }");
     }
 
+    /**
+     * (Re)load the theme for this window.
+     */
     private void loadTheme() {
         if (PrefStorage.getSetting("theme").equals("dark")) {
             topicList.setBackground(new Color(41, 49, 52));
@@ -86,6 +93,10 @@ public class Help extends javax.swing.JInternalFrame {
         loadTopic(topicList.getSelectedValue().toString().toLowerCase());
     }
 
+    /**
+     * Load a help topic from the help package.
+     * @param name The name of the help file, without the ".html".
+     */
     public void loadTopic(String name) {
         if (name.equals("welcome")) {
             String text = "<html><head><title>About SyMAT</title></head>"
@@ -158,9 +169,6 @@ public class Help extends javax.swing.JInternalFrame {
         setTitle("Manual");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/help.png"))); // NOI18N
         addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                formComponentResized(evt);
-            }
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
@@ -225,21 +233,12 @@ public class Help extends javax.swing.JInternalFrame {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         topicList.setSelectedIndex(0);
-        if (topicOnLoad) {
-            loadTopic("welcome");
-        }
+        loadTopic("welcome");
     }//GEN-LAST:event_formComponentShown
 
     private void topicListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_topicListMouseClicked
         loadTheme();
     }//GEN-LAST:event_topicListMouseClicked
-
-    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
-        if (!topicOnLoad) {
-            jSplitPane1.setDividerLocation(0.0);
-            jSplitPane1.setResizeWeight(0.0);
-        }
-    }//GEN-LAST:event_formComponentResized
 
     private void topicBrowserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_topicBrowserMouseClicked
         loadTheme();
