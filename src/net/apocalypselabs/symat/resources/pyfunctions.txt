@@ -1,0 +1,29 @@
+_.notify|return nothing|Display a message in a box.
+_.ask|return String|Ask a question in a box.  Supply question text.
+_.D|return String|Find the derivative of the function passed with respect to the second argument.
+radians|return double|Convert a given number in degrees to radians.
+degrees|return double|Convert a given number in radians to degrees.
+_.subs|return double|Solve an equation for the second argument.
+_.plot|return nothing|Graph the given function.
+_.graph|alias of plot|Graph the given function.
+_.plotname|return nothing or String|Gets or sets the title of the graph window.
+_.plotclr|return nothing|Clear the graph and its history.
+_.clearplot|alias of plotclr|Clear the graph and its history.
+_.plotscale|return nothing|Scale the plot to the given factor.
+_.drawdot|return nothing|Places a red dot at the given coordinates.
+fabs|return double|
+asin|return double|
+acos|return double|
+atan|return double|
+ceil|return double|
+exp|return double|
+floor|return double|
+log|return double|
+max|return double|Returns the highest number given.
+min|return double|Returns the lowest number given.
+pow|return double|
+round|return double|
+sin|return double|
+cos|return double|
+tan|return double|
+print|return nothing|Prints the supplied text to the output.

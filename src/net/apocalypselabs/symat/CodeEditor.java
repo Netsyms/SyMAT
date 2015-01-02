@@ -40,12 +40,13 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
@@ -62,6 +63,11 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private RSyntaxTextArea codeBox = new RSyntaxTextArea();
     private RTextScrollPane sp;
     private String lastSaved = "";
+    
+    private CompletionProvider jscomp = new CodeCompleter("js").getProvider();
+    private CompletionProvider pycomp = new CodeCompleter("py").getProvider();
+    private AutoCompletion jsac = new AutoCompletion(jscomp);
+    private AutoCompletion pyac = new AutoCompletion(pycomp);
 
     /**
      * Creates new form CodeEditor
@@ -101,6 +107,8 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                 formMouseClicked(evt);
             }
         });
+        
+        jsac.install(codeBox);
         sp.setVisible(true);
         codeBox.setVisible(true);
         codeBox.requestFocus();
@@ -161,8 +169,11 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         saveAsMenu = new javax.swing.JMenuItem();
         exportMenu = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
-        copyBtn = new javax.swing.JMenuItem();
+        undoBtn = new javax.swing.JMenuItem();
+        redoBtn = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         cutBtn = new javax.swing.JMenuItem();
+        copyBtn = new javax.swing.JMenuItem();
         pasteBtn = new javax.swing.JMenuItem();
         runMenu = new javax.swing.JMenu();
         runCodeBtn = new javax.swing.JMenuItem();
@@ -316,14 +327,25 @@ public class CodeEditor extends javax.swing.JInternalFrame {
 
         editMenu.setText("Edit");
 
-        copyBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
-        copyBtn.setText("Copy");
-        copyBtn.addActionListener(new java.awt.event.ActionListener() {
+        undoBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        undoBtn.setText("Undo");
+        undoBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                copyBtnActionPerformed(evt);
+                undoBtnActionPerformed(evt);
             }
         });
-        editMenu.add(copyBtn);
+        editMenu.add(undoBtn);
+
+        redoBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
+        redoBtn.setText("Redo");
+        redoBtn.setToolTipText("");
+        redoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                redoBtnActionPerformed(evt);
+            }
+        });
+        editMenu.add(redoBtn);
+        editMenu.add(jSeparator1);
 
         cutBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         cutBtn.setText("Cut");
@@ -333,6 +355,15 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             }
         });
         editMenu.add(cutBtn);
+
+        copyBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        copyBtn.setText("Copy");
+        copyBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyBtnActionPerformed(evt);
+            }
+        });
+        editMenu.add(copyBtn);
 
         pasteBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         pasteBtn.setText("Paste");
@@ -444,10 +475,12 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             javascriptOption.setSelected(true);
             pythonOption.setSelected(false);
             codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+            jsac.install(codeBox);
         } else if (file.matches(".*\\.(sypy|py)")) {
             javascriptOption.setSelected(false);
             pythonOption.setSelected(true);
             codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
+            pyac.install(codeBox);
         }
     }
 
@@ -595,6 +628,14 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         outputBox.setText("");
     }//GEN-LAST:event_clearBtnActionPerformed
 
+    private void undoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoBtnActionPerformed
+        codeBox.undoLastAction();
+    }//GEN-LAST:event_undoBtnActionPerformed
+
+    private void redoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoBtnActionPerformed
+        codeBox.redoLastAction();
+    }//GEN-LAST:event_redoBtnActionPerformed
+
     /**
      * Open a sample code file with the given name.<p>
      * Uses the current language.
@@ -678,6 +719,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JRadioButtonMenuItem javascriptOption;
     private javax.swing.ButtonGroup langBtnGroup;
@@ -687,11 +729,13 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private javax.swing.JPanel outputPanel;
     private javax.swing.JMenuItem pasteBtn;
     private javax.swing.JRadioButtonMenuItem pythonOption;
+    private javax.swing.JMenuItem redoBtn;
     private javax.swing.JMenuItem runCodeBtn;
     private javax.swing.JMenu runMenu;
     private javax.swing.JMenuItem sampleGraph;
     private javax.swing.JMenuItem sampleHelloWorld;
     private javax.swing.JMenuItem saveAsMenu;
     private javax.swing.JMenuItem saveMenu;
+    private javax.swing.JMenuItem undoBtn;
     // End of variables declaration//GEN-END:variables
 }

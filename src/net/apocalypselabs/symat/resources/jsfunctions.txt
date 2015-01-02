@@ -1,0 +1,30 @@
+notify|return nothing|Display a message in a box.
+ask|return String|Ask a question in a box.  Supply question text.
+D|return String|Find the derivative of the function passed with respect to the second argument.
+rad|return double|Convert a given number in degrees to radians.
+deg|return double|Convert a given number in radians to degrees.
+subs|return double|Solve an equation for the second argument.
+plot|return nothing|Graph the given function.
+graph|alias of plot|Graph the given function.
+plotname|return nothing or String|Gets or sets the title of the graph window.
+plotclr|return nothing|Clear the graph and its history.
+clearplot|alias of plotclr|Clear the graph and its history.
+plotscale|return nothing|Scale the plot to the given factor.
+drawdot|return nothing|Places a red dot at the given coordinates.
+abs|return double|
+asin|return double|
+acos|return double|
+atan|return double|
+ceil|return double|
+exp|return double|
+floor|return double|
+log|return double|
+max|return double|Returns the highest number given.
+min|return double|Returns the lowest number given.
+pow|return double|
+random|return double|Gives a random number between 0.0 and 1.0.
+round|return double|
+sin|return double|
+cos|return double|
+tan|return double|
+print|return nothing|Prints the supplied text to the output.
