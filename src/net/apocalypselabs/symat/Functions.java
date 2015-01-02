@@ -27,6 +27,7 @@
  */
 package net.apocalypselabs.symat;
 
+import static java.lang.Math.*;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.swing.JOptionPane;
@@ -65,21 +66,17 @@ public class Functions {
     public String D(String function, String idv) {
         return util.evaluate("diff(" + function + "," + idv + ")").toString();
     }
-    
-    public double cos(Object expression) {
-        return Double.parseDouble(util.evaluate("Cos("+expression+")").toString());
-    }
-    
-    public double sin(Object expression) {
-        return Double.parseDouble(util.evaluate("Sin("+expression+")").toString());
-    }
-    
-    public double tan(Object expression) {
-        return Double.parseDouble(util.evaluate("Tan("+expression+")").toString());
-    }
-    
+       
     public String factor(String function) {
         return sym("Factor(" + function + ")");
+    }
+    
+    public double rad(double degrees) {
+        return degrees * (PI/180);
+    }
+    
+    public double deg(double radians) {
+        return radians * (180/PI);
     }
 
     public String sym(String input) {
