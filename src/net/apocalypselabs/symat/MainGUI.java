@@ -36,6 +36,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 
@@ -48,6 +50,7 @@ public class MainGUI extends javax.swing.JFrame {
     public static final String APP_NAME = "SyMAT 0.9";
     public static final double APP_CODE = 10;
     public static final String VERSION_NAME = "0.9";
+    public static final String API_URL = "https://apis.symatapp.com/";
     public static String argfile = "";
     public static boolean skipPython = false; // Skip python init on start?
     public static boolean skipEditor = false; // Skip editor init on start?
@@ -64,7 +67,8 @@ public class MainGUI extends javax.swing.JFrame {
 
         // Check for updates.
         try {
-            URL url = new URL("http://symatapp.com/version.txt");
+            Debug.println("Checking for updates...");
+            URL url = new URL(API_URL + "version.php");
             InputStream is = url.openStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
@@ -78,8 +82,11 @@ public class MainGUI extends javax.swing.JFrame {
                     System.out.println("An update was found, "
                             + "but has been ignored by the user.");
                 } else {
+                    Debug.println("Update available.");
                     loadFrame(new Update(line.split("\\|")[1]));
                 }
+            } else {
+                Debug.println("No updates found.");
             }
         } catch (IOException | NumberFormatException e) {
             System.err.println("Fail:  Cannot check update server.  \n"
@@ -89,15 +96,38 @@ public class MainGUI extends javax.swing.JFrame {
 
         setButtonShortcuts();
 
-        // Open shell unless launched with file as argument
-        if (argfile.equals("")) {
-            Interpreter sh = new Interpreter();
-            loadFrame(sh);
-        } else {
+        // Open initial windows
+        boolean loaded = false;
+        if (!argfile.equals("")) {
             CodeEditor ed = new CodeEditor();
             loadFrame(ed);
             ed.openFileFromName(argfile);
             argfile = "";
+            loaded = true;
+        }
+        if (PrefStorage.getSetting("license").equals("")
+                || PrefStorage.getSetting("licensetype").equals("demo")) {
+            boolean licValid = false;
+            if (PrefStorage.getSetting("licensetype").equals("demo")) {
+                Calendar c = Calendar.getInstance();
+                c.setTime(new Date());
+                try {
+                    long expire = Long.parseLong(PrefStorage.getSetting("license"));
+                    if (expire > c.getTimeInMillis()) {
+                        licValid = true;
+                    }
+                } catch (NumberFormatException e) {
+
+                }
+            }
+            if (!licValid) {
+                loadFrame(new FirstRun());
+                loaded = true;
+            }
+        }
+        // Only load shell if nothing else is going on
+        if (argfile.equals("") && !loaded) {
+            loadFrame(new Interpreter());
         }
         updateDisplay();
     }
@@ -134,14 +164,23 @@ public class MainGUI extends javax.swing.JFrame {
      */
     private static String namemark() {
         String nbsp = "";
+        String demo = "";
         for (int i = 0; i < 8; i++) {
             nbsp += "&nbsp;";
+        }
+        if (PrefStorage.getSetting("licensetype").equals("demo")) {
+            demo = " Trial";
         }
         return "<html>"
                 + nbsp
                 + "<span style=\"color: gray; font-size: 130%;\"><i>"
-                + APP_NAME
+                + APP_NAME + demo
                 + "</i></span>&nbsp;&nbsp;";
+    }
+
+    public static void updateNamemark() {
+        jLabel1.setText(namemark());
+        jLabel3.setText(namemark());
     }
 
     /**
@@ -535,8 +574,11 @@ public class MainGUI extends javax.swing.JFrame {
                     skipPython = true;
                     skipEditor = true;
                     break;
+                case "licensereset":
+                    PrefStorage.saveSetting("license", "");
+                    break;
                 default:
-                    argfile = args[0];
+                    argfile = arg;
                     break;
             }
         }
