@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Calendar;
+import javax.swing.SwingUtilities;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
@@ -95,56 +96,11 @@ public class Help extends javax.swing.JInternalFrame {
 
     /**
      * Load a help topic from the help package.
-     * @param name The name of the help file, without the ".html".
+     *
+     * @param topicName The name of the help file, without the ".html".
      */
-    public void loadTopic(String name) {
-        if (name.equals("welcome")) {
-            String text = "<html><head><title>About SyMAT</title></head>"
-                    + "<body>"
-                    + "<h1>Welcome to SyMAT!</h1>"
-                    + "<p>SyMAT is a Java-based algebra and calculus system.  "
-                    + "Scripts and commands can be written in "
-                    + "JavaScript or Python.</p>"
-                    + "<p>This is SyMAT version "
-                    + MainGUI.VERSION_NAME + " (" + (int) MainGUI.APP_CODE + ")."
-                    + "</p>"
-                    + "<p>SyMAT is copyright &copy; "
-                    + Calendar.getInstance().get(Calendar.YEAR)
-                    + " Apocalypse Laboratories.  Some rights reserved."
-                    + "</p>"
-                    + "<p>Internal help documentation is "
-                    + "licensed under the Creative Commons "
-                    + "Attribution-NonCommercial 4.0 International"
-                    + " license (CC-BY-NC).  "
-                    + "You can use it in part or in whole "
-                    + "for any purpose, excepting commercial, as long as "
-                    + "you attribute Apocalypse Laboratories.  See "
-                    + "http://creativecommons.org/licenses/by-nc/4.0/"
-                    + " for more information.</p>";
-            topicBrowser.setText(text);
-            topicBrowser.setCaretPosition(0);
-            setTitle("Manual");
-        } else {
-            try {
-                String text = "";
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(
-                                CodeRunner.class
-                                .getResourceAsStream("help/" + name + ".html")));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    text += line;
-                }
-                topicBrowser.setText(text);
-                topicBrowser.setCaretPosition(0);
-                setTitle("Manual (" + topicList.getSelectedValue().toString() + ")");
-            } catch (Exception e) {
-                //JOptionPane.showInternalMessageDialog(MainGUI.mainPane, 
-                //"Error: Cannot load help topic "+name+".\n\n"+e.getMessage());
-                topicBrowser.setText("<html><head></head><body><p><b>Error:</b><br>Cannot get help topic \""
-                        + name + "\".<br>(" + e.getMessage() + ")</p></body></html>");
-            }
-        }
+    public void loadTopic(String topicName) {
+        new LoadThread(topicName).start();
     }
 
     /**
@@ -243,6 +199,77 @@ public class Help extends javax.swing.JInternalFrame {
     private void topicBrowserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_topicBrowserMouseClicked
         loadTheme();
     }//GEN-LAST:event_topicBrowserMouseClicked
+
+    private class LoadThread extends Thread {
+
+        String name;
+
+        public LoadThread(String topic) {
+            name = topic;
+        }
+
+        @Override
+        public void run() {
+            setText("<p><i>Loading...</i></p>", "Manual");
+            if (name.equals("welcome")) {
+                final String text = "<html><head><title>About SyMAT</title></head>"
+                        + "<body>"
+                        + "<h1>Welcome to SyMAT!</h1>"
+                        + "<p>SyMAT is a Java-based algebra and calculus system.  "
+                        + "Scripts and commands can be written in "
+                        + "JavaScript or Python.</p>"
+                        + "<p>This is SyMAT version "
+                        + MainGUI.VERSION_NAME + " (" + (int) MainGUI.APP_CODE + ")."
+                        + "</p>"
+                        + "<p>SyMAT is copyright &copy; "
+                        + Calendar.getInstance().get(Calendar.YEAR)
+                        + " Apocalypse Laboratories.  Some rights reserved."
+                        + "</p>"
+                        + "<p>Internal help documentation is "
+                        + "licensed under the Creative Commons "
+                        + "Attribution-NonCommercial 4.0 International"
+                        + " license (CC-BY-NC).  "
+                        + "You can use it in part or in whole "
+                        + "for any purpose, excepting commercial, as long as "
+                        + "you attribute Apocalypse Laboratories.  See "
+                        + "http://creativecommons.org/licenses/by-nc/4.0/"
+                        + " for more information.</p>";
+                setText(text, "Manual");
+            } else {
+                try {
+                    String text = "";
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(
+                                    CodeRunner.class
+                                    .getResourceAsStream("help/" + name + ".html")));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        text += line;
+                    }
+                    setText(text, "Manual (" + topicList.getSelectedValue().toString() + ")");
+                } catch (Exception e) {
+                    //JOptionPane.showInternalMessageDialog(MainGUI.mainPane, 
+                    //"Error: Cannot load help topic "+name+".\n\n"+e.getMessage());
+                    setText("<html><head></head><body><p><b>Error:</b><br>Cannot get help topic \""
+                            + name + "\".<br>(" + e.getMessage() + ")</p></body></html>", "Manual");
+                }
+            }
+        }
+
+        private void setText(String string, String wintitle) {
+            final String text = string;
+            final String title = wintitle;
+            SwingUtilities.invokeLater(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            topicBrowser.setText(text);
+                            topicBrowser.setCaretPosition(0);
+                            setTitle(title);
+                        }
+                    });
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
