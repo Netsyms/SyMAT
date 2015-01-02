@@ -77,10 +77,13 @@ public class Help extends javax.swing.JInternalFrame {
     }
 
     public void loadTopic(String name) {
-        if (name.equals("about")) {
+        if (name.equals("welcome")) {
             String text = "<html><head><title>About SyMAT</title></head>"
                     + "<body>"
-                    + "<h1>About</h1>"
+                    + "<h1>Welcome to SyMAT!</h1>"
+                    + "<p>SyMAT is a Java-based algebra and calculus system.  "
+                    + "Scripts and commands can be written in "
+                    + "JavaScript or Python.</p>"
                     + "<p>This is SyMAT version "
                     + MainGUI.VERSION_NAME + " (" + (int) MainGUI.APP_CODE + ")."
                     + "</p>"
@@ -89,14 +92,17 @@ public class Help extends javax.swing.JInternalFrame {
                     + " Apocalypse Laboratories.  Some rights reserved."
                     + "</p>"
                     + "<p>Internal help documentation is "
-                    + "licensed under the Creative Commons Attribution "
-                    + "license (CC-BY). You can use it in part or in whole "
-                    + "for any purpose, including commercial, as long as "
-                    + "you attribute Apocalypse Laboratories.</p>"
-                    + "";
+                    + "licensed under the Creative Commons "
+                    + "Attribution-NonCommercial 4.0 International"
+                    + " license (CC-BY-NC).  "
+                    + "You can use it in part or in whole "
+                    + "for any purpose, excepting commercial, as long as "
+                    + "you attribute Apocalypse Laboratories.  See "
+                    + "http://creativecommons.org/licenses/by-nc/4.0/"
+                    + " for more information.</p>";
             topicBrowser.setText(text);
             topicBrowser.setCaretPosition(0);
-            setTitle("About SyMAT");
+            setTitle("Manual");
         } else {
             try {
                 String text = "";
