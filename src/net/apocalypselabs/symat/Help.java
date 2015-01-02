@@ -31,6 +31,8 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Calendar;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 
 /**
  *
@@ -40,40 +42,48 @@ public class Help extends javax.swing.JInternalFrame {
 
     // True if this is a manual, false if about window
     private boolean topicOnLoad = true;
+    private final HTMLEditorKit kit;
+    private final StyleSheet styleSheet;
+    private final StyleSheet dark = new StyleSheet();
+    private final StyleSheet light = new StyleSheet();
 
     /**
      * Creates new form Help
      */
     public Help() {
+        kit = new HTMLEditorKit();
         initComponents();
+        styleSheet = kit.getStyleSheet();
+        loadStyleSheets();
         loadTheme();
     }
 
-    /**
-     * Load the About window.
-     *
-     * @param about set it to whatever.
-     */
-    public Help(boolean about) {
-        initComponents();
-        setSize(450, 352);
-        jSplitPane1.setDividerSize(0);
-        jSplitPane1.setDividerLocation(0.0);
-        jSplitPane1.setResizeWeight(0.0);
-        topicOnLoad = false;
-        loadTopic("about");
+    private void loadStyleSheets() {
+        dark.addRule("body { background-color: #293134; }");
+        dark.addRule("h1 { color: #ffffff; }");
+        dark.addRule("h2 { color: #ffffff; }");
+        dark.addRule("p { color: #ffffff; }");
+        light.addRule("body { background-color: #ffffff; }");
+        light.addRule("h1 { color: #000000; }");
+        light.addRule("h2 { color: #000000; }");
+        light.addRule("p { color: #000000; }");
     }
 
     private void loadTheme() {
         if (PrefStorage.getSetting("theme").equals("dark")) {
-            topicList.setBackground(Color.BLACK);
+            topicList.setBackground(new Color(41, 49, 52));
             topicList.setForeground(Color.WHITE);
+            styleSheet.addStyleSheet(dark);
+            styleSheet.removeStyleSheet(light);
             setBackground(Color.DARK_GRAY);
         } else {
             topicList.setBackground(Color.WHITE);
             topicList.setForeground(Color.BLACK);
+            styleSheet.addStyleSheet(light);
+            styleSheet.removeStyleSheet(dark);
             setBackground(Color.LIGHT_GRAY);
         }
+        loadTopic(topicList.getSelectedValue().toString().toLowerCase());
     }
 
     public void loadTopic(String name) {
@@ -182,8 +192,15 @@ public class Help extends javax.swing.JInternalFrame {
         jSplitPane1.setLeftComponent(jScrollPane1);
 
         topicBrowser.setEditable(false);
+        topicBrowser.setBorder(null);
         topicBrowser.setContentType("text/html"); // NOI18N
         topicBrowser.setText("<html>\r\n  <head>\r\n\r\n  </head>\r\n  <body>\r\n    <p style=\"margin-top: 0\">\r\n      \rHi there\n    </p>\r\n  </body>\r\n</html>\r\n");
+        topicBrowser.setEditorKit(kit);
+        topicBrowser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                topicBrowserMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(topicBrowser);
 
         jSplitPane1.setRightComponent(jScrollPane2);
@@ -223,6 +240,10 @@ public class Help extends javax.swing.JInternalFrame {
             jSplitPane1.setResizeWeight(0.0);
         }
     }//GEN-LAST:event_formComponentResized
+
+    private void topicBrowserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_topicBrowserMouseClicked
+        loadTheme();
+    }//GEN-LAST:event_topicBrowserMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

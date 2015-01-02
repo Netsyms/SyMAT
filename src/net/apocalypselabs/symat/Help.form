@@ -101,9 +101,18 @@
             <Component class="javax.swing.JEditorPane" name="topicBrowser">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
                 <Property name="contentType" type="java.lang.String" value="text/html" noResource="true"/>
                 <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xd;&#xa;  &lt;head&gt;&#xd;&#xa;&#xd;&#xa;  &lt;/head&gt;&#xd;&#xa;  &lt;body&gt;&#xd;&#xa;    &lt;p style=&quot;margin-top: 0&quot;&gt;&#xd;&#xa;      &#xd;Hi there&#xa;    &lt;/p&gt;&#xd;&#xa;  &lt;/body&gt;&#xd;&#xa;&lt;/html&gt;&#xd;&#xa;"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="topicBrowserMouseClicked"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="topicBrowser.setEditorKit(kit);"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
