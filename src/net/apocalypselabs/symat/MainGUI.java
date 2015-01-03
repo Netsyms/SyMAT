@@ -42,14 +42,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 
 /**
+ * This class is like the Force: A light theme, a dark theme, and it binds the
+ * app together.  Also like duct tape, but that's not as cool.
  *
  * @author Skylar
  */
 public class MainGUI extends javax.swing.JFrame {
-
-    public static final String APP_NAME = "SyMAT 0.9";
-    public static final double APP_CODE = 10;
-    public static final String VERSION_NAME = "0.9";
+    // TODO: Add more code comments and stuff in case anybody else reads this
+    public static final String APP_NAME = "SyMAT 0.9.1";
+    public static final double APP_CODE = 11;
+    public static final String VERSION_NAME = "0.9.1";
     public static final String API_URL = "https://apis.symatapp.com/";
     public static String argfile = "";
     public static boolean skipPython = false; // Skip python init on start?
@@ -217,10 +219,11 @@ public class MainGUI extends javax.swing.JFrame {
             }
         }
         ;
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(APP_NAME);
-        setMinimumSize(new java.awt.Dimension(300, 400));
+        setMinimumSize(new java.awt.Dimension(640, 540));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -397,16 +400,25 @@ public class MainGUI extends javax.swing.JFrame {
         mainPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mainPane.setOpaque(false);
 
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/watermark.png"))); // NOI18N
+
         javax.swing.GroupLayout mainPaneLayout = new javax.swing.GroupLayout(mainPane);
         mainPane.setLayout(mainPaneLayout);
         mainPaneLayout.setHorizontalGroup(
             mainPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPaneLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         mainPaneLayout.setVerticalGroup(
             mainPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 481, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPaneLayout.createSequentialGroup()
+                .addContainerGap(295, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
+        mainPane.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -600,6 +612,7 @@ public class MainGUI extends javax.swing.JFrame {
     public static javax.swing.JButton graphBtn;
     public static javax.swing.JButton helpBtn;
     public static javax.swing.JLabel jLabel1;
+    public static javax.swing.JLabel jLabel2;
     public static javax.swing.JLabel jLabel3;
     public static javax.swing.JPanel jPanel2;
     public static javax.swing.JPanel jPanel4;

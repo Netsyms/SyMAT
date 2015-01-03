@@ -160,6 +160,7 @@ public class Graph extends javax.swing.JInternalFrame {
 
         gLbl.setBackground(new java.awt.Color(255, 255, 255));
         gLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        gLbl.setToolTipText("");
         gLbl.setMaximumSize(new java.awt.Dimension(300, 300));
         gLbl.setMinimumSize(new java.awt.Dimension(300, 300));
         gLbl.setOpaque(true);
