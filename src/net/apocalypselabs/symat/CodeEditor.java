@@ -475,11 +475,13 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             javascriptOption.setSelected(true);
             pythonOption.setSelected(false);
             codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+            pyac.uninstall();
             jsac.install(codeBox);
         } else if (file.matches(".*\\.(sypy|py)")) {
             javascriptOption.setSelected(false);
             pythonOption.setSelected(true);
             codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
+            jsac.uninstall();
             pyac.install(codeBox);
         }
     }
@@ -590,10 +592,14 @@ public class CodeEditor extends javax.swing.JInternalFrame {
 
     private void javascriptOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javascriptOptionActionPerformed
         codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        pyac.uninstall();
+        jsac.install(codeBox);
     }//GEN-LAST:event_javascriptOptionActionPerformed
 
     private void pythonOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pythonOptionActionPerformed
         codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
+        jsac.uninstall();
+        pyac.install(codeBox);
     }//GEN-LAST:event_pythonOptionActionPerformed
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
