@@ -30,6 +30,7 @@ package net.apocalypselabs.symat;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultCaret;
 
@@ -67,7 +68,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
         }
 
         // Set font
-        int font_size = 12;
+        int font_size = 15;
         try {
             font_size = Integer.valueOf(PrefStorage.getSetting("editfont"));
         } catch (Exception ex) {
@@ -108,6 +109,8 @@ public class Interpreter extends javax.swing.JInternalFrame {
         javascriptMenu = new javax.swing.JRadioButtonMenuItem();
         pythonMenu = new javax.swing.JRadioButtonMenuItem();
         setDefaultLang = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        fontBtn = new javax.swing.JMenuItem();
 
         setClosable(true);
         setIconifiable(true);
@@ -125,7 +128,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
         mainBox.setColumns(20);
         mainBox.setFont(new java.awt.Font("Courier New", 0, 15)); // NOI18N
         mainBox.setLineWrap(true);
-        mainBox.setRows(5);
+        mainBox.setRows(2);
         mainBox.setTabSize(4);
         mainBox.setToolTipText("");
         mainBox.setWrapStyleWord(true);
@@ -202,6 +205,18 @@ public class Interpreter extends javax.swing.JInternalFrame {
 
         jMenuBar1.add(langMenu);
 
+        jMenu2.setText("Options");
+
+        fontBtn.setText("Font size...");
+        fontBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fontBtnActionPerformed(evt);
+            }
+        });
+        jMenu2.add(fontBtn);
+
+        jMenuBar1.add(jMenu2);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -219,13 +234,12 @@ public class Interpreter extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(runBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(inputBox, javax.swing.GroupLayout.Alignment.LEADING)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(inputBox, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(runBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(2, 2, 2))
         );
 
@@ -238,9 +252,9 @@ public class Interpreter extends javax.swing.JInternalFrame {
 
     private void loadTheme() {
         if (PrefStorage.getSetting("theme").equals("dark")) {
-            mainBox.setBackground(new Color(41,49,52));
+            mainBox.setBackground(new Color(41, 49, 52));
             mainBox.setForeground(Color.WHITE);
-            inputBox.setBackground(new Color(41,49,52));
+            inputBox.setBackground(new Color(41, 49, 52));
             inputBox.setForeground(Color.WHITE);
             setBackground(Color.DARK_GRAY);
         } else {
@@ -251,7 +265,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
             setBackground(Color.LIGHT_GRAY);
         }
     }
-    
+
     private void inputBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputBoxKeyTyped
         if (evt.getKeyChar() == '\n') {
             doRunCode();
@@ -322,6 +336,18 @@ public class Interpreter extends javax.swing.JInternalFrame {
         formMouseClicked(evt);
     }//GEN-LAST:event_runBtnMouseClicked
 
+    private void fontBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontBtnActionPerformed
+        FontOptions fo = new FontOptions(mainBox.getFont().getSize());
+        JOptionPane.showInternalMessageDialog(this,
+                fo,
+                "Font Size",
+                JOptionPane.PLAIN_MESSAGE);
+        if (fo.isModified()) {
+            mainBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fo.getResult()));
+            inputBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fo.getResult()));
+        }
+    }//GEN-LAST:event_fontBtnActionPerformed
+
     private void doRunCode() {
         String code = inputBox.getText();
         mainBox.append(" " + code + "\n");
@@ -374,9 +400,11 @@ public class Interpreter extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem fontBtn;
     private javax.swing.JTextField inputBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButtonMenuItem javascriptMenu;
