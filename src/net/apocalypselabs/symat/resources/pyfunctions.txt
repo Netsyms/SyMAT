@@ -1,6 +1,7 @@
 _.notify|return nothing|Display a message in a box.
 _.ask|return String|Ask a question in a box.  Supply question text.
-_.D|return String|Find the derivative of the function passed with respect to the second argument.
+_.diff|return String|Find the derivative of the function passed with respect to the second argument.
+_.integrate|return String|Find the integral of the function passed with respect to the second argument.
 radians|return double|Convert a given number in degrees to radians.
 degrees|return double|Convert a given number in radians to degrees.
 _.subs|return double|Solve an equation for the second argument.

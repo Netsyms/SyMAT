@@ -1,6 +1,7 @@
 notify|return nothing|Display a message in a box.
 ask|return String|Ask a question in a box.  Supply question text.
-D|return String|Find the derivative of the function passed with respect to the second argument.
+diff|return String|Find the derivative of the function passed with respect to the second argument.
+integrate|return String|Find the integral of the function passed with respect to the second argument.
 rad|return double|Convert a given number in degrees to radians.
 deg|return double|Convert a given number in radians to degrees.
 subs|return double|Solve an equation for the second argument.
