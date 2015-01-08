@@ -40,7 +40,7 @@ import org.matheclipse.parser.client.math.MathException;
  * @author Skylar
  */
 public class Functions {
-    
+
     private final EvalUtilities util = new EvalUtilities(true, true);
     Graph graphwin = new Graph(true);
 
@@ -58,40 +58,39 @@ public class Functions {
     /*
      Math commands
      */
-    
     // Derivative of function with respect to idv
     public String diff(String function, String idv) {
         return util.evaluate("diff(" + function + "," + idv + ")").toString();
     }
-    
+
     public String diff(String function) {
         // Assume "x" as var
         return diff(function, "x");
     }
-    
+
     @Deprecated
     public String D(String function, String idv) {
         return diff(function, idv);
     }
-    
+
     public String integrate(String function, String idv) {
         return util.evaluate("integrate(" + function + "," + idv + ")").toString();
     }
-    
+
     public String integrate(String function) {
         return integrate(function, "x");
     }
-       
+
     public String factor(String function) {
         return sym("Factor(" + function + ")");
     }
-    
+
     public double rad(double degrees) {
-        return degrees * (PI/180);
+        return degrees * (PI / 180);
     }
-    
+
     public double deg(double radians) {
-        return radians * (180/PI);
+        return radians * (180 / PI);
     }
 
     public String sym(String input) {
@@ -122,16 +121,23 @@ public class Functions {
     /* 
      Graphing interfaces
      */
-    
     public void plotrange(double xmin, double xmax) {
         graphwin.setRange(xmin, xmax);
     }
-    
+
     public void plot(String function) {
         showGraph();
         graphwin.graphFunction(function);
     }
-    
+
+    public void plot(double[] x, double[] y) {
+        graphwin.plotPoints(x, y);
+    }
+
+    public void plot(double[] x, double[] y, String name) {
+        graphwin.plotPoints(x, y, name);
+    }
+
     public void plot(String function, double xmin, double xmax) {
         graphwin.setRange(xmin, xmax);
         plot(function);
@@ -140,7 +146,7 @@ public class Functions {
     public void ezplot(String f) {
         plot(f);
     }
-    
+
     public void ezplot(String function, double xmin, double xmax) {
         plot(function, xmin, xmax);
     }
@@ -156,7 +162,7 @@ public class Functions {
     public String plotname() {
         return graphwin.getTitle();
     }
-    
+
     public void plot() {
         showGraph();
     }
@@ -199,6 +205,7 @@ public class Functions {
     /*
      Constructor.
      */
+
     public Functions() {
         MainGUI.loadFrame(graphwin, false);
     }

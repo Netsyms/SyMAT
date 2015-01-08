@@ -321,6 +321,14 @@ public class Graph extends javax.swing.JInternalFrame {
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
     }//GEN-LAST:event_formComponentShown
 
+    public void plotPoints(double[] x, double[] y) {
+        plotPoints(x, y, "Points");
+    }
+
+    public void plotPoints(double[] x, double[] y, String name) {
+        plot.addLinePlot(name, x, y);
+    }
+
     /**
      * Get the zoom ratio.
      *
