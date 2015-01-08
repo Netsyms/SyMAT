@@ -157,6 +157,7 @@ public class Functions {
 
     public void plotname(String t) {
         graphwin.setWindowTitle(t);
+        graphwin.setLabel(t);
     }
 
     public String plotname() {

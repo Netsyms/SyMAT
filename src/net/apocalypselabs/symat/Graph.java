@@ -29,11 +29,14 @@ package net.apocalypselabs.symat;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.abs;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -41,6 +44,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.math.plot.plotObjects.BaseLabel;
 import org.matheclipse.core.eval.EvalUtilities;
 import org.matheclipse.parser.client.math.MathException;
 
@@ -54,6 +58,8 @@ public class Graph extends javax.swing.JInternalFrame {
 
     private boolean standalone = true;
     private boolean customName = false;
+
+    private BaseLabel lbl = new BaseLabel("", Color.black, 0.5, 1.1);
 
     // History, used for redrawing when scale changed.
     private String history = "";
@@ -87,6 +93,8 @@ public class Graph extends javax.swing.JInternalFrame {
         plot.plotToolBar.remove(5);
         plot.plotToolBar.remove(4);
         plot.plotToolBar.remove(3);
+        lbl.setFont(new Font("Courier", Font.BOLD, 18));
+        plot.addPlotable(lbl);
     }
 
     @Override
@@ -150,6 +158,12 @@ public class Graph extends javax.swing.JInternalFrame {
         plotBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 plotBtnActionPerformed(evt);
+            }
+        });
+
+        plot.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                plotMouseClicked(evt);
             }
         });
 
@@ -264,8 +278,8 @@ public class Graph extends javax.swing.JInternalFrame {
                         cr.setVar("x", x);
                         String res = solver.evaluate("$x=" + x + ";N[" + formula + "]").toString();
                         //if (Double.parseDouble(res) >= ymin && Double.parseDouble(res) <= ymax) {
-                            yy += res + " ";
-                            xx += String.valueOf(x) + " ";
+                        yy += res + " ";
+                        xx += String.valueOf(x) + " ";
                         //}
                     } catch (MathException | NumberFormatException ex) {
 
@@ -362,7 +376,18 @@ public class Graph extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_clrGraphBtnActionPerformed
 
     private void exportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportBtnActionPerformed
-
+        int result = fc.showSaveDialog(MainGUI.mainPane);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = new File(addSaveExt(fc.getSelectedFile().toString()));
+            try {
+                plot.toGraphicFile(file);
+            } catch (IOException ex) {
+                JOptionPane.showInternalMessageDialog(this,
+                        "Image export failed!",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_exportBtnActionPerformed
 
     private void setTitleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setTitleBtnActionPerformed
@@ -372,8 +397,13 @@ public class Graph extends javax.swing.JInternalFrame {
                 JOptionPane.QUESTION_MESSAGE);
         if (wintitle != null && !wintitle.equals("")) {
             setWindowTitle(wintitle);
+            setLabel(wintitle);
         }
     }//GEN-LAST:event_setTitleBtnActionPerformed
+
+    private void plotMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plotMouseClicked
+
+    }//GEN-LAST:event_plotMouseClicked
 
     /**
      * Get the range of the graph.
@@ -390,6 +420,7 @@ public class Graph extends javax.swing.JInternalFrame {
         xmax = max;
 
         clearDraw(false);
+        plot.setFixedBounds(0, min, max);
         if (!history.trim().equals("")) {
             String temp = "";
             for (String cmd : history.trim().split("\n")) {
@@ -413,6 +444,10 @@ public class Graph extends javax.swing.JInternalFrame {
     public void graphFunction(String f) {
         inBox.setText(f);
         plotBtnActionPerformed(null);
+    }
+
+    public void setLabel(String label) {
+        lbl.setText(label);
     }
 
     private String addSaveExt(String path) {

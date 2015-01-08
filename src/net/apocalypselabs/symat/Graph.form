@@ -139,6 +139,9 @@
       </Events>
     </Component>
     <Component class="org.math.plot.Plot2DPanel" name="plot">
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="plotMouseClicked"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
