@@ -44,6 +44,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
     private String[] history = new String[10]; // Command history buffer
     private int historyIndex = 0; // For going back in time and keeping things straight
     private String lang = "javascript";
+    private Object ans = 0;
 
     /**
      * Creates new form Interpreter
@@ -362,11 +363,39 @@ public class Interpreter extends javax.swing.JInternalFrame {
             code = cmd;
         }
 
+        /**
+         * Process control commands.
+         *
+         * @return True if the modified code should be executed, false if not.
+         */
+        private boolean doSpecialCommands() {
+            switch (code) {
+                case "clc":
+                    clrOutput();
+                    return false;
+            }
+
+            // Implement ans command
+            String ansfill = "";
+            try {
+                ansfill = String.valueOf(Double.parseDouble(ans.toString()));
+            } catch (NumberFormatException ex) {
+                ansfill = "\"" + ans.toString() + "\"";
+            }
+            code = code.replace("ans", ansfill);
+            return true;
+        }
+
         @Override
         public void run() {
             try {
-
-                append(cr.evalString(code).toString() + "\n");
+                if (doSpecialCommands()) {
+                    Object result = cr.evalString(code);
+                    if (result != null && !result.toString().trim().equals("")) {
+                        ans = result;
+                    }
+                    append(result.toString() + "\n");
+                }
             } catch (NullPointerException ex) {
 
             }
@@ -388,12 +417,22 @@ public class Interpreter extends javax.swing.JInternalFrame {
             });
         }
 
+        private void clrOutput() {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    mainBox.setText("");
+                }
+            });
+        }
+
         private void append(String out) {
             final String output = out;
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
                     mainBox.append(output);
+                    mainBox.setCaretPosition(mainBox.getText().length());
                 }
             });
         }

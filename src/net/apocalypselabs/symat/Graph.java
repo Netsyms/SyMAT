@@ -41,6 +41,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.math.plot.Plot2DPanel;
 import org.matheclipse.core.eval.EvalUtilities;
 import org.matheclipse.parser.client.math.MathException;
 
@@ -51,8 +52,7 @@ import org.matheclipse.parser.client.math.MathException;
 public class Graph extends javax.swing.JInternalFrame {
 
     private final JFileChooser fc = new JFileChooser();
-    private BufferedImage gpnl;
-    private Graphics gg; // Main graphics object
+
     private boolean standalone = true;
     private boolean customName = false;
 
@@ -62,13 +62,9 @@ public class Graph extends javax.swing.JInternalFrame {
     // If a graph is being drawn, set to true, else false
     boolean graphing = false;
 
-    // Graph scaling data.
-    private double xtimes = 15;
-    private double ytimes = 15;
-    private double scale = 1;
-    
-    // The current value for the zoom/scale, as entered by the user
-    private int scaleLevel = 0;
+    // Graph min and max
+    private double xmin = -10;
+    private double xmax = 10;
 
     /**
      * Creates new form Graph
@@ -84,12 +80,12 @@ public class Graph extends javax.swing.JInternalFrame {
 
     private void init() {
         initComponents();
-        gpnl = new BufferedImage(300, 300, BufferedImage.TYPE_INT_ARGB);
         FileFilter filter = new FileNameExtensionFilter("PNG image (.png)", "png");
         fc.setFileFilter(filter);
         fc.addChoosableFileFilter(filter);
-        filter = new FileNameExtensionFilter("JPEG image (.jpg)", "jpg");
-        fc.addChoosableFileFilter(filter);
+        plot.plotToolBar.remove(5);
+        plot.plotToolBar.remove(4);
+        plot.plotToolBar.remove(3);
     }
 
     @Override
@@ -117,24 +113,22 @@ public class Graph extends javax.swing.JInternalFrame {
         inBox = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         plotBtn = new javax.swing.JButton();
-        gLbl = new javax.swing.JLabel();
+        plot = new org.math.plot.Plot2DPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        exportBtn = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         clrGraphBtn = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        scaleLbl = new javax.swing.JMenu();
+        setTitleBtn = new javax.swing.JMenuItem();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Graph");
         setToolTipText("");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/graph.png"))); // NOI18N
-        setMaximumSize(new java.awt.Dimension(326, 402));
-        setMinimumSize(new java.awt.Dimension(326, 402));
         setPreferredSize(new java.awt.Dimension(326, 402));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -158,24 +152,16 @@ public class Graph extends javax.swing.JInternalFrame {
             }
         });
 
-        gLbl.setBackground(new java.awt.Color(255, 255, 255));
-        gLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        gLbl.setToolTipText("");
-        gLbl.setMaximumSize(new java.awt.Dimension(300, 300));
-        gLbl.setMinimumSize(new java.awt.Dimension(300, 300));
-        gLbl.setOpaque(true);
-        gLbl.setPreferredSize(new java.awt.Dimension(300, 300));
-
         jMenu1.setText("File");
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setText("Export graph...");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        exportBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        exportBtn.setText("Export graph...");
+        exportBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                exportBtnActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenu1.add(exportBtn);
 
         jMenuBar1.add(jMenu1);
 
@@ -190,29 +176,16 @@ public class Graph extends javax.swing.JInternalFrame {
         });
         jMenu2.add(clrGraphBtn);
 
-        jMenuItem6.setText("Scale...");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        setTitleBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
+        setTitleBtn.setText("Set Title...");
+        setTitleBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                setTitleBtnActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem6);
-
-        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem3.setText("Set Title...");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem3);
+        jMenu2.add(setTitleBtn);
 
         jMenuBar1.add(jMenu2);
-
-        scaleLbl.setForeground(java.awt.Color.blue);
-        scaleLbl.setText("Scale: 1 to 1");
-        scaleLbl.setEnabled(false);
-        jMenuBar1.add(scaleLbl);
 
         setJMenuBar(jMenuBar1);
 
@@ -222,21 +195,18 @@ public class Graph extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(inBox, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(plotBtn))
-                    .addComponent(gLbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0))
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(inBox, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(plotBtn)
+                .addGap(10, 10, 10))
+            .addComponent(plot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(gLbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(plot, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -281,61 +251,74 @@ public class Graph extends javax.swing.JInternalFrame {
                 }
             });
             for (String formula : frmlas) {
+                String niceformula = formula;
                 CodeRunner cr = new CodeRunner();
                 formula = formula.replaceAll("x", "\\$x");
                 EvalUtilities solver = new EvalUtilities();
-                double xx, yy, xo, yo, x;
-                xo = 0;
-                yo = 0;
-                gg = gpnl.getGraphics();
-                drawAxes();
-                gg.setColor(Color.BLUE);
-                for (x = (-10 * scale); x <= (10 * scale); x += (10 * scale * .01)) {
+                String xx = "";
+                String yy = "";
+                double x;
+                for (x = xmin; x <= xmax; x += ((xmax - xmin) / 40.0)) {
                     try {
                         cr.setVar("x", x);
-                        yy = (-(Double.parseDouble(solver.evaluate("$x=" + x + ";N[" + formula + "]").toString())) * ytimes) + (gpnl.getHeight() / 2);
-                        //System.err.println(solver.evaluate("$x="+x+";N["+formula+"]").toString());
-                        xx = (x * xtimes) + (gpnl.getWidth() / 2);
-                        //gg.drawOval(xx-1, yy-1, 2, 2);
-                        if (x != (-10 * scale)) {
-                            gg.drawLine((int) xo, (int) yo, (int) xx, (int) yy);
-                        }
-                        xo = xx;
-                        yo = yy;
+                        yy += solver.evaluate("$x=" + x + ";N[" + formula + "]").toString() + " ";
+                        xx += String.valueOf(x) + " ";
                     } catch (MathException | NumberFormatException ex) {
 
                     }
                 }
-                gg.translate(gpnl.getWidth() / 2, gpnl.getHeight() / 2);
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        dispGraph();
-                        if (!customName) {
-                            setTitle("Graph | " + inBox.getText());
-                        }
-                        history += inBox.getText() + "\n";
-                    }
-                });
-            }
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    inBox.setEnabled(true);
-                    plotBtn.setEnabled(true);
-                    for (Component mu : jMenuBar1.getComponents()) {
-                        mu.setEnabled(true);
-                    }
+                Debug.println(xx);
+                Debug.println(yy);
+                String[] xs = xx.trim().split(" ");
+                String[] ys = yy.trim().split(" ");
+                double[] xd = new double[xs.length];
+                double[] yd = new double[ys.length];
+                for (int i = 0; i < xs.length; i++) {
+                    xd[i] = Double.parseDouble(xs[i]);
                 }
-            });
+                for (int i = 0; i < ys.length; i++) {
+                    yd[i] = Double.parseDouble(ys[i]);
+                }
+                SwingUtilities.invokeLater(new Updater(niceformula, xd, yd));
+            }
+            SwingUtilities.invokeLater(new Finisher());
+        }
+
+        private class Updater implements Runnable {
+
+            final double[] xd;
+            final double[] yd;
+            final String formula;
+
+            public Updater(String frmla, double[] x, double[] y) {
+                xd = x;
+                yd = y;
+                formula = frmla;
+            }
+
+            @Override
+            public void run() {
+                plot.addLinePlot(formula, xd, yd);
+                history += formula + "\n";
+            }
+
+        }
+
+        private class Finisher implements Runnable {
+
+            @Override
+            public void run() {
+                inBox.setEnabled(true);
+                plotBtn.setEnabled(true);
+                for (Component mu : jMenuBar1.getComponents()) {
+                    mu.setEnabled(true);
+                }
+            }
+
         }
     }
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        gg = gpnl.getGraphics();
-        drawAxes();
-        gg.translate(gpnl.getWidth() / 2, gpnl.getHeight() / 2);
-        dispGraph();
     }//GEN-LAST:event_formComponentShown
 
     /**
@@ -354,23 +337,48 @@ public class Graph extends javax.swing.JInternalFrame {
         return gscale;
     }
 
-    /**
-     * Set the zoom level. The larger the int, the more zoomed it is.
-     *
-     * @param zoomLevel Level to zoom. 0 is default (10x10).
-     */
-    public void setZoom(int zoomLevel) {
-        scaleLevel = zoomLevel;
-        if (zoomLevel >= 0) {
-            xtimes = 15.0 * (zoomLevel + 1.0);
-            ytimes = 15.0 * (zoomLevel + 1.0);
-        } else {
-            xtimes = 15.0 / (abs(zoomLevel) + 1.0);
-            ytimes = 15.0 / (abs(zoomLevel) + 1.0);
+    public void drawDot(double x, double y) {
+        // TODO: implement this
+    }
+
+    private void inBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inBoxKeyTyped
+        if (evt.getKeyChar() == '\n') {
+            plotBtnActionPerformed(null);
         }
-        scale = getScale(zoomLevel);
-        scaleLbl.setText("Scale: 1 to " + scale);
-        Debug.println("Scaled to xtimes=" + xtimes + ", ytimes=" + ytimes + ", scale=1to" + scale);
+    }//GEN-LAST:event_inBoxKeyTyped
+
+    private void clrGraphBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clrGraphBtnActionPerformed
+        clearDraw();
+    }//GEN-LAST:event_clrGraphBtnActionPerformed
+
+    private void exportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportBtnActionPerformed
+
+    }//GEN-LAST:event_exportBtnActionPerformed
+
+    private void setTitleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setTitleBtnActionPerformed
+        String wintitle = JOptionPane.showInternalInputDialog(this,
+                "New window title:",
+                "Rename",
+                JOptionPane.QUESTION_MESSAGE);
+        if (wintitle != null && !wintitle.equals("")) {
+            setWindowTitle(wintitle);
+        }
+    }//GEN-LAST:event_setTitleBtnActionPerformed
+
+    /**
+     * Get the range of the graph.
+     *
+     * @return {xmin, xmax}
+     */
+    public double[] getRange() {
+        double[] range = {xmin, xmax};
+        return range;
+    }
+
+    public void setRange(double min, double max) {
+        xmin = min;
+        xmax = max;
+
         clearDraw(false);
         if (!history.trim().equals("")) {
             String temp = "";
@@ -386,67 +394,6 @@ public class Graph extends javax.swing.JInternalFrame {
         }
     }
 
-    private void dispGraph() {
-        gLbl.setIcon(new ImageIcon(gpnl));
-    }
-
-    public void drawDot(double x, double y) {
-        gg.setColor(Color.RED);
-        gg.drawOval((int) (x * xtimes - 2), (int) (y * -ytimes - 2), 4, 4);
-        dispGraph();
-    }
-
-    private void inBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inBoxKeyTyped
-        if (evt.getKeyChar() == '\n') {
-            plotBtnActionPerformed(null);
-        }
-    }//GEN-LAST:event_inBoxKeyTyped
-
-    private void clrGraphBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clrGraphBtnActionPerformed
-        clearDraw();
-    }//GEN-LAST:event_clrGraphBtnActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        int r = fc.showSaveDialog(this);
-        if (r == JFileChooser.APPROVE_OPTION) {
-            try {
-                File file = new File(addSaveExt(fc.getSelectedFile().toString()));
-                if (file.toString().endsWith("png")) {
-                    ImageIO.write(gpnl, "png", file);
-                } else if (file.toString().endsWith("jpg")) {
-                    ImageIO.write(gpnl, "jpg", file);
-                }
-            } catch (IOException ex) {
-                JOptionPane.showInternalMessageDialog(this, "Error:  Cannot save file: " + ex.getMessage());
-            }
-        }
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        String wintitle = JOptionPane.showInternalInputDialog(this,
-                "New window title:",
-                "Rename",
-                JOptionPane.QUESTION_MESSAGE);
-        if (wintitle != null && !wintitle.equals("")) {
-            setWindowTitle(wintitle);
-        }
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        GraphScale gs = new GraphScale(scaleLevel);
-        int size = 0;
-        int result = JOptionPane.showInternalConfirmDialog(this,
-                gs,
-                "Graph Scale",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
-            size = gs.getScale();
-            Debug.println("Scaling to: " + size);
-            setZoom(size);
-        }
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
-
     /**
      * Graph the given function. Same as typing into input box and pressing
      * Enter.
@@ -459,7 +406,7 @@ public class Graph extends javax.swing.JInternalFrame {
     }
 
     private String addSaveExt(String path) {
-        if (!path.matches(".*\\.(png|jpg)")) {
+        if (!path.matches(".*\\.(png)")) {
             path += ".png";
         }
         return path;
@@ -497,41 +444,22 @@ public class Graph extends javax.swing.JInternalFrame {
      * @param alsoHistory True if history should be removed
      */
     public void clearDraw(boolean alsoHistory) {
-        gpnl = new BufferedImage(300, 300, BufferedImage.TYPE_INT_ARGB);
-        gg = gpnl.getGraphics();
-        drawAxes();
-        gg.translate(gpnl.getWidth() / 2, gpnl.getHeight() / 2);
-        dispGraph();
-        setTitle("Graph");
         if (alsoHistory) {
             history = "";
         }
-    }
-
-    private void drawAxes() {
-        gg.setColor(Color.GRAY);
-        gg.drawLine(150, 0, 150, 300);
-        gg.drawLine(0, 150, 300, 150);
-        // Draw points
-        for (int i = 0; i <= 315; i += 15) {
-            gg.drawOval(150 - 1, i - 1, 2, 2);
-            gg.drawOval(i - 1, 150 - 1, 2, 2);
-        }
-        gg.setColor(Color.BLUE);
+        plot.removeAllPlots();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem clrGraphBtn;
-    private javax.swing.JLabel gLbl;
+    private javax.swing.JMenuItem exportBtn;
     private javax.swing.JTextField inBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem6;
+    private org.math.plot.Plot2DPanel plot;
     private javax.swing.JButton plotBtn;
-    private javax.swing.JMenu scaleLbl;
+    private javax.swing.JMenuItem setTitleBtn;
     // End of variables declaration//GEN-END:variables
 }

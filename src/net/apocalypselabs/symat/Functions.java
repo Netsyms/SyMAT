@@ -122,13 +122,27 @@ public class Functions {
     /* 
      Graphing interfaces
      */
+    
+    public void plotrange(double xmin, double xmax) {
+        graphwin.setRange(xmin, xmax);
+    }
+    
     public void plot(String function) {
         showGraph();
         graphwin.graphFunction(function);
     }
+    
+    public void plot(String function, double xmin, double xmax) {
+        graphwin.setRange(xmin, xmax);
+        plot(function);
+    }
 
     public void ezplot(String f) {
         plot(f);
+    }
+    
+    public void ezplot(String function, double xmin, double xmax) {
+        plot(function, xmin, xmax);
     }
 
     public void graph(String f) {
@@ -157,11 +171,6 @@ public class Functions {
 
     public void plotclear() {
         plotclr();
-    }
-
-    public void plotscale(int level) {
-        showGraph();
-        graphwin.setZoom(level);
     }
 
     public void drawdot(double x, double y) {
