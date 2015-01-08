@@ -41,7 +41,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.math.plot.Plot2DPanel;
 import org.matheclipse.core.eval.EvalUtilities;
 import org.matheclipse.parser.client.math.MathException;
 
@@ -65,6 +64,8 @@ public class Graph extends javax.swing.JInternalFrame {
     // Graph min and max
     private double xmin = -10;
     private double xmax = 10;
+//    private double ymin = -10;
+//    private double ymax = 10;
 
     /**
      * Creates new form Graph
@@ -261,8 +262,11 @@ public class Graph extends javax.swing.JInternalFrame {
                 for (x = xmin; x <= xmax; x += ((xmax - xmin) / 40.0)) {
                     try {
                         cr.setVar("x", x);
-                        yy += solver.evaluate("$x=" + x + ";N[" + formula + "]").toString() + " ";
-                        xx += String.valueOf(x) + " ";
+                        String res = solver.evaluate("$x=" + x + ";N[" + formula + "]").toString();
+                        //if (Double.parseDouble(res) >= ymin && Double.parseDouble(res) <= ymax) {
+                            yy += res + " ";
+                            xx += String.valueOf(x) + " ";
+                        //}
                     } catch (MathException | NumberFormatException ex) {
 
                     }
@@ -335,18 +339,16 @@ public class Graph extends javax.swing.JInternalFrame {
      * @param zoomLevel The zoom level to calculate from.
      * @return The ratio.
      */
+    @Deprecated
     public static double getScale(int zoomLevel) {
-        double gscale = 15.0;
-        if (zoomLevel >= 0) {
-            gscale = 1.0 / (zoomLevel + 1.0);
-        } else {
-            gscale = 1.0 * (abs(zoomLevel) + 1.0);
-        }
-        return gscale;
+        return 15.0;
     }
 
     public void drawDot(double x, double y) {
-        // TODO: implement this
+        double[] xpt = {x};
+        double[] ypt = {y};
+
+        plot.addScatterPlot("", xpt, ypt);
     }
 
     private void inBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inBoxKeyTyped
