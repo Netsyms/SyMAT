@@ -61,7 +61,7 @@ public class MainGUI extends javax.swing.JFrame {
     public static boolean skipEditor = false; // Skip editor init on start?
 
     private static boolean recentItemsMinimized = false;
-    
+
     private static final int RECENT_FILES = 10;
 
     /**
@@ -199,17 +199,30 @@ public class MainGUI extends javax.swing.JFrame {
             return;
         }
         String[] fileList = files.split("\n");
-        KeyValListItem[] items = new KeyValListItem[fileList.length];
-        for (int i = 0; i < fileList.length; i++) {
-            if (i < RECENT_FILES) {
-                File file = new File(fileList[i]);
-                if (file.isFile()) {
-                    items[i] = new KeyValListItem(file.getName(), file.getPath());
-                }
+        int neededLength = 0;
+        for (String file : fileList) {
+            if ((new File(file)).isFile()) {
+                neededLength++;
+            }
+        }
+        KeyValListItem[] items = new KeyValListItem[neededLength];
+        int i = 0;
+        for (String f : fileList) {
+            File file = new File(f);
+            if (file.isFile()) {
+                items[i] = new KeyValListItem(file.getName(), file.getPath());
+                i++;
             }
         }
 
         recentFileList.setListData(items);
+
+        // Re-save list to remove bad entries
+        String list = "";
+        for (KeyValListItem item : items) {
+            list += item.getValue() + "\n";
+        }
+        PrefStorage.saveSetting("recentfiles", list);
     }
 
     public static void addRecentFile(String file) {
