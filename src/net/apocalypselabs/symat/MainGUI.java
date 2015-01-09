@@ -43,7 +43,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.ListModel;
 import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
 
 /**
  * This class is like the Force: A light theme, a dark theme, and it binds the
@@ -64,7 +63,8 @@ public class MainGUI extends javax.swing.JFrame {
 
     private static boolean recentItemsMinimized = false;
 
-    private static final int RECENT_FILES = 10;
+    public static boolean updateAvailable = false;
+    public static String updateString = "";
 
     /**
      * Creates the main app window and does some quick things that aren't
@@ -75,35 +75,6 @@ public class MainGUI extends javax.swing.JFrame {
         setIconImage((new ImageIcon(
                 getClass().getResource("icon.png"))).getImage());
         setLocationRelativeTo(null);
-
-        // Check for updates.
-        try {
-            Debug.println("Checking for updates...");
-            URL url = new URL(API_URL + "version.php");
-            InputStream is = url.openStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-            String line = br.readLine();
-            br.close();
-            is.close();
-            double version = Double.parseDouble(line.split("\\|")[0]);
-            if (version > APP_CODE) {
-                if (PrefStorage.getSetting("update-ignore")
-                        .equals(VERSION_NAME + "|" + line.split("\\|")[1])) {
-                    System.out.println("An update was found, "
-                            + "but has been ignored by the user.");
-                } else {
-                    Debug.println("Update available.");
-                    loadFrame(new Update(line.split("\\|")[1]));
-                }
-            } else {
-                Debug.println("No updates found.");
-            }
-        } catch (IOException | NumberFormatException e) {
-            System.err.println("Fail:  Cannot check update server.  \n"
-                    + "       Assuming local copy up-to-date.");
-            Debug.stacktrace(e);
-        }
 
         setButtonShortcuts();
 
@@ -139,6 +110,9 @@ public class MainGUI extends javax.swing.JFrame {
         // Only load shell if nothing else is going on
         if (argfile.equals("") && !loaded) {
             loadFrame(new Interpreter());
+        }
+        if (updateAvailable) {
+            loadFrame(new Update(updateString));
         }
         loadRecentFiles();
         updateDisplay();

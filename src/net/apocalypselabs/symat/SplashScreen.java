@@ -29,6 +29,10 @@ package net.apocalypselabs.symat;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JProgressBar;
 import javax.swing.Painter;
@@ -36,6 +40,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
+import static net.apocalypselabs.symat.MainGUI.API_URL;
+import static net.apocalypselabs.symat.MainGUI.APP_CODE;
+import static net.apocalypselabs.symat.MainGUI.VERSION_NAME;
+import static net.apocalypselabs.symat.MainGUI.loadFrame;
 
 /**
  *
@@ -53,7 +61,7 @@ public class SplashScreen extends javax.swing.JFrame {
         defaults.put("ProgressBar[Enabled].foregroundPainter", new ProgressPainter(true));
         progBar.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
         progBar.putClientProperty("Nimbus.Overrides", defaults);
-        
+
         setIconImage((new ImageIcon(
                 getClass().getResource("icon.png"))).getImage());
         setLocationRelativeTo(null);
@@ -157,11 +165,46 @@ public class SplashScreen extends javax.swing.JFrame {
                 // Get editor going too
                 CodeEditor edit = new CodeEditor();
             }
+            
+            setProgress(75, "Checking for updates...");
+            checkUpdates();
 
             setProgress(85, "Loading main interface...");
             new MainGUI().setVisible(true);
             setProgress(100, "Done!");
             dispose();
+        }
+
+        private void checkUpdates() {
+            // Check for updates.
+            try {
+                Debug.println("Checking for updates...");
+                URL url = new URL(API_URL + "testversion.php");
+                InputStream is = url.openStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+                String line = br.readLine();
+                br.close();
+                is.close();
+                double version = Double.parseDouble(line.split("\\|")[0]);
+                if (version > APP_CODE) {
+                    if (PrefStorage.getSetting("update-ignore")
+                            .equals(VERSION_NAME + "|" + line.split("\\|")[1])) {
+                        System.out.println("An update was found, "
+                                + "but has been ignored by the user.");
+                    } else {
+                        Debug.println("Update available.");
+                        MainGUI.updateString = line.split("\\|")[1];
+                        MainGUI.updateAvailable = true;
+                    }
+                } else {
+                    Debug.println("No updates found.");
+                }
+            } catch (Exception e) {
+                System.err.println("Fail:  Cannot check update server.  \n"
+                        + "       Assuming local copy up-to-date.");
+                Debug.stacktrace(e);
+            }
         }
 
         /**
