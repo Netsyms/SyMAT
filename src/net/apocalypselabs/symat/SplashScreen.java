@@ -111,7 +111,7 @@ public class SplashScreen extends javax.swing.JFrame {
             if (!MainGUI.skipPython) {
                 // Python laggggsss when used for first time, this fixes the wait later.
                 System.out.println("Warming up Python engine, to skip run with argument 'skippython'");
-                setProgress(20, "Initializing code engine...");
+                setProgress(15, "Initializing code engine...");
                 try {
                     CodeRunner python = new CodeRunner(true);
                 } catch (Exception ex) {
@@ -121,11 +121,12 @@ public class SplashScreen extends javax.swing.JFrame {
 
             if (!MainGUI.skipEditor) {
                 System.out.println("Preparing editor, to skip run with argument 'skipeditor'");
-                setProgress(50, "Preparing editor...");
+                setProgress(60, "Preparing editor...");
                 // Get editor going too
                 CodeEditor edit = new CodeEditor();
             }
-            setProgress(70, "Loading main interface...");
+            
+            setProgress(85, "Loading main interface...");
             new MainGUI().setVisible(true);
             setProgress(100, "Done!");
             dispose();
@@ -148,47 +149,6 @@ public class SplashScreen extends javax.swing.JFrame {
                     progBar.setString(lbl);
                 }
             });
-        }
-
-        /**
-         * Animate the dots on the progress bar label.
-         *
-         * This way people know it's not "frozen", so they don't "let it go".
-         */
-        private class DotThread extends Thread {
-
-            private boolean doRun = true;
-
-            @Override
-            public void run() {
-                while (doRun) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            String val = progBar.getString();
-                            if (val.endsWith("...")) {
-                                progBar.setString(val.replace("...", "   "));
-                            } else if (val.endsWith(".. ")) {
-                                progBar.setString(val.replace(".. ", "..."));
-                            } else if (val.endsWith(".  ")) {
-                                progBar.setString(val.replace(".  ", ".. "));
-                            } else if (!val.endsWith(" ")) {
-                                progBar.setString(val + ".  ");
-                            }
-                        }
-                    });
-                    Debug.println("dotsupdate");
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException ex) {
-
-                    }
-                }
-            }
-
-            public void kill() {
-                doRun = false;
-            }
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

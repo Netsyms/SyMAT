@@ -68,6 +68,8 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private CompletionProvider pycomp = new CodeCompleter("py").getProvider();
     private AutoCompletion jsac = new AutoCompletion(jscomp);
     private AutoCompletion pyac = new AutoCompletion(pycomp);
+    
+    private String filename = "";
 
     /**
      * Creates new form CodeEditor
@@ -435,6 +437,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                 File f = fc.getSelectedFile();
                 codeBox.setText(readFile(f.toString(), StandardCharsets.UTF_8));
                 isSaved = true;
+                filename = f.toString();
                 lastSaved = codeBox.getText();
                 setTitle("Editor - " + f.getName());
             } catch (IOException ex) {
@@ -484,6 +487,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             jsac.uninstall();
             pyac.install(codeBox);
         }
+        filename = file;
     }
 
     private void saveMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuActionPerformed
@@ -492,13 +496,14 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             if (r == JFileChooser.APPROVE_OPTION) {
                 try {
                     saveFile(codeBox.getText(), addSaveExt(fc.getSelectedFile().toString()));
+                    filename = fc.getSelectedFile().toString();
                 } catch (IOException ex) {
                     JOptionPane.showInternalMessageDialog(this, "Error:  Cannot save file: " + ex.getMessage());
                 }
             }
         } else {
             try {
-                saveFile(codeBox.getText(), addSaveExt(fc.getSelectedFile().toString()));
+                saveFile(codeBox.getText(), addSaveExt(filename));
             } catch (IOException ex) {
                 JOptionPane.showInternalMessageDialog(this, "Error:  Cannot save file: " + ex.getMessage());
             }
@@ -682,6 +687,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         setTitle("Editor - " + (new File(path)).getName());
         lastSaved = content;
         isSaved = true;
+        MainGUI.addRecentFile(path);
     }
 
     @Override

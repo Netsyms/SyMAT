@@ -32,6 +32,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,14 +41,16 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
+import javax.swing.ListModel;
 
 /**
  * This class is like the Force: A light theme, a dark theme, and it binds the
- * app together.  Also like duct tape, but that's not as cool.
+ * app together. Also like duct tape, but that's not as cool.
  *
  * @author Skylar
  */
 public class MainGUI extends javax.swing.JFrame {
+
     // TODO: Add more code comments and stuff in case anybody else reads this
     public static final String APP_NAME = "SyMAT 1.0";
     public static final double APP_CODE = 12;
@@ -56,6 +59,10 @@ public class MainGUI extends javax.swing.JFrame {
     public static String argfile = "";
     public static boolean skipPython = false; // Skip python init on start?
     public static boolean skipEditor = false; // Skip editor init on start?
+
+    private static boolean recentItemsMinimized = false;
+    
+    private static final int RECENT_FILES = 10;
 
     /**
      * Creates the main app window and does some quick things that aren't
@@ -131,6 +138,7 @@ public class MainGUI extends javax.swing.JFrame {
         if (argfile.equals("") && !loaded) {
             loadFrame(new Interpreter());
         }
+        loadRecentFiles();
         updateDisplay();
     }
 
@@ -185,6 +193,44 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel3.setText(namemark());
     }
 
+    public static void loadRecentFiles() {
+        String files = PrefStorage.getSetting("recentfiles");
+        if (files.equals("")) {
+            return;
+        }
+        String[] fileList = files.split("\n");
+        KeyValListItem[] items = new KeyValListItem[fileList.length];
+        for (int i = 0; i < fileList.length; i++) {
+            if (i < RECENT_FILES) {
+                File file = new File(fileList[i]);
+                if (file.isFile()) {
+                    items[i] = new KeyValListItem(file.getName(), file.getPath());
+                }
+            }
+        }
+
+        recentFileList.setListData(items);
+    }
+
+    public static void addRecentFile(String file) {
+        String files = PrefStorage.getSetting("recentfiles");
+        String[] fileList = files.split("\n");
+        for (int i = 0; i < fileList.length; i++) {
+            if (fileList[i].trim().equals(file)) {
+                fileList[i] = "";
+            }
+        }
+        files = file + "\n";
+        for (String f : fileList) {
+            if (!f.trim().equals("")) {
+                files += f + "\n";
+            }
+        }
+        PrefStorage.saveSetting("recentfiles", files);
+        PrefStorage.save();
+        loadRecentFiles();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -220,6 +266,11 @@ public class MainGUI extends javax.swing.JFrame {
         }
         ;
         jLabel2 = new javax.swing.JLabel();
+        recentItemsPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        recentFileList = new javax.swing.JList();
+        recentFileBtn = new javax.swing.JButton();
+        recentItemsTitle = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(APP_NAME);
@@ -400,7 +451,72 @@ public class MainGUI extends javax.swing.JFrame {
         mainPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mainPane.setOpaque(false);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/watermark.png"))); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel2.setText("SyMAT");
+        jLabel2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+
+        recentItemsPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        recentItemsPanel.setForeground(new java.awt.Color(153, 153, 153));
+        recentItemsPanel.setMaximumSize(new java.awt.Dimension(160, 234));
+        recentItemsPanel.setOpaque(false);
+
+        recentFileList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        recentFileList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                recentFileListMouseClicked(evt);
+            }
+        });
+        recentFileList.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                recentFileListMouseMoved(evt);
+            }
+        });
+        jScrollPane1.setViewportView(recentFileList);
+
+        recentFileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/openfile.png"))); // NOI18N
+        recentFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recentFileBtnActionPerformed(evt);
+            }
+        });
+
+        recentItemsTitle.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        recentItemsTitle.setForeground(new java.awt.Color(102, 102, 102));
+        recentItemsTitle.setText("  Recent Files");
+        recentItemsTitle.setOpaque(true);
+        recentItemsTitle.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                recentItemsTitleMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout recentItemsPanelLayout = new javax.swing.GroupLayout(recentItemsPanel);
+        recentItemsPanel.setLayout(recentItemsPanelLayout);
+        recentItemsPanelLayout.setHorizontalGroup(
+            recentItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(recentItemsPanelLayout.createSequentialGroup()
+                .addGroup(recentItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(recentItemsPanelLayout.createSequentialGroup()
+                        .addGap(97, 97, 97)
+                        .addComponent(recentFileBtn))
+                    .addGroup(recentItemsPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(recentItemsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        recentItemsPanelLayout.setVerticalGroup(
+            recentItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(recentItemsPanelLayout.createSequentialGroup()
+                .addComponent(recentItemsTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(recentFileBtn)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout mainPaneLayout = new javax.swing.GroupLayout(mainPane);
         mainPane.setLayout(mainPaneLayout);
@@ -408,17 +524,22 @@ public class MainGUI extends javax.swing.JFrame {
             mainPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPaneLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(mainPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(recentItemsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         mainPaneLayout.setVerticalGroup(
             mainPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPaneLayout.createSequentialGroup()
-                .addContainerGap(295, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(recentItemsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
+                .addComponent(jLabel2)
                 .addContainerGap())
         );
         mainPane.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        mainPane.setLayer(recentItemsPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -479,6 +600,53 @@ public class MainGUI extends javax.swing.JFrame {
     private void shellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shellBtnActionPerformed
         loadFrame(new Interpreter());
     }//GEN-LAST:event_shellBtnActionPerformed
+
+    private void recentFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recentFileBtnActionPerformed
+        if (recentFileList.getSelectedValue() == null) {
+            return;
+        }
+        KeyValListItem file = (KeyValListItem) recentFileList.getSelectedValue();
+        if (file.isEmpty()) {
+            return;
+        }
+        CodeEditor edit = new CodeEditor();
+        edit.openFileFromName(file.getValue());
+        loadFrame(edit);
+    }//GEN-LAST:event_recentFileBtnActionPerformed
+
+    private void recentFileListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recentFileListMouseClicked
+        if (evt.getClickCount() == 2) {
+            recentFileBtnActionPerformed(null);
+        }
+    }//GEN-LAST:event_recentFileListMouseClicked
+
+    private void recentFileListMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recentFileListMouseMoved
+        try {
+            ListModel m = recentFileList.getModel();
+            int index = recentFileList.locationToIndex(evt.getPoint());
+            if (index > -1) {
+                recentFileList.setToolTipText(
+                        ((KeyValListItem) m.getElementAt(index)).getValue());
+            }
+        } catch (Exception ex) {
+            // This feature is optional.  Just skip it if it's broken.
+            recentFileList.setToolTipText("");
+        }
+    }//GEN-LAST:event_recentFileListMouseMoved
+
+    private void recentItemsTitleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recentItemsTitleMouseClicked
+        if (evt.getClickCount() == 2) {
+            if (recentItemsMinimized) {
+                recentItemsPanel.setSize(recentItemsPanel.getWidth(),
+                        (int) recentItemsPanel.getMaximumSize().getHeight());
+                recentItemsMinimized = false;
+            } else {
+                recentItemsPanel.setSize(recentItemsPanel.getWidth(),
+                        recentItemsTitle.getHeight());
+                recentItemsMinimized = true;
+            }
+        }
+    }//GEN-LAST:event_recentItemsTitleMouseClicked
 
     /*
      End the button handlers.
@@ -616,7 +784,12 @@ public class MainGUI extends javax.swing.JFrame {
     public static javax.swing.JLabel jLabel3;
     public static javax.swing.JPanel jPanel2;
     public static javax.swing.JPanel jPanel4;
+    public static javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JDesktopPane mainPane;
+    public static javax.swing.JButton recentFileBtn;
+    public static javax.swing.JList recentFileList;
+    public static javax.swing.JPanel recentItemsPanel;
+    public static javax.swing.JLabel recentItemsTitle;
     public static javax.swing.JButton shellBtn;
     public static javax.swing.JTabbedPane tabs;
     // End of variables declaration//GEN-END:variables
