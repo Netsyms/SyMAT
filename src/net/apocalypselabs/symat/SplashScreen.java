@@ -27,8 +27,15 @@
  */
 package net.apocalypselabs.symat;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import javax.swing.ImageIcon;
+import javax.swing.JProgressBar;
+import javax.swing.Painter;
 import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
 /**
  *
@@ -41,8 +48,34 @@ public class SplashScreen extends javax.swing.JFrame {
      */
     public SplashScreen() {
         initComponents();
-        setIconImage((new ImageIcon(getClass().getResource("icon.png"))).getImage());
+        UIDefaults defaults = new UIDefaults();
+        defaults.put("ProgressBar[Enabled].backgroundPainter", new ProgressPainter(false));
+        defaults.put("ProgressBar[Enabled].foregroundPainter", new ProgressPainter(true));
+        progBar.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
+        progBar.putClientProperty("Nimbus.Overrides", defaults);
+        
+        setIconImage((new ImageIcon(
+                getClass().getResource("icon.png"))).getImage());
         setLocationRelativeTo(null);
+    }
+
+    class ProgressPainter implements Painter<JProgressBar> {
+
+        private final Color color;
+
+        public ProgressPainter(boolean foreground) {
+            if (foreground) {
+                this.color = new Color(86, 161, 243);
+            } else {
+                this.color = new Color(59, 127, 243);
+            }
+        }
+
+        @Override
+        public void paint(Graphics2D gd, JProgressBar t, int width, int height) {
+            gd.setColor(color);
+            gd.fillRect(0, 0, width, height);
+        }
     }
 
     /**
@@ -69,14 +102,13 @@ public class SplashScreen extends javax.swing.JFrame {
             }
         });
 
-        progBar.setIndeterminate(true);
         progBar.setMaximumSize(new java.awt.Dimension(32767, 20));
         progBar.setMinimumSize(new java.awt.Dimension(10, 20));
         progBar.setPreferredSize(new java.awt.Dimension(146, 20));
         progBar.setString("");
         progBar.setStringPainted(true);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/anim-splash.gif"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/splash.gif"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -125,7 +157,7 @@ public class SplashScreen extends javax.swing.JFrame {
                 // Get editor going too
                 CodeEditor edit = new CodeEditor();
             }
-            
+
             setProgress(85, "Loading main interface...");
             new MainGUI().setVisible(true);
             setProgress(100, "Done!");

@@ -42,6 +42,8 @@ import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.ListModel;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
 /**
  * This class is like the Force: A light theme, a dark theme, and it binds the
@@ -744,7 +746,7 @@ public class MainGUI extends javax.swing.JFrame {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
