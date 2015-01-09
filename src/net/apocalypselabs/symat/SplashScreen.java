@@ -179,7 +179,7 @@ public class SplashScreen extends javax.swing.JFrame {
             // Check for updates.
             try {
                 Debug.println("Checking for updates...");
-                URL url = new URL(API_URL + "testversion.php");
+                URL url = new URL(API_URL + "version.php");
                 InputStream is = url.openStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
