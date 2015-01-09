@@ -33,6 +33,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultCaret;
+import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.CompletionProvider;
 
 /**
  *
@@ -45,6 +47,11 @@ public class Interpreter extends javax.swing.JInternalFrame {
     private int historyIndex = 0; // For going back in time and keeping things straight
     private String lang = "javascript";
     private Object ans = 0;
+    
+    private CompletionProvider jscomp = new CodeCompleter("js").getProvider();
+    private CompletionProvider pycomp = new CodeCompleter("py").getProvider();
+    private AutoCompletion jsac = new AutoCompletion(jscomp);
+    private AutoCompletion pyac = new AutoCompletion(pycomp);
 
     /**
      * Creates new form Interpreter
@@ -62,10 +69,13 @@ public class Interpreter extends javax.swing.JInternalFrame {
         }
         cr = new CodeRunner(lang, true);
 
-        // Set selected lang menu
+        // Setup language
         if (lang.equals("python")) {
             javascriptMenu.setSelected(false);
             pythonMenu.setSelected(true);
+            pyac.install(inputBox);
+        } else {
+            jsac.install(inputBox);
         }
 
         // Set font
