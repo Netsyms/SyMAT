@@ -1,30 +1,32 @@
-_.notify|return nothing|Display a message in a box.
-_.ask|return String|Ask a question in a box.  Supply question text.
-_.diff|return String|Find the derivative of the function passed with respect to the second argument.
-_.integrate|return String|Find the integral of the function passed with respect to the second argument.
-radians|return double|Convert a given number in degrees to radians.
-degrees|return double|Convert a given number in radians to degrees.
-_.subs|return double|Solve an equation for the second argument.
-_.plot|return nothing|Graph the given function.
-_.graph|alias of plot|Graph the given function.
-_.plotname|return nothing or String|Gets or sets the title of the graph window.
-_.plotclr|return nothing|Clear the graph and its history.
-_.clearplot|alias of plotclr|Clear the graph and its history.
-_.plotscale|return nothing|Scale the plot to the given factor.
-_.drawdot|return nothing|Places a red dot at the given coordinates.
-fabs|return double|
-asin|return double|
-acos|return double|
-atan|return double|
-ceil|return double|
-exp|return double|
-floor|return double|
-log|return double|
-max|return double|Returns the highest number given.
-min|return double|Returns the lowest number given.
-pow|return double|
-round|return double|
-sin|return double|
-cos|return double|
-tan|return double|
-print|return nothing|Prints the supplied text to the output.
+_.notify("")|Display a message in a box.
+_.ask("")|Ask a question in a box.  Supply question text.
+_.diff('',"x")|Find the derivative of the function passed with respect to the second argument.
+_.integrate('',"x")|Find the integral of the function passed with respect to the second argument.
+_.rad(0)|Convert a given number in degrees to radians.
+_.deg(0)|Convert a given number in radians to degrees.
+_.subs('',"x")|Solve an equation for the second argument.
+_.plot()|Show the plot window.
+_.plot('')|Graph the given function.
+_.plot(x[],y[])|Graph the lists of points given.
+_.graph('')|Alias of plot('')
+_.plotname("")|Sets the title of the graph window.
+_.plotname()|Gets the title of the graph window.
+_.plotrange(min,max)|Sets the x-axis min and max values.
+_.plotclr()|Reset the graph.
+_.clearplot()|Alias of plotclr()
+_.drawdot(x, y)|Places a dot at the given coordinates.
+fabs(0)|Absolute value of number.
+asin(0)|
+acos(0)|
+atan(0)|
+ceil(0)|Round the number up to the next integer.
+exp(0)|
+floor(0)|Round the number down to the next integer.
+log(0)|Natural log of number.
+max(0,1,...)|Returns the highest number given.
+min(0,1,...)|Returns the lowest number given.
+pow(x,y)|Raise x to y and calculate.
+sin(0)|Find the sine.
+cos(0)|Find the cosine.
+tan(0)|Find the tangent.
+print("")|Prints the supplied text or formula to the output.
