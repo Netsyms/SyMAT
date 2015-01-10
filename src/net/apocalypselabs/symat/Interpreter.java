@@ -125,7 +125,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
         jMenu3 = new javax.swing.JMenu();
         exportHistoryBtn = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        clearBtn = new javax.swing.JMenuItem();
         langMenu = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
         javascriptMenu = new javax.swing.JRadioButtonMenuItem();
@@ -207,8 +207,13 @@ public class Interpreter extends javax.swing.JInternalFrame {
 
         jMenu4.setText("Edit");
 
-        jMenuItem1.setText("Clear window");
-        jMenu4.add(jMenuItem1);
+        clearBtn.setText("Clear window");
+        clearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBtnActionPerformed(evt);
+            }
+        });
+        jMenu4.add(clearBtn);
 
         jMenuBar1.add(jMenu4);
 
@@ -415,6 +420,11 @@ public class Interpreter extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_exportHistoryBtnActionPerformed
 
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+        mainBox.setText(">>");
+        commandsForExport = "";
+    }//GEN-LAST:event_clearBtnActionPerformed
+
     private void doRunCode() {
         String code = inputBox.getText();
         commandsForExport += code + "\n";
@@ -489,6 +499,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
                 @Override
                 public void run() {
                     mainBox.setText("");
+                    commandsForExport = "";
                 }
             });
         }
@@ -506,6 +517,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem clearBtn;
     private javax.swing.JMenuItem exportHistoryBtn;
     private javax.swing.JMenuItem fontBtn;
     private javax.swing.JTextField inputBox;
@@ -515,7 +527,6 @@ public class Interpreter extends javax.swing.JInternalFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButtonMenuItem javascriptMenu;
     private javax.swing.ButtonGroup langGroup;

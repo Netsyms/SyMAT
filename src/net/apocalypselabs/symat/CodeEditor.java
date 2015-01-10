@@ -683,11 +683,11 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             dispose();
         } else {
             int p = JOptionPane.showInternalConfirmDialog(this,
-                    "Are you sure you want to exit without saving this file?",
+                    "Do you want to save the file before closing?",
                     "Unsaved Changes",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
-            if (p == JOptionPane.YES_OPTION) {
+            if (p == JOptionPane.NO_OPTION) {
                 dispose();
             } else {
                 saveMenuActionPerformed(null);
