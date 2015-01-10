@@ -181,11 +181,14 @@ public class MainGUI extends javax.swing.JFrame {
                 neededLength++;
             }
         }
+        if (neededLength > 10) {
+            neededLength = 10;
+        }
         KeyValListItem[] items = new KeyValListItem[neededLength];
         int i = 0;
         for (String f : fileList) {
             File file = new File(f);
-            if (file.isFile()) {
+            if (file.isFile() && i < neededLength) {
                 items[i] = new KeyValListItem(file.getName(), file.getPath());
                 i++;
             }
@@ -202,6 +205,7 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     public static void addRecentFile(String file) {
+        file = (new File(file)).getAbsolutePath();
         String files = PrefStorage.getSetting("recentfiles");
         String[] fileList = files.split("\n");
         for (int i = 0; i < fileList.length; i++) {
@@ -500,8 +504,8 @@ public class MainGUI extends javax.swing.JFrame {
             recentItemsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(recentItemsPanelLayout.createSequentialGroup()
                 .addComponent(recentItemsTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(recentFileBtn)
                 .addContainerGap())
@@ -523,7 +527,7 @@ public class MainGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(recentItemsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
         );
@@ -599,6 +603,7 @@ public class MainGUI extends javax.swing.JFrame {
             return;
         }
         CodeEditor edit = new CodeEditor();
+        Debug.println(file.getValue());
         edit.openFileFromName(file.getValue());
         loadFrame(edit);
     }//GEN-LAST:event_recentFileBtnActionPerformed

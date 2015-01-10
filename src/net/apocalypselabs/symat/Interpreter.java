@@ -30,8 +30,14 @@ package net.apocalypselabs.symat;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultCaret;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
@@ -44,10 +50,11 @@ public class Interpreter extends javax.swing.JInternalFrame {
 
     private final CodeRunner cr;
     private String[] history = new String[10]; // Command history buffer
+    private String commandsForExport = ""; // History for saving
     private int historyIndex = 0; // For going back in time and keeping things straight
     private String lang = "javascript";
     private Object ans = 0;
-    
+
     private CompletionProvider jscomp = new CodeCompleter("js").getProvider();
     private CompletionProvider pycomp = new CodeCompleter("py").getProvider();
     private AutoCompletion jsac = new AutoCompletion(jscomp);
@@ -115,6 +122,10 @@ public class Interpreter extends javax.swing.JInternalFrame {
         runBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        exportHistoryBtn = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         langMenu = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
         javascriptMenu = new javax.swing.JRadioButtonMenuItem();
@@ -180,6 +191,26 @@ public class Interpreter extends javax.swing.JInternalFrame {
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText(">>");
+
+        jMenu3.setText("File");
+
+        exportHistoryBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        exportHistoryBtn.setText("Save history...");
+        exportHistoryBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportHistoryBtnActionPerformed(evt);
+            }
+        });
+        jMenu3.add(exportHistoryBtn);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setText("Edit");
+
+        jMenuItem1.setText("Clear window");
+        jMenu4.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu4);
 
         langMenu.setText("Language");
 
@@ -359,8 +390,34 @@ public class Interpreter extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_fontBtnActionPerformed
 
+    private void exportHistoryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportHistoryBtnActionPerformed
+        JFileChooser fc = new JFileChooser();
+        FileFilter filter;
+        if (javascriptMenu.isSelected()) {
+            filter = new FileNameExtensionFilter("SyMAT JavaScript (.syjs)", "syjs");
+        } else {
+            filter = new FileNameExtensionFilter("SyMAT Python (.sypy)", "sypy");
+        }
+        fc.setFileFilter(filter);
+        fc.addChoosableFileFilter(filter);
+        int result = fc.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                FileUtils.saveFile(commandsForExport,
+                        FileUtils.getFileWithExtension(fc).toString(),
+                        false);
+            } catch (IOException ex) {
+                JOptionPane.showInternalMessageDialog(this,
+                        "Error saving: "+ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_exportHistoryBtnActionPerformed
+
     private void doRunCode() {
         String code = inputBox.getText();
+        commandsForExport += code + "\n";
         mainBox.append(" " + code + "\n");
         new EvalThread(code).start();
     }
@@ -449,12 +506,16 @@ public class Interpreter extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem exportHistoryBtn;
     private javax.swing.JMenuItem fontBtn;
     private javax.swing.JTextField inputBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButtonMenuItem javascriptMenu;
     private javax.swing.ButtonGroup langGroup;

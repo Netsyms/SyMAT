@@ -63,13 +63,13 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private RSyntaxTextArea codeBox = new RSyntaxTextArea();
     private RTextScrollPane sp;
     private String lastSaved = "";
-    
+
     private CompletionProvider jscomp = new CodeCompleter("js").getProvider();
     private CompletionProvider pycomp = new CodeCompleter("py").getProvider();
     private AutoCompletion jsac = new AutoCompletion(jscomp);
     private AutoCompletion pyac = new AutoCompletion(pycomp);
-    
-    private String filename = "";
+
+    private File filedata;
 
     /**
      * Creates new form CodeEditor
@@ -109,7 +109,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                 formMouseClicked(evt);
             }
         });
-        
+
         jsac.install(codeBox);
         sp.setVisible(true);
         codeBox.setVisible(true);
@@ -435,10 +435,10 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         if (r == JFileChooser.APPROVE_OPTION) {
             try {
                 File f = fc.getSelectedFile();
-                codeBox.setText(readFile(f.toString(), StandardCharsets.UTF_8));
+                codeBox.setText(FileUtils.readFile(f.toString()));
                 isSaved = true;
-                filename = f.toString();
-                lastSaved = codeBox.getText();
+                filedata = f;
+                lastSaved = FileUtils.MD5(codeBox.getText());
                 setTitle("Editor - " + f.getName());
             } catch (IOException ex) {
                 JOptionPane.showInternalMessageDialog(this,
@@ -455,8 +455,10 @@ public class CodeEditor extends javax.swing.JInternalFrame {
      */
     public void openFileFromName(String file) {
         try {
+            Debug.println(file);
             File f = new File(file);
-            openString(readFile(f.toString(), StandardCharsets.UTF_8), f.getName(), true);
+            openString(FileUtils.readFile(f.getAbsolutePath()),
+                    f.getAbsolutePath(), true);
         } catch (IOException ex) {
             JOptionPane.showInternalMessageDialog(this,
                     "Error:  Cannot load file: " + ex.getMessage());
@@ -472,8 +474,8 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private void openString(String data, String file, boolean saved) {
         codeBox.setText(data);
         isSaved = saved;
-        lastSaved = codeBox.getText();
-        setTitle("Editor - " + file);
+        lastSaved = FileUtils.MD5(codeBox.getText());
+        setTitle("Editor - " + (new File(file)).getName());
         if (file.matches(".*\\.(js|mls|symt|syjs)")) {
             javascriptOption.setSelected(true);
             pythonOption.setSelected(false);
@@ -487,7 +489,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             jsac.uninstall();
             pyac.install(codeBox);
         }
-        filename = file;
+        filedata = new File(file);
     }
 
     private void saveMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuActionPerformed
@@ -495,31 +497,27 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             int r = fc.showSaveDialog(this);
             if (r == JFileChooser.APPROVE_OPTION) {
                 try {
-                    saveFile(codeBox.getText(), addSaveExt(fc.getSelectedFile().toString()));
-                    filename = fc.getSelectedFile().toString();
+                    filedata = FileUtils.getFileWithExtension(fc);
+                    FileUtils.saveFile(codeBox.getText(), filedata.getAbsolutePath(), true);
+                    isSaved = true;
+                    lastSaved = FileUtils.MD5(codeBox.getText());
+                    setTitle("Editor - "
+                            + FileUtils.getFileWithExtension(fc).getName());
                 } catch (IOException ex) {
                     JOptionPane.showInternalMessageDialog(this, "Error:  Cannot save file: " + ex.getMessage());
                 }
             }
         } else {
             try {
-                saveFile(codeBox.getText(), addSaveExt(filename));
+                FileUtils.saveFile(codeBox.getText(), filedata.getAbsolutePath(), true);
             } catch (IOException ex) {
                 JOptionPane.showInternalMessageDialog(this, "Error:  Cannot save file: " + ex.getMessage());
             }
         }
+        Debug.println(filedata.toString());
+        Debug.println(filedata.getAbsolutePath());
     }//GEN-LAST:event_saveMenuActionPerformed
 
-    private String addSaveExt(String path) {
-        if (!path.matches(".*\\.(js|mls|symt|syjs|sypy|py)")) {
-            if (pythonOption.isSelected()) {
-                path += ".sypy";
-            } else {
-                path += ".syjs";
-            }
-        }
-        return path;
-    }
     private void saveAsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuActionPerformed
         isSaved = false; // Reset saved status, force dialog
         saveMenuActionPerformed(evt);
@@ -550,7 +548,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             execCode(lang);
             setRunning(false);
         }
-        
+
         public void setRunning(boolean isRunning) {
             final boolean running = isRunning;
             SwingUtilities.invokeLater(new Runnable() {
@@ -679,20 +677,9 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         openString(text, name + "." + ext, false);
     }
 
-    private void saveFile(String content, String path)
-            throws IOException {
-        try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
-            out.print(content);
-        }
-        setTitle("Editor - " + (new File(path)).getName());
-        lastSaved = content;
-        isSaved = true;
-        MainGUI.addRecentFile(path);
-    }
-
     @Override
     public void doDefaultCloseAction() {
-        if (lastSaved.equals(codeBox.getText())) {
+        if (lastSaved.equals(FileUtils.MD5(codeBox.getText()))) {
             dispose();
         } else {
             int p = JOptionPane.showInternalConfirmDialog(this,
@@ -708,11 +695,6 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         }
     }
 
-    private static String readFile(String path, Charset encoding)
-            throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, encoding);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearBtn;

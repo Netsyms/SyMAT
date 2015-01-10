@@ -27,23 +27,15 @@
  */
 package net.apocalypselabs.symat;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import javax.swing.ImageIcon;
-import javax.swing.JProgressBar;
-import javax.swing.Painter;
 import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
 import static net.apocalypselabs.symat.MainGUI.API_URL;
 import static net.apocalypselabs.symat.MainGUI.APP_CODE;
 import static net.apocalypselabs.symat.MainGUI.VERSION_NAME;
-import static net.apocalypselabs.symat.MainGUI.loadFrame;
 
 /**
  *
@@ -56,34 +48,10 @@ public class SplashScreen extends javax.swing.JFrame {
      */
     public SplashScreen() {
         initComponents();
-        UIDefaults defaults = new UIDefaults();
-        defaults.put("ProgressBar[Enabled].backgroundPainter", new ProgressPainter(false));
-        defaults.put("ProgressBar[Enabled].foregroundPainter", new ProgressPainter(true));
-        progBar.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
-        progBar.putClientProperty("Nimbus.Overrides", defaults);
 
         setIconImage((new ImageIcon(
                 getClass().getResource("icon.png"))).getImage());
         setLocationRelativeTo(null);
-    }
-
-    class ProgressPainter implements Painter<JProgressBar> {
-
-        private final Color color;
-
-        public ProgressPainter(boolean foreground) {
-            if (foreground) {
-                this.color = new Color(86, 161, 243);
-            } else {
-                this.color = new Color(59, 127, 243);
-            }
-        }
-
-        @Override
-        public void paint(Graphics2D gd, JProgressBar t, int width, int height) {
-            gd.setColor(color);
-            gd.fillRect(0, 0, width, height);
-        }
     }
 
     /**
@@ -95,43 +63,30 @@ public class SplashScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        progBar = new javax.swing.JProgressBar();
-        jLabel5 = new javax.swing.JLabel();
+        dispLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(MainGUI.APP_NAME);
-        setMaximumSize(new java.awt.Dimension(204, 260));
-        setMinimumSize(new java.awt.Dimension(204, 260));
+        setMaximumSize(new java.awt.Dimension(400, 320));
+        setMinimumSize(new java.awt.Dimension(400, 320));
         setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(400, 320));
         setResizable(false);
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
         });
+        getContentPane().setLayout(null);
 
-        progBar.setMaximumSize(new java.awt.Dimension(32767, 20));
-        progBar.setMinimumSize(new java.awt.Dimension(10, 20));
-        progBar.setPreferredSize(new java.awt.Dimension(146, 20));
-        progBar.setString("");
-        progBar.setStringPainted(true);
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/splash.gif"))); // NOI18N
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(progBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel5)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel5)
-                .addGap(0, 0, 0)
-                .addComponent(progBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        dispLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        dispLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        dispLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/splash.gif"))); // NOI18N
+        dispLabel.setText("<html><br><br>&nbsp;&nbsp;&nbsp;");
+        dispLabel.setToolTipText("");
+        dispLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        getContentPane().add(dispLabel);
+        dispLabel.setBounds(0, 0, 400, 320);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -147,11 +102,11 @@ public class SplashScreen extends javax.swing.JFrame {
 
         @Override
         public void run() {
-            setProgress(10, "Starting up...");
+            setProgress("Starting up...");
             if (!MainGUI.skipPython) {
                 // Python laggggsss when used for first time, this fixes the wait later.
                 System.out.println("Warming up Python engine, to skip run with argument 'skippython'");
-                setProgress(15, "Initializing code engine...");
+                setProgress("Initializing code engine...");
                 try {
                     CodeRunner python = new CodeRunner(true);
                 } catch (Exception ex) {
@@ -161,17 +116,17 @@ public class SplashScreen extends javax.swing.JFrame {
 
             if (!MainGUI.skipEditor) {
                 System.out.println("Preparing editor, to skip run with argument 'skipeditor'");
-                setProgress(60, "Preparing editor...");
+                setProgress("Preparing editor...");
                 // Get editor going too
                 CodeEditor edit = new CodeEditor();
             }
             
-            setProgress(75, "Checking for updates...");
+            setProgress("Checking for updates...");
             checkUpdates();
 
-            setProgress(85, "Loading main interface...");
+            setProgress("Loading main interface...");
             new MainGUI().setVisible(true);
-            setProgress(100, "Done!");
+            setProgress("Done!");
             dispose();
         }
 
@@ -208,26 +163,20 @@ public class SplashScreen extends javax.swing.JFrame {
         }
 
         /**
-         * Set the progress bar.
-         *
-         * @param progress how full to make it (0 <= progress <= 100)
+         * Set the progress text.
          * @param label The String to put on the label.
          */
-        private void setProgress(int progress, String label) {
-            final int prog = progress;
+        private void setProgress(String label) {
             final String lbl = label;
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    progBar.setIndeterminate(false);
-                    progBar.setValue(prog);
-                    progBar.setString(lbl);
+                    dispLabel.setText("<html><br><br>&nbsp;&nbsp;&nbsp;"+lbl);
                 }
             });
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JProgressBar progBar;
+    private javax.swing.JLabel dispLabel;
     // End of variables declaration//GEN-END:variables
 }
