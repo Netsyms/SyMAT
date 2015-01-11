@@ -30,15 +30,8 @@ package net.apocalypselabs.symat;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import static java.lang.Math.abs;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -57,7 +50,6 @@ public class Graph extends javax.swing.JInternalFrame {
     private final JFileChooser fc = new JFileChooser();
 
     private boolean standalone = true;
-    private boolean customName = false;
 
     private BaseLabel lbl = new BaseLabel("", Color.black, 0.5, 1.1);
 
@@ -273,15 +265,19 @@ public class Graph extends javax.swing.JInternalFrame {
                 String xx = "";
                 String yy = "";
                 double x;
-                for (x = xmin; x <= xmax; x += ((xmax - xmin) / 40.0)) {
+                for (x = xmin; x <= xmax; x += ((xmax - xmin) / 60.0)) {
+                    String res;
                     try {
                         cr.setVar("x", x);
-                        String res = solver.evaluate("$x=" + x + ";N[" + formula + "]").toString();
-                        //if (Double.parseDouble(res) >= ymin && Double.parseDouble(res) <= ymax) {
-                        yy += res + " ";
-                        xx += String.valueOf(x) + " ";
-                        //}
+                        res = solver.evaluate("$x=" + x + ";N[" + formula + "]").toString();
                     } catch (MathException | NumberFormatException ex) {
+                        res = "0";
+                    }
+                    // Omit crazy numbers like 1/0 and stuff
+                    if (Double.parseDouble(res) > Integer.MIN_VALUE) {
+                        xx += String.valueOf(x) + " ";
+                        yy += res + " ";
+                    } else {
 
                     }
                 }
@@ -292,10 +288,26 @@ public class Graph extends javax.swing.JInternalFrame {
                 double[] xd = new double[xs.length];
                 double[] yd = new double[ys.length];
                 for (int i = 0; i < xs.length; i++) {
-                    xd[i] = Double.parseDouble(xs[i]);
+                    try {
+                        xd[i] = Double.parseDouble(xs[i]);
+                        if (xd[i] == Double.MIN_VALUE) {
+                            xd[i] = 0.0
+
+                        }
+                    } catch (Exception ex) {
+                        xd[i] = 0.0;
+                    }
                 }
                 for (int i = 0; i < ys.length; i++) {
-                    yd[i] = Double.parseDouble(ys[i]);
+                    try {
+                        yd[i] = Double.parseDouble(ys[i]);
+                        if (yd[i] == Double.MIN_VALUE) {
+                            yd[i] = 0.0
+
+                        }
+                    } catch (Exception ex) {
+                        yd[i] = 0.0;
+                    }
                 }
                 SwingUtilities.invokeLater(new Updater(niceformula, xd, yd));
             }
