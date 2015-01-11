@@ -66,7 +66,7 @@ public class SplashScreen extends javax.swing.JFrame {
         dispLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle(MainGUI.APP_NAME);
+        setTitle("SyMAT Startup");
         setMaximumSize(new java.awt.Dimension(400, 320));
         setMinimumSize(new java.awt.Dimension(400, 320));
         setUndecorated(true);
