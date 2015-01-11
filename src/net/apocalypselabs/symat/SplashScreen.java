@@ -27,6 +27,7 @@
  */
 package net.apocalypselabs.symat;
 
+import java.awt.geom.RoundRectangle2D;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -66,12 +67,13 @@ public class SplashScreen extends javax.swing.JFrame {
         dispLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SyMAT Startup");
+        setTitle("SyMAT Starting");
         setMaximumSize(new java.awt.Dimension(400, 320));
         setMinimumSize(new java.awt.Dimension(400, 320));
         setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(400, 320));
         setResizable(false);
+        setShape(new RoundRectangle2D.Double(0, 0, getSize().width, getSize().height, 50, 50));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
