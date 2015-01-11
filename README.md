@@ -4,8 +4,8 @@ SyMAT
 SyMAT is a programmable symbolic math system written in Java.
 
 This repository is extremely bleeding-edge.  
-We test new features before committing (usually), but there are probably bugs.  
-If you want a stable release, go download a binary instead.
+We test new features before committing (usually), but there are bugs.  
+If you want a more stable release, download the latest one from our website.
 
 Get SyMAT
 ------
