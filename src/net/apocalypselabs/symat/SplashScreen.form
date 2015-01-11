@@ -16,7 +16,7 @@
     </Property>
     <Property name="resizable" type="boolean" value="false"/>
     <Property name="shape" type="java.awt.Shape" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-      <Connection code="new RoundRectangle2D.Double(0, 0, getSize().width, getSize().height, 50, 50)" type="code"/>
+      <Connection code="new RoundRectangle2D.Double(0, 0, getSize().width, getSize().height, 25, 25)" type="code"/>
     </Property>
   </Properties>
   <SyntheticProperties>

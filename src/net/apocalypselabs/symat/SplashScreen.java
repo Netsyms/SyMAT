@@ -73,7 +73,7 @@ public class SplashScreen extends javax.swing.JFrame {
         setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(400, 320));
         setResizable(false);
-        setShape(new RoundRectangle2D.Double(0, 0, getSize().width, getSize().height, 50, 50));
+        setShape(new RoundRectangle2D.Double(0, 0, getSize().width, getSize().height, 25, 25));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
