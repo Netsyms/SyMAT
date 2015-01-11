@@ -152,7 +152,6 @@ public class Interpreter extends javax.swing.JInternalFrame {
         mainBox.setLineWrap(true);
         mainBox.setRows(2);
         mainBox.setTabSize(4);
-        mainBox.setToolTipText("");
         mainBox.setWrapStyleWord(true);
         DefaultCaret caret = (DefaultCaret)mainBox.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);

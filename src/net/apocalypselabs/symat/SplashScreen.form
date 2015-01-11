@@ -50,7 +50,6 @@
           <Image iconType="3" name="/net/apocalypselabs/symat/splash.gif"/>
         </Property>
         <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;br&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;"/>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="horizontalTextPosition" type="int" value="0"/>
       </Properties>
       <Constraints>
