@@ -45,6 +45,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
@@ -61,7 +63,6 @@ public class CodeExport extends javax.swing.JInternalFrame {
     private String codeLang = "js";
     private String html;
     private final String origCode;
-    private final JFileChooser fc = new JFileChooser();
 
     /**
      * Creates new form CodeExport
@@ -320,14 +321,26 @@ public class CodeExport extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_exPdfActionPerformed
 
     private void doSave(String format) {
+        JFileChooser fc = new JFileChooser();
+        FileFilter filter;
+        switch (format) {
+            case "pdf":
+                filter = new FileNameExtensionFilter("Portable Document Format (PDF)", "pdf");
+                break;
+            default:
+                filter = new FileNameExtensionFilter("Web Document (HTML)", "html");
+        }
+        fc.setFileFilter(filter);
+        fc.addChoosableFileFilter(filter);
         int r = fc.showSaveDialog(this);
         if (r == JFileChooser.APPROVE_OPTION) {
+            String file = FileUtils.getFileWithExtension(fc).getAbsolutePath();
             switch (format) {
                 case "html":
-                    saveFile(html, addSaveExt(fc.getSelectedFile().toString(), format));
+                    saveFile(html, file);
                     break;
                 case "pdf":
-                    savePdfFile(html, addSaveExt(fc.getSelectedFile().toString(), format));
+                    savePdfFile(html, file);
                     break;
             }
         }
