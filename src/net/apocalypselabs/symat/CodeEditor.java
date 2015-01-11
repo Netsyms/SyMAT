@@ -32,14 +32,8 @@ import java.awt.Component;
 import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -63,8 +57,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private final JFileChooser fc = new JFileChooser();
     private boolean isSaved = false;
     private RSyntaxTextArea codeBox = new RSyntaxTextArea();
-    private RTextScrollPane sp;
-    private String lastSaved = "";
+    private final RTextScrollPane sp;
     private boolean fileChanged = false;
 
     private CompletionProvider jscomp = new CodeCompleter("js").getProvider();
@@ -462,7 +455,6 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                 codeBox.setText(FileUtils.readFile(f.toString()));
                 isSaved = true;
                 filedata = f;
-                lastSaved = FileUtils.MD5(codeBox.getText());
                 setTitle("Editor - " + f.getName());
             } catch (IOException ex) {
                 JOptionPane.showInternalMessageDialog(this,

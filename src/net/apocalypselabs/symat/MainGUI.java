@@ -29,12 +29,15 @@ package net.apocalypselabs.symat;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -758,7 +761,7 @@ public class MainGUI extends javax.swing.JFrame {
             ubuntuRegular = Font.createFont(Font.TRUETYPE_FONT,
                     new File(MainGUI.class.
                             getResource("resources/Ubuntu-R.ttf").toURI()));
-        } catch (Exception ex) {
+        } catch (URISyntaxException | FontFormatException | IOException ex) {
             ubuntuRegular = Font.getFont(Font.SANS_SERIF);
         }
 

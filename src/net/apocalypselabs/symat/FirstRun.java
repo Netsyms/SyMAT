@@ -211,7 +211,7 @@ public class FirstRun extends javax.swing.JInternalFrame {
 
     private void contBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contBtnActionPerformed
         if (noLicSel.isSelected()) {
-            if (PrefStorage.getSetting("licensetype").equals("demo") 
+            if (PrefStorage.getSetting("licensetype").equals("demo")
                     && PrefStorage.getSetting("licensedemo").equals("used")) {
                 int ans = JOptionPane.showInternalConfirmDialog(this,
                         "You have already used a trial license."
@@ -219,7 +219,7 @@ public class FirstRun extends javax.swing.JInternalFrame {
                         "Expired",
                         JOptionPane.YES_NO_OPTION);
                 if (ans == JOptionPane.NO_OPTION) {
-                    
+
                 } else {
                     openShop();
                 }
@@ -292,7 +292,7 @@ public class FirstRun extends javax.swing.JInternalFrame {
      */
     private class CheckThread extends Thread {
 
-        private String email;
+        private final String email;
 
         public CheckThread(String useremail) {
             email = useremail;
@@ -303,12 +303,12 @@ public class FirstRun extends javax.swing.JInternalFrame {
             try {
                 Debug.println("Checking license...");
                 URL url = new URL(API_URL + "liccheck.php?email=" + email);
-                InputStream is = url.openStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-                String line = br.readLine();
-                br.close();
-                is.close();
+                String line;
+                try (InputStream is = url.openStream();
+                        BufferedReader br
+                        = new BufferedReader(new InputStreamReader(is))) {
+                    line = br.readLine();
+                }
 
                 switch (line) {
                     case "ok:single":
@@ -356,12 +356,13 @@ public class FirstRun extends javax.swing.JInternalFrame {
                         JOptionPane.QUESTION_MESSAGE);
                 Debug.println("Checking license code (" + code + ")...");
                 URL url = new URL(API_URL + "emailverify.php?code=" + code + "&email=" + email);
-                InputStream is = url.openStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-                String line = br.readLine();
-                br.close();
-                is.close();
+                String line;
+                try (InputStream is = url.openStream()) {
+                    BufferedReader br
+                            = new BufferedReader(new InputStreamReader(is));
+                    line = br.readLine();
+                    br.close();
+                }
                 if (code.equals(line)) {
                     success("domain");
                 } else {

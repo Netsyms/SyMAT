@@ -31,8 +31,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -412,7 +410,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
                         false);
             } catch (IOException ex) {
                 JOptionPane.showInternalMessageDialog(this,
-                        "Error saving: "+ex.getMessage(),
+                        "Error saving: " + ex.getMessage(),
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
@@ -452,7 +450,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
             }
 
             // Implement ans command
-            String ansfill = "";
+            String ansfill;
             try {
                 ansfill = String.valueOf(Double.parseDouble(ans.toString()));
             } catch (NumberFormatException ex) {
@@ -463,6 +461,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
         }
 
         @Override
+        @SuppressWarnings("null")
         public void run() {
             try {
                 if (doSpecialCommands()) {

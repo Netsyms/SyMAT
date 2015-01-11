@@ -49,6 +49,7 @@ public class Debug {
         }
     }
 
+    @SuppressWarnings(value = {"CallToPrintStackTrace"}) 
     public static void stacktrace(Exception e) {
         if (DEBUG) {
             e.printStackTrace();
