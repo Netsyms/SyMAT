@@ -28,7 +28,9 @@
 package net.apocalypselabs.symat;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.io.BufferedReader;
@@ -36,9 +38,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.ListModel;
@@ -65,6 +70,8 @@ public class MainGUI extends javax.swing.JFrame {
 
     public static boolean updateAvailable = false;
     public static String updateString = "";
+
+    public static Font ubuntuRegular;
 
     /**
      * Creates the main app window and does some quick things that aren't
@@ -319,6 +326,7 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(MainGUI.ubuntuRegular.deriveFont(11.0F));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel1.setText(namemark());
         jLabel1.setFocusable(false);
@@ -369,6 +377,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         jPanel2.setOpaque(false);
 
+        jLabel3.setFont(MainGUI.ubuntuRegular.deriveFont(11.0F));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText(namemark());
         jLabel3.setFocusable(false);
@@ -444,7 +453,7 @@ public class MainGUI extends javax.swing.JFrame {
         mainPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mainPane.setOpaque(false);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        jLabel2.setFont(MainGUI.ubuntuRegular.deriveFont(48.0F));
         jLabel2.setForeground(new java.awt.Color(153, 153, 153));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel2.setText("SyMAT");
@@ -527,7 +536,7 @@ public class MainGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(recentItemsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
         );
@@ -733,8 +742,17 @@ public class MainGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         //</editor-fold>
+        
+        try {
+            // Ubuntu font for prettifying
+            ubuntuRegular = Font.createFont(Font.TRUETYPE_FONT,
+                    new File(MainGUI.class.
+                            getResource("resources/Ubuntu-R.ttf").toURI()));
+        } catch (Exception ex) {
+            ubuntuRegular = Font.getFont(Font.SANS_SERIF);
+        }
+
         // Command line args
         for (String arg : args) {
             switch (arg) {

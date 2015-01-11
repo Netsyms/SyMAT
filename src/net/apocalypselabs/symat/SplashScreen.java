@@ -79,7 +79,7 @@ public class SplashScreen extends javax.swing.JFrame {
         });
         getContentPane().setLayout(null);
 
-        dispLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        dispLabel.setFont(MainGUI.ubuntuRegular.deriveFont(20.0F));
         dispLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         dispLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/splash.gif"))); // NOI18N
         dispLabel.setText("<html><br><br>&nbsp;&nbsp;&nbsp;");
