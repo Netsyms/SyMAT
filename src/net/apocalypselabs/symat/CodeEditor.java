@@ -43,6 +43,8 @@ import java.nio.file.Paths;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.fife.ui.autocomplete.AutoCompletion;
@@ -63,6 +65,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private RSyntaxTextArea codeBox = new RSyntaxTextArea();
     private RTextScrollPane sp;
     private String lastSaved = "";
+    private boolean fileChanged = false;
 
     private CompletionProvider jscomp = new CodeCompleter("js").getProvider();
     private CompletionProvider pycomp = new CodeCompleter("py").getProvider();
@@ -114,6 +117,27 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         sp.setVisible(true);
         codeBox.setVisible(true);
         codeBox.requestFocus();
+
+        codeBox.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                changed();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                changed();
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                changed();
+            }
+
+            public void changed() {
+                fileChanged = true;
+            }
+        });
     }
 
     private void setEditorTheme(String themeName) {
@@ -474,7 +498,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private void openString(String data, String file, boolean saved) {
         codeBox.setText(data);
         isSaved = saved;
-        lastSaved = FileUtils.MD5(codeBox.getText());
+        fileChanged = false;
         setTitle("Editor - " + (new File(file)).getName());
         if (file.matches(".*\\.(js|mls|symt|syjs)")) {
             javascriptOption.setSelected(true);
@@ -500,7 +524,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                     filedata = FileUtils.getFileWithExtension(fc);
                     FileUtils.saveFile(codeBox.getText(), filedata.getAbsolutePath(), true);
                     isSaved = true;
-                    lastSaved = FileUtils.MD5(codeBox.getText());
+                    fileChanged = false;
                     setTitle("Editor - "
                             + FileUtils.getFileWithExtension(fc).getName());
                 } catch (IOException ex) {
@@ -510,6 +534,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         } else {
             try {
                 FileUtils.saveFile(codeBox.getText(), filedata.getAbsolutePath(), true);
+                fileChanged = false;
             } catch (IOException ex) {
                 JOptionPane.showInternalMessageDialog(this, "Error:  Cannot save file: " + ex.getMessage());
             }
@@ -679,7 +704,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
 
     @Override
     public void doDefaultCloseAction() {
-        if (lastSaved.equals(FileUtils.MD5(codeBox.getText()))) {
+        if (fileChanged == false) {
             dispose();
         } else {
             int p = JOptionPane.showInternalConfirmDialog(this,
