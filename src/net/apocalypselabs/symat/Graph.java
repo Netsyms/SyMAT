@@ -290,10 +290,6 @@ public class Graph extends javax.swing.JInternalFrame {
                 for (int i = 0; i < xs.length; i++) {
                     try {
                         xd[i] = Double.parseDouble(xs[i]);
-                        if (xd[i] == Double.MIN_VALUE) {
-                            xd[i] = 0.0
-
-                        }
                     } catch (Exception ex) {
                         xd[i] = 0.0;
                     }
@@ -301,10 +297,6 @@ public class Graph extends javax.swing.JInternalFrame {
                 for (int i = 0; i < ys.length; i++) {
                     try {
                         yd[i] = Double.parseDouble(ys[i]);
-                        if (yd[i] == Double.MIN_VALUE) {
-                            yd[i] = 0.0
-
-                        }
                     } catch (Exception ex) {
                         yd[i] = 0.0;
                     }
@@ -476,7 +468,6 @@ public class Graph extends javax.swing.JInternalFrame {
      */
     public void setWindowTitle(String t) {
         setTitle(t);
-        customName = true;
     }
 
     /**
