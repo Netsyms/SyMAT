@@ -225,9 +225,9 @@ public class FirstRun extends javax.swing.JInternalFrame {
                 }
             } else {
                 int ans = JOptionPane.showInternalConfirmDialog(this,
-                        "Would you like to open the shop and"
-                        + " purchase a license?",
-                        "Open Browser",
+                        "Would you like to purchase a license?\n"
+                                + "Select no to activate a 15-day trial.",
+                        "Purchase License",
                         JOptionPane.YES_NO_OPTION);
                 if (ans == JOptionPane.NO_OPTION) {
                     Calendar c = Calendar.getInstance();
