@@ -74,11 +74,16 @@ public class FirstRun extends javax.swing.JInternalFrame {
 
         setTitle("Welcome");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icon16.png"))); // NOI18N
-        setMaximumSize(new java.awt.Dimension(435, 350));
-        setMinimumSize(new java.awt.Dimension(435, 350));
-        setPreferredSize(new java.awt.Dimension(435, 350));
+        setMaximumSize(new java.awt.Dimension(435, 367));
+        setMinimumSize(new java.awt.Dimension(435, 367));
+        setPreferredSize(new java.awt.Dimension(435, 367));
+        try {
+            setSelected(true);
+        } catch (java.beans.PropertyVetoException e1) {
+            e1.printStackTrace();
+        }
 
-        jLabel1.setText("<html>\n<h1>Welcome to SyMAT!</h1>\n<p>It would be a good idea to get this copy fully activated\n<br />before you go any further.</p>\n<br />\n<p>Do you have a license?</p>");
+        jLabel1.setText("<html>\n<h1>Welcome to SyMAT!</h1>\n<p>Please activate the software.  \n<br />Until you do, features will be limited.\n<br />You may be eligible for a free 15-day trial.</p>\n<br />\n<p>Do you have a license?</p>");
 
         grp1.add(singLicSel);
         singLicSel.setText("Yes, I have a single-user license");
@@ -171,7 +176,7 @@ public class FirstRun extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(emailBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(contBtn))
-                .addGap(20, 20, 20))
+                .addGap(40, 40, 40))
         );
 
         emailBox.setVisible(false);
@@ -337,6 +342,7 @@ public class FirstRun extends javax.swing.JInternalFrame {
                     "Thank you for activating SyMAT!",
                     "Success",
                     JOptionPane.INFORMATION_MESSAGE);
+            MainGUI.licenseRestrict(false);
             exit();
         }
 

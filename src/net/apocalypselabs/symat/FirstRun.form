@@ -11,14 +11,15 @@
       <Image iconType="3" name="/net/apocalypselabs/symat/icon16.png"/>
     </Property>
     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[435, 350]"/>
+      <Dimension value="[435, 367]"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[435, 350]"/>
+      <Dimension value="[435, 367]"/>
     </Property>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[435, 350]"/>
+      <Dimension value="[435, 367]"/>
     </Property>
+    <Property name="selected" type="boolean" value="true"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -78,7 +79,7 @@
                   <Component id="emailBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="contBtn" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -86,7 +87,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;h1&gt;Welcome to SyMAT!&lt;/h1&gt;&#xa;&lt;p&gt;It would be a good idea to get this copy fully activated&#xa;&lt;br /&gt;before you go any further.&lt;/p&gt;&#xa;&lt;br /&gt;&#xa;&lt;p&gt;Do you have a license?&lt;/p&gt;"/>
+        <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;h1&gt;Welcome to SyMAT!&lt;/h1&gt;&#xa;&lt;p&gt;Please activate the software.  &#xa;&lt;br /&gt;Until you do, features will be limited.&#xa;&lt;br /&gt;You may be eligible for a free 15-day trial.&lt;/p&gt;&#xa;&lt;br /&gt;&#xa;&lt;p&gt;Do you have a license?&lt;/p&gt;"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JRadioButton" name="singLicSel">

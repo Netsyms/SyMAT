@@ -122,6 +122,7 @@ public class MainGUI extends javax.swing.JFrame {
                 }
             }
             if (!licValid) {
+                licenseRestrict(true);
                 loadFrame(new FirstRun());
                 loaded = true;
             }
@@ -135,6 +136,12 @@ public class MainGUI extends javax.swing.JFrame {
         }
         loadRecentFiles();
         updateDisplay();
+    }
+
+    public static void licenseRestrict(boolean restricted) {
+        editorBtn.setEnabled(!restricted);
+        graphBtn.setEnabled(!restricted);
+        helpBtn.setEnabled(!restricted);
     }
 
     /**
@@ -175,6 +182,9 @@ public class MainGUI extends javax.swing.JFrame {
         }
         if (PrefStorage.getSetting("licensetype").equals("demo")) {
             demo = " Trial";
+        }
+        if (PrefStorage.getSetting("license").equals("")) {
+            demo = " Unregistered";
         }
         return "<html>"
                 + nbsp
