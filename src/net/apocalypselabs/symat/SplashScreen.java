@@ -126,7 +126,7 @@ public class SplashScreen extends javax.swing.JFrame {
             checkUpdates();
 
             setProgress("Loading main interface...");
-            new MainGUI().setVisible(true);
+            MainGUI main = new MainGUI();
             setProgress("Done!");
             dispose();
         }

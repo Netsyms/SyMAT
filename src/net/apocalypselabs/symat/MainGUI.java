@@ -30,6 +30,7 @@ package net.apocalypselabs.symat;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -80,8 +81,8 @@ public class MainGUI extends javax.swing.JFrame {
                 getClass().getResource("icon.png"))).getImage());
         setLocationRelativeTo(null);
 
+        // Run things when closed
         addWindowListener(new WindowAdapter() {
-
             @Override
             public void windowClosing(WindowEvent we) {
                 int p = JOptionPane.showConfirmDialog(MainGUI.mainPane,
@@ -90,6 +91,11 @@ public class MainGUI extends javax.swing.JFrame {
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
                 if (p == JOptionPane.YES_OPTION) {
+                    if (getExtendedState() == MAXIMIZED_BOTH) {
+                        PrefStorage.saveSetting("framemaxed", "yes");
+                    } else {
+                        PrefStorage.saveSetting("framemaxed", "no");
+                    }
                     System.exit(0);
                 }
             }
@@ -136,6 +142,20 @@ public class MainGUI extends javax.swing.JFrame {
         }
         loadRecentFiles();
         updateDisplay();
+        setVisible(true);
+        if (PrefStorage.getSetting("framemaxed", "no").equals("yes")) {
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+//                    try {
+//                        Thread.sleep(500);
+//                    } catch (InterruptedException ex) {
+//
+//                    }
+                    setExtendedState(MAXIMIZED_BOTH);
+                }
+            });
+        }
     }
 
     public static void licenseRestrict(boolean restricted) {
