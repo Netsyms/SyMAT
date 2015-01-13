@@ -169,11 +169,13 @@ public class MainGUI extends javax.swing.JFrame {
      */
     private void setButtonShortcuts() {
         shellBtn.setMnemonic(KeyEvent.VK_S);
-        editorBtn.setMnemonic(KeyEvent.VK_D);
+        editorBtn.setMnemonic(KeyEvent.VK_E);
         graphBtn.setMnemonic(KeyEvent.VK_G);
         helpBtn.setMnemonic(KeyEvent.VK_M);
-        tabs.setMnemonicAt(0, KeyEvent.VK_A);
-        tabs.setMnemonicAt(1, KeyEvent.VK_V);
+        displaySettingsBtn.setMnemonic(KeyEvent.VK_T);
+        arrangeWindowsBtn.setMnemonic(KeyEvent.VK_C);
+        tabs.setMnemonicAt(0, KeyEvent.VK_0);
+        tabs.setMnemonicAt(1, KeyEvent.VK_1);
     }
 
     /**
@@ -488,7 +490,7 @@ public class MainGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tabs.addTab("View", jPanel2);
+        tabs.addTab("Window", jPanel2);
 
         mainPane.setBackground(new java.awt.Color(204, 204, 204));
         mainPane.setAutoscrolls(true);
