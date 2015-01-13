@@ -520,19 +520,26 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                     setTitle("Editor - "
                             + FileUtils.getFileWithExtension(fc).getName());
                 } catch (IOException ex) {
-                    JOptionPane.showInternalMessageDialog(this, "Error:  Cannot save file: " + ex.getMessage());
+                    JOptionPane.showInternalMessageDialog(this,
+                            "Error:  Cannot save file: " + ex.getMessage());
                 }
             }
         } else {
             try {
-                FileUtils.saveFile(codeBox.getText(), filedata.getAbsolutePath(), true);
+                FileUtils.saveFile(codeBox.getText(),
+                        filedata.getAbsolutePath(), true);
                 fileChanged = false;
             } catch (IOException ex) {
-                JOptionPane.showInternalMessageDialog(this, "Error:  Cannot save file: " + ex.getMessage());
+                JOptionPane.showInternalMessageDialog(this,
+                        "Error:  Cannot save file: " + ex.getMessage());
             }
         }
-        Debug.println(filedata.toString());
-        Debug.println(filedata.getAbsolutePath());
+        try {
+            Debug.println(filedata.toString());
+            Debug.println(filedata.getAbsolutePath());
+        } catch (Exception ex) {
+
+        }
     }//GEN-LAST:event_saveMenuActionPerformed
 
     private void saveAsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuActionPerformed
