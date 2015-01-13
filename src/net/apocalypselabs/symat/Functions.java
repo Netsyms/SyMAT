@@ -189,11 +189,27 @@ public class Functions {
      Other
      */
     public String sysinfo() {
-        String info = "==Java System Information==\n";
+        String info = "==Java Information==\n";
         info += "Java version: " + System.getProperty("java.version");
         info += "\nJava vendor: " + System.getProperty("java.vendor");
         info += "\nJava home: " + System.getProperty("java.home");
         return info;
+    }
+
+    /**
+     * Reset the license, quit the application.
+     */
+    public void resetlicense() {
+        int result = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to reset your license?\n"
+                + "This will close SyMAT and all open files!",
+                "Reset license",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+        if (result == JOptionPane.YES_OPTION) {
+            PrefStorage.unset("license");
+            System.exit(0);
+        }
     }
 
     /**

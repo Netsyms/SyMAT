@@ -47,7 +47,10 @@ public class PrefStorage {
     }
 
     public static void unset(String key) {
+        saveSetting(key, "");
+        save();
         prefs.remove(key);
+        save();
     }
 
     public static String getSetting(String key) {
