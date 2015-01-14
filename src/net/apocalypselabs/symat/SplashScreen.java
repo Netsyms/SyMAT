@@ -88,6 +88,7 @@ public class SplashScreen extends javax.swing.JFrame {
         dispLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/splash.gif"))); // NOI18N
         dispLabel.setText("<html><br><br>&nbsp;&nbsp;&nbsp;");
         dispLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        dispLabel.setMaximumSize(new java.awt.Dimension(400, 320));
         getContentPane().add(dispLabel);
         dispLabel.setBounds(0, 0, 400, 320);
 

@@ -30,7 +30,7 @@
 package net.apocalypselabs.symat;
 
 /**
- * This class handles DEBUG logging, so it's easy to disable.
+ * This class handles debug logging, so it's easy to disable.
  *
  * @author Skylar
  */

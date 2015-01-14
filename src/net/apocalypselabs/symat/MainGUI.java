@@ -403,8 +403,8 @@ public class MainGUI extends javax.swing.JFrame {
                 .addComponent(graphBtn)
                 .addGap(11, 11, 11)
                 .addComponent(helpBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -792,11 +792,14 @@ public class MainGUI extends javax.swing.JFrame {
 
         try {
             // Ubuntu font for prettifying
-            ubuntuRegular = Font.createFont(Font.TRUETYPE_FONT,
-                    new File(MainGUI.class.
-                            getResource("resources/Ubuntu-R.ttf").toURI()));
-        } catch (URISyntaxException | FontFormatException | IOException ex) {
+            ubuntuRegular = Font.createFont(Font.TRUETYPE_FONT,MainGUI.class.
+                            getResourceAsStream("/ubuntu.ttf"));
+        } catch (FontFormatException | IOException ex) {
             ubuntuRegular = Font.getFont(Font.SANS_SERIF);
+            System.err.println("Error loading fonts: " + ex.getMessage());
+        } catch (Exception ex) {
+            ubuntuRegular = Font.getFont(Font.SANS_SERIF);
+            System.err.println("Error loading fonts: " + ex.getMessage());
         }
 
         // Command line args
