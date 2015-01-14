@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Apocalypse Laboratories
-Open Source License
+Copyright (c) 2015, Apocalypse Laboratories
+All rights reserved.
 
-Source code can be used for any purpose, as long as:
- - Compiled binaries are rebranded and trademarks are not
-   visible by the end user at any time, except to give
-   credit to Apocalypse Laboratories, such as by showing
-   "Based on <product> by Apocalypse Laboratories" or a
-   similar notice;
- - You do not use the code for evil;
- - Rebranded compiled applications have significant
-   differences in functionality;
- - and you provide your modified source code for download,
-   under the terms of the GNU LGPL v3 or a comparable
-   license.
+Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
 
-Compiled binaries cannot be redistributed or mirrored,
-unless:
- - You have written permission from Apocalypse Laboratories;
- - Downloads are not available from Apocalypse Laboratories,
-   not even behind a paywall or other blocking mechanism;
- - or you have received a multi-computer license, in which
-   case you should take measures to prevent unauthorized
-   downloads, such as preventing download access from the 
-   Internet.
+1. Redistributions of source code must retain the above copyright notice, this 
+list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, 
+this list of conditions and the following disclaimer in the documentation and/or
+ other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors 
+may be used to endorse or promote products derived from this software without 
+specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON 
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
 <project name="SyMAT" default="default" basedir=".">
