@@ -478,8 +478,9 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             openString(FileUtils.readFile(f.getAbsolutePath()),
                     f.getAbsolutePath(), true);
         } catch (IOException ex) {
-            JOptionPane.showInternalMessageDialog(this,
+            JOptionPane.showInternalMessageDialog(MainGUI.mainPane,
                     "Error:  Cannot load file: " + ex.getMessage());
+            MainGUI.loadRecentFiles();
         }
     }
 
