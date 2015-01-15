@@ -7,13 +7,10 @@ _.deg(0)|Convert a given number in radians to degrees.
 _.subs('',"x")|Solve an equation for the second argument.
 _.plot()|Show the plot window.
 _.plot('')|Graph the given function.
-_.plot(x[],y[])|Graph the lists of points given.
-_.graph('')|Alias of plot('')
 _.plotname("")|Sets the title of the graph window.
 _.plotname()|Gets the title of the graph window.
 _.xlim(min,max)|Sets the x-axis min and max values.  Cannot be used after a formula has been graphed.
 _.plotclr()|Reset the graph.
-_.clearplot()|Alias of plotclr()
 _.drawdot(x, y)|Places a dot at the given coordinates.
 fabs(0)|Absolute value of number.
 asin(0)|

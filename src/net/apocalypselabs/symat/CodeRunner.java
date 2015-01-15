@@ -67,7 +67,7 @@ public class CodeRunner {
                     // Add custom functions.
                     se.eval("importClass(net.apocalypselabs.symat.Functions);"
                             + "SyMAT_Functions = new net.apocalypselabs.symat.Functions();"
-                            + jsFunctions());
+                            + getFunctions("js"));
                 } catch (Exception ex) {
                     initError(ex);
                 }
@@ -75,7 +75,10 @@ public class CodeRunner {
             case "python":
                 se = new ScriptEngineManager().getEngineByName("python");
                 try {
-                    se.eval("from math import *\nfrom net.apocalypselabs.symat import Functions\n_=Functions()\n");
+                    se.eval("from math import *\n"
+                            + "from net.apocalypselabs.symat import Functions\n"
+                            + "_=Functions()\n\n"
+                            + getFunctions("py"));
                 } catch (Exception ex) {
                     initError(ex);
                 }
@@ -160,13 +163,13 @@ public class CodeRunner {
         return se.get(var);
     }
 
-    private String jsFunctions() {
+    private String getFunctions(String lang) {
         String text = "";
         try {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(
                             CodeRunner.class
-                            .getResourceAsStream("functions.js")));
+                            .getResourceAsStream("functions."+lang)));
             String line;
             while ((line = reader.readLine()) != null) {
                 text += line;
@@ -174,14 +177,5 @@ public class CodeRunner {
         } catch (Exception e) {
         }
         return text;
-    }
-
-    // TODO: Run Javascript in separate thread from rest of app.
-    private class JsThread extends Thread {
-
-        @Override
-        public void run() {
-
-        }
     }
 }
