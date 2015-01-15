@@ -11,7 +11,7 @@ plot(x[],y[])|Graph the lists of points given.
 graph('')|Alias of plot('')
 plotname("")|Sets the title of the graph window.
 plotname()|Gets the title of the graph window.
-plotrange(min,max)|Sets the x-axis min and max values.
+xlim(min,max)|Sets the x-axis min and max values.  Cannot be used after a formula has been graphed.
 plotclr()|Reset the graph.
 clearplot()|Alias of plotclr()
 drawdot(x, y)|Places a dot at the given coordinates.

@@ -11,7 +11,7 @@ _.plot(x[],y[])|Graph the lists of points given.
 _.graph('')|Alias of plot('')
 _.plotname("")|Sets the title of the graph window.
 _.plotname()|Gets the title of the graph window.
-_.plotrange(min,max)|Sets the x-axis min and max values.
+_.xlim(min,max)|Sets the x-axis min and max values.  Cannot be used after a formula has been graphed.
 _.plotclr()|Reset the graph.
 _.clearplot()|Alias of plotclr()
 _.drawdot(x, y)|Places a dot at the given coordinates.

@@ -267,7 +267,7 @@ public class Graph extends javax.swing.JInternalFrame {
                 String xx = "";
                 String yy = "";
                 double x;
-                for (x = xmin; x <= xmax; x += ((xmax - xmin) / 60.0)) {
+                for (x = xmin; x <= xmax; x += ((xmax - xmin) / 400.0)) {
                     String res;
                     try {
                         cr.setVar("x", x);
@@ -368,7 +368,7 @@ public class Graph extends javax.swing.JInternalFrame {
         double[] xpt = {x};
         double[] ypt = {y};
 
-        plot.addScatterPlot("", xpt, ypt);
+        plot.addScatterPlot("", Color.BLACK, xpt, ypt);
     }
 
     private void inBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inBoxKeyTyped

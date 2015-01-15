@@ -123,7 +123,7 @@ public class Functions {
     /*
      Graphing interfaces
      */
-    public void plotrange(double xmin, double xmax) {
+    public void xlim(double xmin, double xmax) {
         graphwin.setRange(xmin, xmax);
     }
 
