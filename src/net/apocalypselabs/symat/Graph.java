@@ -288,15 +288,20 @@ public class Graph extends javax.swing.JInternalFrame {
                     try {
                         cr.setVar("x", x);
                         res = solver.evaluate("$x=" + x + ";N[" + formula + "]").toString();
-                    } catch (MathException | NumberFormatException ex) {
+                    } catch (Exception ex) {
                         res = "0";
                     }
                     // Omit crazy numbers like 1/0 and stuff
-                    if (Double.parseDouble(res) > Integer.MIN_VALUE) {
+                    try {
+                        if (Double.parseDouble(res) > Integer.MIN_VALUE) {
+                            xx += String.valueOf(x) + " ";
+                            yy += res + " ";
+                        } else {
+
+                        }
+                    } catch (Exception ex) {
                         xx += String.valueOf(x) + " ";
                         yy += res + " ";
-                    } else {
-
                     }
                 }
                 Debug.println(xx);

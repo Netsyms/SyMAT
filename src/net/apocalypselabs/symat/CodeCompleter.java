@@ -49,12 +49,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import org.fife.ui.autocomplete.BasicCompletion;
-import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
-import org.fife.ui.autocomplete.FunctionCompletion;
-import org.fife.ui.autocomplete.MarkupTagCompletion;
-import org.fife.ui.autocomplete.ShorthandCompletion;
 import org.fife.ui.autocomplete.VariableCompletion;
 
 /**
