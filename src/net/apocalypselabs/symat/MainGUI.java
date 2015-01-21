@@ -58,9 +58,9 @@ import javax.swing.UIManager;
 public class MainGUI extends javax.swing.JFrame {
 
     // TODO: Add more code comments and stuff in case anybody else reads this
-    public static final String APP_NAME = "SyMAT 1.0";
-    public static final double APP_CODE = 12;
-    public static final String VERSION_NAME = "1.0";
+    public static final String APP_NAME = "SyMAT 1.1";
+    public static final double APP_CODE = 13;
+    public static final String VERSION_NAME = "1.1";
     public static final String API_URL = "https://apis.symatapp.com/";
     public static String argfile = "";
     public static boolean skipPython = false; // Skip python init on start?

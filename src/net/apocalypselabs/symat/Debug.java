@@ -37,7 +37,7 @@ package net.apocalypselabs.symat;
 public class Debug {
 
     // If output should be on or off
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     public static void println(Object data) {
         if (DEBUG) {

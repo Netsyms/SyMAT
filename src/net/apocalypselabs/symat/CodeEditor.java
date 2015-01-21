@@ -36,6 +36,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -602,16 +604,96 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     }
 
     private void execCode(String lang) {
+        if (!checkRequiredVersion(codeBox.getText(), lang)) {
+            return;
+        }
         CodeRunner cr = new CodeRunner(lang);
+        String script = loadExternalScripts(codeBox.getText(), lang);
         Debug.println(lang);
-        Debug.println(codeBox.getText());
-        Object result = cr.evalString(codeBox.getText());
+        Debug.println(script);
+        Object result = cr.evalString(script);
         try {
             outputBox.append(result.toString() + "\n");
         } catch (NullPointerException ex) {
 
         }
     }
+
+    private boolean checkRequiredVersion(String script, String lang) {
+        String prefix = "//";
+        if (lang.startsWith("p")) {
+            prefix = "##";
+        }
+        String line = script.trim().split("\\n", 2)[0];
+        if (line.startsWith(prefix + "needs ")) {
+            String versions = line.substring(8).trim();
+            Debug.println(versions);
+            String min = versions;
+            String max = "999999999";
+            if (versions.contains("-")) {
+                min = versions.split("-")[0];
+                max = versions.split("-")[1];
+            }
+            try {
+                int minNum = Integer.parseInt(min);
+                int maxNum = Integer.parseInt(max);
+                if (!(minNum <= MainGUI.APP_CODE
+                        && maxNum >= MainGUI.APP_CODE)) {
+                    JOptionPane.showInternalMessageDialog(this, "This script "
+                            + "cannot be run on this version of SyMAT.");
+                    return false;
+                }
+                return true;
+            } catch (Exception ex) {
+                outputBox.append("Error: Bad version selection syntax: "
+                        + ex.getMessage() + "\n");
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Load external script files, relative to the current file.
+     *
+     * @param script The file to parse for includes.
+     * @param lang The script language.
+     * @return The script modified as needed.
+     */
+    private String loadExternalScripts(String script, String lang) {
+        String[] lines = script.split("\n");
+        String temp;
+        String result = "";
+        for (String line : lines) {
+            if (lang.startsWith("j")) {
+                if (line.startsWith("//include ") && !line.trim().endsWith("//include")) {
+                    temp = line.split(" ", 2)[1];
+                    try {
+                        line = FileUtils.readFile(filedata.getParent()
+                                + "./" + temp);
+                    } catch (IOException ex) {
+                        outputBox.append("Error: Cannot read "
+                                + "referenced script file: " + ex.getMessage()
+                                + "\n");
+                    }
+                }
+            } else {
+                if (line.startsWith("##include ") && !line.trim().endsWith("##include")) {
+                    temp = line.split(" ", 2)[1];
+                    try {
+                        line = FileUtils.readFile(filedata.getParent()
+                                + "./" + temp);
+                    } catch (IOException ex) {
+                        outputBox.append("Error: Cannot read "
+                                + "referenced script file: " + ex.getMessage()
+                                + "\n");
+                    }
+                }
+            }
+            result += line + "\n";
+        }
+        return result;
+    }
+
     private void exportMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuActionPerformed
         String lang = "js";
         if (pythonOption.isSelected()) {

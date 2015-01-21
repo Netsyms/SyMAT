@@ -51,8 +51,6 @@ public class CodeRunner {
     // What codez are we speaking?
     private String scriptLang = "";
 
-    private boolean isShell = false;
-
     public CodeRunner() {
         this("javascript");
     }
@@ -68,6 +66,8 @@ public class CodeRunner {
                     se.eval("importClass(net.apocalypselabs.symat.Functions);"
                             + "SyMAT_Functions = new net.apocalypselabs.symat.Functions();"
                             + getFunctions("js"));
+                    // Allow engine access from scripts.
+                    se.put("engine", se);
                 } catch (Exception ex) {
                     initError(ex);
                 }
@@ -79,6 +79,8 @@ public class CodeRunner {
                             + "from net.apocalypselabs.symat import Functions\n"
                             + "_=Functions()\n\n"
                             + getFunctions("py"));
+                    // Allow engine access from scripts.
+                    se.put("engine", se);
                 } catch (Exception ex) {
                     initError(ex);
                 }
@@ -88,13 +90,13 @@ public class CodeRunner {
         }
     }
 
+    @Deprecated
     public CodeRunner(String lang, boolean shell) {
         this(lang);
-        isShell = shell;
     }
     
     /**
-     * Inits the Python engine.
+     * Inits the Python engine on application start.
      * @param fakeInit Set it to true.
      */
     public CodeRunner(boolean fakeInit) {
