@@ -56,7 +56,6 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -121,6 +120,9 @@ public class MainGUI extends javax.swing.JFrame {
 
         setButtonShortcuts();
 
+        // Disable community tab
+        tabs.remove(2);
+        
         // Open initial windows
         boolean loaded = false;
         if (!argfile.equals("")) {
@@ -318,6 +320,9 @@ public class MainGUI extends javax.swing.JFrame {
         arrangeWindowsBtn = new javax.swing.JButton();
         closeAllBtn = new javax.swing.JButton();
         displaySettingsBtn = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        wikiBtn = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         mainPane = mainPane = new javax.swing.JDesktopPane() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -513,6 +518,48 @@ public class MainGUI extends javax.swing.JFrame {
         );
 
         tabs.addTab("Window", jPanel2);
+
+        jPanel5.setFocusable(false);
+        jPanel5.setOpaque(false);
+
+        wikiBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/wiki.png"))); // NOI18N
+        wikiBtn.setText("Wiki");
+        wikiBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        wikiBtn.setFocusable(false);
+        wikiBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        wikiBtn.setOpaque(false);
+        wikiBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        wikiBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wikiBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(MainGUI.ubuntuRegular.deriveFont(11.0F));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel4.setText(namemark());
+        jLabel4.setFocusable(false);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(wikiBtn)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(wikiBtn)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        tabs.addTab("Community", jPanel5);
 
         mainPane.setBackground(new java.awt.Color(204, 204, 204));
         mainPane.setAutoscrolls(true);
@@ -720,6 +767,10 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_recentItemsTitleMouseClicked
 
+    private void wikiBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wikiBtnActionPerformed
+        //loadFrame(new Wiki());
+    }//GEN-LAST:event_wikiBtnActionPerformed
+
     /*
      End the button handlers.
      */
@@ -866,8 +917,10 @@ public class MainGUI extends javax.swing.JFrame {
     public static javax.swing.JLabel jLabel1;
     public static javax.swing.JLabel jLabel2;
     public static javax.swing.JLabel jLabel3;
+    public static javax.swing.JLabel jLabel4;
     public static javax.swing.JPanel jPanel2;
     public static javax.swing.JPanel jPanel4;
+    public static javax.swing.JPanel jPanel5;
     public static javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JDesktopPane mainPane;
     public static javax.swing.JButton recentFileBtn;
@@ -876,5 +929,6 @@ public class MainGUI extends javax.swing.JFrame {
     public static javax.swing.JLabel recentItemsTitle;
     public static javax.swing.JButton shellBtn;
     public static javax.swing.JTabbedPane tabs;
+    public static javax.swing.JButton wikiBtn;
     // End of variables declaration//GEN-END:variables
 }

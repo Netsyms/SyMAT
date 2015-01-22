@@ -662,6 +662,8 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                 outputBox.append("Error: Bad version selection syntax: "
                         + ex.getMessage() + "\n");
             }
+        } else {
+            return true;
         }
         return false;
     }
@@ -677,30 +679,22 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         String[] lines = script.split("\n");
         String temp;
         String result = "";
+        String pre = "//";
+        if (lang.startsWith("p")) {
+            pre = "##";
+        }
         for (String line : lines) {
-            if (lang.startsWith("j")) {
-                if (line.startsWith("//include ") && !line.trim().endsWith("//include")) {
-                    temp = line.split(" ", 2)[1];
-                    try {
-                        line = FileUtils.readFile(filedata.getParent()
-                                + "./" + temp);
-                    } catch (IOException ex) {
-                        outputBox.append("Error: Cannot read "
-                                + "referenced script file: " + ex.getMessage()
-                                + "\n");
-                    }
-                }
-            } else {
-                if (line.startsWith("##include ") && !line.trim().endsWith("##include")) {
-                    temp = line.split(" ", 2)[1];
-                    try {
-                        line = FileUtils.readFile(filedata.getParent()
-                                + "./" + temp);
-                    } catch (IOException ex) {
-                        outputBox.append("Error: Cannot read "
-                                + "referenced script file: " + ex.getMessage()
-                                + "\n");
-                    }
+            if (line.startsWith(pre + "include ")
+                    && !line.trim().endsWith(pre + "include")) {
+                temp = line.split(" ", 2)[1];
+                try {
+                    line = loadExternalScripts(FileUtils.readFile(
+                            filedata.getParent()
+                            + "./" + temp), lang);
+                } catch (IOException ex) {
+                    outputBox.append("Error: Cannot read "
+                            + "referenced script file: " + ex.getMessage()
+                            + "\n");
                 }
             }
             result += line + "\n";
