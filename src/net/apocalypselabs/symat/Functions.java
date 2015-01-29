@@ -46,6 +46,7 @@
 package net.apocalypselabs.symat;
 
 import static java.lang.Math.*;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 import org.matheclipse.core.eval.EvalUtilities;
 import org.matheclipse.parser.client.math.MathException;
@@ -58,6 +59,8 @@ import org.matheclipse.parser.client.math.MathException;
  * @author Skylar
  */
 public class Functions {
+
+    public static final HashMap<String, Object> GLOBALS = new HashMap<>();
 
     private final EvalUtilities util = new EvalUtilities(true, true);
     Graph graphwin = new Graph(true);
@@ -201,6 +204,45 @@ public class Functions {
     public void drawdot(double x, double y) {
         showGraph();
         graphwin.drawDot(x, y);
+    }
+
+    /*
+     Global variables are accessible across scripts.
+     */
+    /**
+     * Set a global variable.
+     *
+     * @param name The variable name
+     * @param var The variable
+     */
+    public static void global(String name, Object var) {
+        GLOBALS.put(name, var);
+    }
+
+    /**
+     * Get a global variable.
+     *
+     * @param name The variable name
+     * @return The variable
+     */
+    public static Object global(String name) {
+        return GLOBALS.get(name);
+    }
+    
+    /**
+     * Clear all the GLOBALS.
+     */
+    public static void clrglobals() {
+        GLOBALS.clear();
+    }
+    
+    /**
+     * Check if the given global key is set.
+     * @param name The key to check.
+     * @return True if the key exists, else false.
+     */
+    public static boolean globalcontains(String name) {
+        return GLOBALS.containsKey(name);
     }
 
     /*

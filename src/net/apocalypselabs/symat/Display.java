@@ -45,8 +45,6 @@
  */
 package net.apocalypselabs.symat;
 
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author Skylar
@@ -79,9 +77,9 @@ public class Display extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setTitle("Theme");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/settings.png"))); // NOI18N
-        setMaximumSize(new java.awt.Dimension(170, 190));
-        setMinimumSize(new java.awt.Dimension(170, 190));
-        setPreferredSize(new java.awt.Dimension(170, 190));
+        setMaximumSize(new java.awt.Dimension(170, 188));
+        setMinimumSize(new java.awt.Dimension(170, 188));
+        setPreferredSize(new java.awt.Dimension(170, 188));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -93,10 +91,10 @@ public class Display extends javax.swing.JInternalFrame {
 
         themeGroup.add(themeLight);
         themeLight.setSelected(true);
-        themeLight.setText("Light");
+        themeLight.setText("Daylight");
 
         themeGroup.add(themeDark);
-        themeDark.setText("Dark");
+        themeDark.setText("NightDark");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -107,14 +105,14 @@ public class Display extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(themeLight)
                     .addComponent(themeDark))
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(themeLight)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(themeDark)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -142,11 +140,10 @@ public class Display extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(saveBtn)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         pack();
@@ -172,13 +169,7 @@ public class Display extends javax.swing.JInternalFrame {
         } else {
             PrefStorage.saveSetting("theme", "light");
         }
-        if (!PrefStorage.save()) {
-            // Something dun goofed...
-            JOptionPane.showInternalMessageDialog(this, 
-                    "Error: Problem occured while saving settings.  "
-                            + "This error is outside the control of "
-                            + "the application.");
-        }
+        PrefStorage.save();
         MainGUI.updateDisplay();
         dispose();
     }//GEN-LAST:event_saveBtnActionPerformed
