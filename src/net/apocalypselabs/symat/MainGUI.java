@@ -72,11 +72,12 @@ import javax.swing.UIManager;
 public class MainGUI extends javax.swing.JFrame {
 
     // TODO: Add more code comments and stuff in case anybody else reads this
-    public static final String APP_NAME = "SyMAT 1.2";
-    public static final double APP_CODE = 14;
-    public static final String VERSION_NAME = "1.2";
-    public static final String API_URL = "https://apis.symatapp.com/";
+    public static final String VERSION_NAME = "1.2"; // For display
+    public static final String APP_NAME = "SyMAT "+VERSION_NAME; // For display
+    public static final double APP_CODE = 14; // Version code, for updates and //needs
+    public static final String API_URL = "https://apis.symatapp.com/"; // API base URL
     public static String argfile = "";
+    public static Font ubuntuRegular; // Ubuntu font for uniform display
     public static boolean skipPython = false; // Skip python init on start?
     public static boolean skipEditor = false; // Skip editor init on start?
 
@@ -84,8 +85,6 @@ public class MainGUI extends javax.swing.JFrame {
 
     public static boolean updateAvailable = false;
     public static String updateString = "";
-
-    public static Font ubuntuRegular;
 
     /**
      * Creates the main app window and does some quick things that aren't
@@ -97,7 +96,7 @@ public class MainGUI extends javax.swing.JFrame {
                 getClass().getResource("icon.png"))).getImage());
         setLocationRelativeTo(null);
 
-        // Run things when closed
+        // Run things when app closed
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
@@ -120,6 +119,7 @@ public class MainGUI extends javax.swing.JFrame {
         setButtonShortcuts();
 
         // Disable community tab
+        // TODO: Make the tab useful.
         tabs.remove(2);
 
         // Open initial windows
