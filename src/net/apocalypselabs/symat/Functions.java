@@ -243,6 +243,16 @@ public class Functions {
         return item;
     }
     
+    // Fix for Python reserved word "global"
+    public static void setglobal(String name, Object var) {
+        global(name, var);
+    }
+    
+    // Fix for Python reserved word "global"
+    public static void getglobal(String name) {
+        global(name);
+    }
+    
     /**
      * Clear all the GLOBALS.
      */

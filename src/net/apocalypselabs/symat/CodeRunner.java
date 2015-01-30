@@ -193,7 +193,7 @@ public class CodeRunner {
                             .getResourceAsStream("functions."+lang)));
             String line;
             while ((line = reader.readLine()) != null) {
-                text += line;
+                text += line+"\n";
             }
         } catch (Exception e) {
         }

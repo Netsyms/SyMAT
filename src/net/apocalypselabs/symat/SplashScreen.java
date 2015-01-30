@@ -111,7 +111,7 @@ public class SplashScreen extends javax.swing.JFrame {
 
         jLabel1.setFont(MainGUI.ubuntuRegular.deriveFont(18.0F));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("Version "+MainGUI.VERSION_NAME);
+        jLabel1.setText("<html><b>Version "+MainGUI.VERSION_NAME+"</b>");
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLayeredPane1.add(jLabel1);
         jLabel1.setBounds(200, 110, 130, 30);

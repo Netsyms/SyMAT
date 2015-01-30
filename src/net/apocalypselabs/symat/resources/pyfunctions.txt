@@ -1,17 +1,21 @@
-_.notify("")|Display a message in a box.
-_.ask("")|Ask a question in a box.  Supply question text.
-_.diff('',"x")|Find the derivative of the function passed with respect to the second argument.
-_.integrate('',"x")|Find the integral of the function passed with respect to the second argument.
-_.rad(0)|Convert a given number in degrees to radians.
-_.deg(0)|Convert a given number in radians to degrees.
-_.subs('',"x")|Solve an equation for the second argument.
-_.plot()|Show the plot window.
-_.plot('')|Graph the given function.
-_.plotname("")|Sets the title of the graph window.
-_.plotname()|Gets the title of the graph window.
-_.xlim(min,max)|Sets the x-axis min and max values.  Cannot be used after a formula has been graphed.
-_.plotclr()|Reset the graph.
-_.drawdot(x, y)|Places a dot at the given coordinates.
+notify("")|Display a message in a box.
+ask("")|Ask a question in a box.  Supply question text.
+diff('',"x")|Find the derivative of the function passed with respect to the second argument.
+integrate('',"x")|Find the integral of the function passed with respect to the second argument.
+rad(0)|Convert a given number in degrees to radians.
+deg(0)|Convert a given number in radians to degrees.
+subs('',"x")|Solve an equation for the second argument.
+plot()|Show the plot window.
+plot('')|Graph the given function.
+plotname("")|Sets the title of the graph window.
+plotname()|Gets the title of the graph window.
+xlim(min,max)|Sets the x-axis min and max values.  Cannot be used after a formula has been graphed.
+plotclr()|Reset the graph.
+drawdot(x, y)|Places a dot at the given coordinates.
+simplify('')|Simplify the given function.
+vpa('')|Computes numerical value or simplifies.
+global("", obj)|Set global variable with the given id.
+global("")|Get global variable with the given id.
 fabs(0)|Absolute value of number.
 asin(0)|
 acos(0)|

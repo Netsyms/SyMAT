@@ -5,6 +5,10 @@ integrate('',"x")|Find the integral of the function passed with respect to the s
 rad(0)|Convert a given number in degrees to radians.
 deg(0)|Convert a given number in radians to degrees.
 subs('',"x")|Solve an equation for the second argument.
+simplify('')|Simplify the given function.
+vpa('')|Computes numerical value or simplifies.
+setglobal("", obj)|Set global variable with the given id.
+getglobal("")|Get global variable with the given id.
 plot()|Show the plot window.
 plot('')|Graph the given function.
 plotname("")|Sets the title of the graph window.
