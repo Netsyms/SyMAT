@@ -49,6 +49,7 @@ import static java.lang.Math.*;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import org.matheclipse.core.eval.EvalUtilities;
+import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.parser.client.math.MathException;
 
 /**
@@ -109,6 +110,14 @@ public class Functions {
     public String simplify(String expr) {
         return sym("Simplify("+expr+")");
     }
+    
+    public Object vpa(String expr) {
+        IExpr ans = util.evaluate("N("+expr+")");
+        if (ans.isNumber()) {
+            return Double.parseDouble(ans.toString());
+        }
+        return ans.toString();
+    }
 
     public double rad(double degrees) {
         return degrees * (PI / 180);
@@ -122,7 +131,7 @@ public class Functions {
         return util.evaluate(input).toString();
     }
 
-    // Shortcut for non-JS math evaluation.
+    // Shortcut for symja evaluation.
     public String $(String input) {
         return sym(input);
     }
