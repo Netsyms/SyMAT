@@ -239,7 +239,8 @@ public class Functions {
      * @return The variable
      */
     public static Object global(String name) {
-        return GLOBALS.get(name);
+        Object item = GLOBALS.get(name);
+        return item;
     }
     
     /**

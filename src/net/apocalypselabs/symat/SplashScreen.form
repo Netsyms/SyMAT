@@ -55,7 +55,7 @@
         <Component class="javax.swing.JLabel" name="dispLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="MainGUI.ubuntuRegular.deriveFont(24.0F)" type="code"/>
+              <Connection code="MainGUI.ubuntuRegular.deriveFont(20.0F)" type="code"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">

@@ -45,6 +45,7 @@
  */
 package net.apocalypselabs.symat;
 
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**
@@ -52,8 +53,6 @@ import javax.swing.JOptionPane;
  * @author Skylar
  */
 public class Globals extends javax.swing.JInternalFrame {
-
-    private int hashCode;
 
     /**
      * Creates new form Globals
@@ -80,6 +79,7 @@ public class Globals extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         valBox = new javax.swing.JTextArea();
         refreshBtn = new javax.swing.JButton();
+        saveBtn = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -123,7 +123,7 @@ public class Globals extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
         );
 
         remBtn.setText("Remove");
@@ -135,7 +135,6 @@ public class Globals extends javax.swing.JInternalFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Value"));
 
-        valBox.setEditable(false);
         valBox.setColumns(1);
         valBox.setRows(1);
         valBox.setTabSize(4);
@@ -164,6 +163,13 @@ public class Globals extends javax.swing.JInternalFrame {
             }
         });
 
+        saveBtn.setText("Save");
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -180,6 +186,8 @@ public class Globals extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(remBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveBtn)
+                        .addGap(37, 37, 37)
                         .addComponent(refreshBtn)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -191,7 +199,8 @@ public class Globals extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addBtn)
                     .addComponent(remBtn)
-                    .addComponent(refreshBtn))
+                    .addComponent(refreshBtn)
+                    .addComponent(saveBtn))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -204,12 +213,30 @@ public class Globals extends javax.swing.JInternalFrame {
 
     private void keyListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_keyListValueChanged
         if (keyList.getSelectedValue() != null) {
+            valBox.setEditable(true);
             try {
-                valBox.setText(Functions.GLOBALS.get(
-                        keyList.getSelectedValue().toString()).toString());
+                Object item = Functions.GLOBALS.get(
+                        keyList.getSelectedValue());
+                if (item.getClass().equals(sun.org.mozilla.javascript.internal.NativeArray.class)) {
+                    Object[] arr = ((sun.org.mozilla.javascript.internal.NativeArray) item).toArray();
+                    valBox.setText(Arrays.toString(arr));
+                    valBox.setEditable(false);
+                } else if (item.getClass().equals(org.mozilla.javascript.NativeArray.class)) {
+                    Object[] arr = ((org.mozilla.javascript.NativeArray) item).toArray();
+                    valBox.setText(Arrays.toString(arr));
+                    valBox.setEditable(false);
+//                } else if (item.getClass().equals(PyList.class)) {
+//                    Object[] arr = ((PyList) item).toArray();
+//                    valBox.setText(Arrays.toString(arr));
+//                    valBox.setEditable(false);
+                } else {
+                    valBox.setText(Functions.GLOBALS.get(
+                            keyList.getSelectedValue()).toString());
+                }
             } catch (Exception ex) {
-                valBox.setText("Error.  Note some datatypes "
-                        + "cannot be displayed here.");
+                valBox.setText("error");
+                valBox.setEditable(false);
+                Debug.stacktrace(ex);
             }
         }
     }//GEN-LAST:event_keyListValueChanged
@@ -249,12 +276,27 @@ public class Globals extends javax.swing.JInternalFrame {
         refreshList();
     }//GEN-LAST:event_refreshBtnActionPerformed
 
-    private void refreshList() {
-        if (Functions.GLOBALS.hashCode() != hashCode) {
-            keyList.setListData(Functions.GLOBALS.keySet().toArray());
-            hashCode = Functions.GLOBALS.hashCode();
-            valBox.setText("");
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        try {
+            setVar(keyList.getSelectedValue().toString(), valBox.getText());
+        } catch (Exception ex) {
+
         }
+    }//GEN-LAST:event_saveBtnActionPerformed
+
+    private void refreshList() {
+        keyList.setListData(Functions.GLOBALS.keySet().toArray());
+        valBox.setText("");
+    }
+
+    private void setVar(String key, String val) {
+        try {
+            double value = Double.parseDouble(val);
+            Functions.GLOBALS.put(key, value);
+        } catch (Exception ex) {
+            Functions.GLOBALS.put(key, val);
+        }
+        refreshList();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -266,6 +308,7 @@ public class Globals extends javax.swing.JInternalFrame {
     private javax.swing.JList keyList;
     private javax.swing.JButton refreshBtn;
     private javax.swing.JButton remBtn;
+    private javax.swing.JButton saveBtn;
     private javax.swing.JTextArea valBox;
     // End of variables declaration//GEN-END:variables
 }

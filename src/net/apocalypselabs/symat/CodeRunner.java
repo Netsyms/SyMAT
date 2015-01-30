@@ -75,6 +75,8 @@ public class CodeRunner {
         scriptLang = lang;
         switch (lang) {
             case "javascript":
+            case "js":
+            case "rhino":
                 se = new ScriptEngineManager().getEngineByName("rhino");
                 wrapRequired = true;
                 try {
@@ -89,6 +91,7 @@ public class CodeRunner {
                 }
                 break;
             case "python":
+            case "py":
                 se = new ScriptEngineManager().getEngineByName("python");
                 try {
                     se.eval("from math import *\n"
