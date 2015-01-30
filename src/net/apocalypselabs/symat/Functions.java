@@ -87,7 +87,7 @@ public class Functions {
     public String diff(String function) {
         // Assume "x" as var
         return diff(function, "x");
-    }
+    }  
 
     @Deprecated
     public String D(String function, String idv) {
@@ -104,6 +104,10 @@ public class Functions {
 
     public String factor(String function) {
         return sym("Factor(" + function + ")");
+    }
+    
+    public String simplify(String expr) {
+        return sym("Simplify("+expr+")");
     }
 
     public double rad(double degrees) {
