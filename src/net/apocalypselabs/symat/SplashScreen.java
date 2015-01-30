@@ -82,7 +82,9 @@ public class SplashScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLayeredPane1 = new javax.swing.JLayeredPane();
         dispLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SyMAT Starting");
@@ -97,16 +99,25 @@ public class SplashScreen extends javax.swing.JFrame {
                 formComponentShown(evt);
             }
         });
-        getContentPane().setLayout(null);
 
-        dispLabel.setFont(MainGUI.ubuntuRegular.deriveFont(20.0F));
+        dispLabel.setFont(MainGUI.ubuntuRegular.deriveFont(24.0F));
         dispLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         dispLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/splash.gif"))); // NOI18N
-        dispLabel.setText("<html><br><br>&nbsp;&nbsp;&nbsp;");
+        dispLabel.setText("<html><br><br>&nbsp;&nbsp;&nbsp;Loading...");
         dispLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         dispLabel.setMaximumSize(new java.awt.Dimension(400, 320));
-        getContentPane().add(dispLabel);
+        jLayeredPane1.add(dispLabel);
         dispLabel.setBounds(0, 0, 400, 320);
+
+        jLabel1.setFont(MainGUI.ubuntuRegular.deriveFont(18.0F));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel1.setText("Version "+MainGUI.VERSION_NAME);
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLayeredPane1.add(jLabel1);
+        jLabel1.setBounds(200, 110, 130, 30);
+        jLayeredPane1.setLayer(jLabel1, javax.swing.JLayeredPane.POPUP_LAYER);
+
+        getContentPane().add(jLayeredPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -198,5 +209,7 @@ public class SplashScreen extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dispLabel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLayeredPane jLayeredPane1;
     // End of variables declaration//GEN-END:variables
 }
