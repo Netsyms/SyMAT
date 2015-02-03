@@ -154,6 +154,10 @@ public class SplashScreen extends javax.swing.JFrame {
             
             setProgress("Checking for updates...");
             checkUpdates();
+            
+            // It will throw errors, but it seems to speed up loading later.
+            setProgress("Loading apps...");
+            try {WebBrowser wb = new WebBrowser();} catch (Exception ex) {}
 
             setProgress("Loading main interface...");
             MainGUI main = new MainGUI();
