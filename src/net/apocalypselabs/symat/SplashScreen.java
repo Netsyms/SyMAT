@@ -45,6 +45,7 @@
  */
 package net.apocalypselabs.symat;
 
+import java.awt.Color;
 import java.awt.geom.RoundRectangle2D;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -67,7 +68,7 @@ public class SplashScreen extends javax.swing.JFrame {
      */
     public SplashScreen() {
         initComponents();
-
+        setBackground(new Color(0, 0, 0, 0));
         setIconImage((new ImageIcon(
                 getClass().getResource("icon.png"))).getImage());
         setLocationRelativeTo(null);
@@ -85,37 +86,57 @@ public class SplashScreen extends javax.swing.JFrame {
         jLayeredPane1 = new javax.swing.JLayeredPane();
         dispLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SyMAT Starting");
-        setMaximumSize(new java.awt.Dimension(400, 320));
-        setMinimumSize(new java.awt.Dimension(400, 320));
+        setMaximumSize(new java.awt.Dimension(702, 471));
+        setMinimumSize(new java.awt.Dimension(702, 471));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(400, 320));
+        setPreferredSize(new java.awt.Dimension(702, 471));
         setResizable(false);
-        setShape(new RoundRectangle2D.Double(0, 0, getSize().width, getSize().height, 25, 25));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
         });
 
-        dispLabel.setFont(MainGUI.ubuntuRegular.deriveFont(20.0F));
-        dispLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dispLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/splash.gif"))); // NOI18N
-        dispLabel.setText("<html><br><br>&nbsp;&nbsp;&nbsp;Loading...");
-        dispLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLayeredPane1.setBackground(new java.awt.Color(255, 255, 255));
+
+        dispLabel.setFont(MainGUI.ubuntuRegular.deriveFont(22.0F));
+        dispLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        dispLabel.setText("Loading...");
+        dispLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         dispLabel.setMaximumSize(new java.awt.Dimension(400, 320));
         jLayeredPane1.add(dispLabel);
-        dispLabel.setBounds(0, 0, 400, 320);
+        dispLabel.setBounds(250, 250, 350, 80);
 
-        jLabel1.setFont(MainGUI.ubuntuRegular.deriveFont(18.0F));
+        jLabel1.setFont(MainGUI.ubuntuRegular.deriveFont(20.0F));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("<html><b>Version "+MainGUI.VERSION_NAME+"</b>");
-        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel1.setText("v. "+MainGUI.VERSION_NAME);
         jLayeredPane1.add(jLabel1);
-        jLabel1.setBounds(200, 110, 130, 30);
+        jLabel1.setBounds(520, 70, 80, 30);
         jLayeredPane1.setLayer(jLabel1, javax.swing.JLayeredPane.POPUP_LAYER);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/symat-hex-logo.png"))); // NOI18N
+        jLayeredPane1.add(jLabel2);
+        jLabel2.setBounds(0, 0, 700, 470);
+
+        jLabel3.setFont(MainGUI.ubuntuRegular.deriveFont(12.0F));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("<html><div style=\"text-align: center;\">Apocalypse<br>Laboratories</div>");
+        jLayeredPane1.add(jLabel3);
+        jLabel3.setBounds(50, 420, 120, 40);
+        jLayeredPane1.setLayer(jLabel3, javax.swing.JLayeredPane.POPUP_LAYER);
+
+        jLabel4.setFont(MainGUI.ubuntuRegular.deriveFont(12.0F));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("symatapp.com");
+        jLayeredPane1.add(jLabel4);
+        jLabel4.setBounds(370, 430, 110, 14);
+        jLayeredPane1.setLayer(jLabel4, javax.swing.JLayeredPane.POPUP_LAYER);
 
         getContentPane().add(jLayeredPane1, java.awt.BorderLayout.CENTER);
 
@@ -154,10 +175,6 @@ public class SplashScreen extends javax.swing.JFrame {
             
             setProgress("Checking for updates...");
             checkUpdates();
-            
-            // It will throw errors, but it seems to speed up loading later.
-            setProgress("Loading apps...");
-            try {WebBrowser wb = new WebBrowser();} catch (Exception ex) {}
 
             setProgress("Loading main interface...");
             MainGUI main = new MainGUI();
@@ -206,7 +223,7 @@ public class SplashScreen extends javax.swing.JFrame {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    dispLabel.setText("<html><br><br>&nbsp;&nbsp;&nbsp;"+lbl);
+                    dispLabel.setText(lbl);
                 }
             });
         }
@@ -214,6 +231,9 @@ public class SplashScreen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dispLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLayeredPane jLayeredPane1;
     // End of variables declaration//GEN-END:variables
 }
