@@ -112,6 +112,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
             @Override
             public void run() {
                 webEngine.load(url);
+                resizeAll();
             }
         });
     }
@@ -121,6 +122,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
             @Override
             public void run() {
                 webEngine.loadContent(content);
+                resizeAll();
             }
         });
     }
@@ -140,7 +142,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Browser");
         setMinimumSize(new java.awt.Dimension(300, 300));
-        setPreferredSize(new java.awt.Dimension(500, 400));
+        setPreferredSize(new java.awt.Dimension(480, 400));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -171,10 +173,10 @@ public class WebBrowser extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        resizeAll();
-        // Ensure scrollbars show up correctly.
-        setSize(getWidth() + 1, getHeight());
-        setSize(getWidth() - 1, getHeight());
+//        resizeAll();
+//        // Ensure scrollbars show up correctly.
+//        setSize(getWidth() + 1, getHeight());
+//        setSize(getWidth() - 1, getHeight());
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
