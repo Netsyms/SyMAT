@@ -57,7 +57,6 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.math.plot.plotObjects.BaseLabel;
 import org.matheclipse.core.eval.EvalUtilities;
-import org.matheclipse.parser.client.math.MathException;
 
 /**
  *

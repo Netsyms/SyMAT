@@ -1,41 +1,41 @@
-/* 
+/*
  * CODE LICENSE =====================
  * Copyright (c) 2015, Apocalypse Laboratories
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  *  are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, this 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
  * list of conditions and the following disclaimer.
- * 
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation and/or
  *  other materials provided with the distribution.
- * 
- * 3. Neither the name of the copyright holder nor the names of its contributors 
- * may be used to endorse or promote products derived from this software without 
+ *
+ * 3. Neither the name of the copyright holder nor the names of its contributors
+ * may be used to endorse or promote products derived from this software without
  * specific prior written permission.
- * 
+ *
  * 4. You adhere to the Media License detailed below.  If you do not, this license
  * is automatically revoked and you must purge all copies of the software you
  * possess, in source or binary form.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON 
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+ *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * MEDIA LICENSE ====================
  * All images and other graphical files (the "graphics") included with this
  * software are copyright (c) 2015 Apocalypse Laboratories.  You may not distribute
- * the graphics or any program, source code repository, or other digital storage 
+ * the graphics or any program, source code repository, or other digital storage
  * media containing them without written permission from Apocalypse Laboratories.
  * This ban on distribution only applies to publicly available systems.
  * A password-protected network file share, USB drive, or other storage scheme that
@@ -45,7 +45,12 @@
  */
 package net.apocalypselabs.symat;
 
+import java.awt.Font;
+import javax.swing.JOptionPane;
+
 /**
+ *
+ * A simple persistent notepad.
  *
  * @author Skylar
  */
@@ -56,9 +61,7 @@ public class Notepad extends javax.swing.JInternalFrame {
      */
     public Notepad() {
         initComponents();
-        page1.setText(PrefStorage.getSetting("notepad1", ""));
-        page2.setText(PrefStorage.getSetting("notepad2", ""));
-        page3.setText(PrefStorage.getSetting("notepad3", ""));
+        textBox.setText(PrefStorage.getSetting("notepad"));
     }
 
     /**
@@ -70,81 +73,91 @@ public class Notepad extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        page1 = new javax.swing.JEditorPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        page2 = new javax.swing.JEditorPane();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        page3 = new javax.swing.JEditorPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        textBox = new javax.swing.JEditorPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        eraseBtn = new javax.swing.JMenuItem();
+        saveBtn = new javax.swing.JMenuItem();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setTitle("Notepad");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/notepad.png"))); // NOI18N
 
-        page1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                page1KeyPressed(evt);
+        jScrollPane4.setFont(Font.getFont(Font.MONOSPACED));
+
+        textBox.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textBoxKeyTyped(evt);
             }
         });
-        jScrollPane1.setViewportView(page1);
+        jScrollPane4.setViewportView(textBox);
 
-        jTabbedPane1.addTab("Page 1", jScrollPane1);
+        jMenu1.setText("File");
 
-        page2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                page2KeyPressed(evt);
+        eraseBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        eraseBtn.setText("Erase");
+        eraseBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eraseBtnActionPerformed(evt);
             }
         });
-        jScrollPane2.setViewportView(page2);
+        jMenu1.add(eraseBtn);
 
-        jTabbedPane1.addTab("Page 2", jScrollPane2);
-
-        page3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                page3KeyPressed(evt);
+        saveBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveBtn.setText("Save");
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
             }
         });
-        jScrollPane3.setViewportView(page3);
+        jMenu1.add(saveBtn);
 
-        jTabbedPane1.addTab("Page 3", jScrollPane3);
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void page1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_page1KeyPressed
-        PrefStorage.saveSetting("notepad1", page1.getText());
-    }//GEN-LAST:event_page1KeyPressed
+    private void eraseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eraseBtnActionPerformed
+        int ans = JOptionPane.showInternalConfirmDialog(this, "Erase notepad contents?", "Are you sure?", JOptionPane.YES_NO_OPTION);
+        if (ans == JOptionPane.YES_OPTION) {
+            textBox.setText("");
+            setTitle("Notepad *");
+        }
+    }//GEN-LAST:event_eraseBtnActionPerformed
 
-    private void page2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_page2KeyPressed
-        PrefStorage.saveSetting("notepad2", page2.getText());
-    }//GEN-LAST:event_page2KeyPressed
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        PrefStorage.saveSetting("notepad", textBox.getText());
+        setTitle("Notepad");
+    }//GEN-LAST:event_saveBtnActionPerformed
 
-    private void page3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_page3KeyPressed
-        PrefStorage.saveSetting("notepad3", page3.getText());
-    }//GEN-LAST:event_page3KeyPressed
+    private void textBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textBoxKeyTyped
+        setTitle("Notepad *");
+    }//GEN-LAST:event_textBoxKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JEditorPane page1;
-    private javax.swing.JEditorPane page2;
-    private javax.swing.JEditorPane page3;
+    private javax.swing.JMenuItem eraseBtn;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JMenuItem saveBtn;
+    private javax.swing.JEditorPane textBox;
     // End of variables declaration//GEN-END:variables
 }

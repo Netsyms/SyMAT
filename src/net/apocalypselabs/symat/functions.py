@@ -30,3 +30,7 @@ def simplify(expr):
     return _.simplify(expr)
 def vpa(expr):
     return _.vpa(expr)
+def readfile(path):
+    return _.readfile(path)
+def savefile(data,path):
+    _.savefile(data,path)

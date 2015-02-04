@@ -45,6 +45,7 @@
  */
 package net.apocalypselabs.symat;
 
+import java.io.IOException;
 import static java.lang.Math.*;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
@@ -217,6 +218,18 @@ public class Functions {
     public void drawdot(double x, double y) {
         showGraph();
         graphwin.drawDot(x, y);
+    }
+    
+    public String readfile(String path) throws IOException {
+        return FileUtils.readFile(path);
+    }
+    
+    public void savefile(String content, String path) throws IOException {
+        FileUtils.saveFile(content, path, false);
+    }
+    
+    public String md5sum(String data) {
+        return FileUtils.MD5(data);
     }
 
     

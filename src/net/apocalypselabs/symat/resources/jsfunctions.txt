@@ -14,6 +14,8 @@ plotname()|Gets the title of the graph window.
 xlim(min,max)|Sets the x-axis min and max values.  Cannot be used after a formula has been graphed.
 plotclr()|Reset the graph.
 drawdot(x, y)|Places a dot at the given coordinates.
+readfile("")|Read a text file from the given filename.
+savefile(data,"")|Save the text data to a file.
 abs(0)|Absolute value of number.
 asin(0)|
 acos(0)|

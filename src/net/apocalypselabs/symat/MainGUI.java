@@ -1,41 +1,41 @@
-/* 
+/*
  * CODE LICENSE =====================
  * Copyright (c) 2015, Apocalypse Laboratories
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  *  are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, this 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
  * list of conditions and the following disclaimer.
- * 
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation and/or
  *  other materials provided with the distribution.
- * 
- * 3. Neither the name of the copyright holder nor the names of its contributors 
- * may be used to endorse or promote products derived from this software without 
+ *
+ * 3. Neither the name of the copyright holder nor the names of its contributors
+ * may be used to endorse or promote products derived from this software without
  * specific prior written permission.
- * 
+ *
  * 4. You adhere to the Media License detailed below.  If you do not, this license
  * is automatically revoked and you must purge all copies of the software you
  * possess, in source or binary form.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON 
- * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+ *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * MEDIA LICENSE ====================
  * All images and other graphical files (the "graphics") included with this
  * software are copyright (c) 2015 Apocalypse Laboratories.  You may not distribute
- * the graphics or any program, source code repository, or other digital storage 
+ * the graphics or any program, source code repository, or other digital storage
  * media containing them without written permission from Apocalypse Laboratories.
  * This ban on distribution only applies to publicly available systems.
  * A password-protected network file share, USB drive, or other storage scheme that
@@ -54,7 +54,6 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,31 +65,55 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * This class is like the Force: A light theme, a dark theme, and it binds the
  * app together. Also like duct tape, but that's not as cool.
  *
- * @author Skylar
+ * Contains a bunch of important variables and constants that are used all over.
+ *
+ * There should be only one MainGUI per app instance, the important things are
+ * static.
+ *
+ * @author Skylar Ittner
  */
 public class MainGUI extends javax.swing.JFrame {
 
     // TODO: Add more code comments and stuff in case anybody else reads this
-    public static final String VERSION_NAME = "1.2"; // For display
-    public static final String APP_NAME = "SyMAT "+VERSION_NAME; // For display
-    public static final double APP_CODE = 14; // Version code, for updates and //needs
-    public static final String API_URL = "https://apis.symatapp.com/"; // API base URL
-    public static String argfile = "";
-    public static Font ubuntuRegular; // Ubuntu font for uniform display
+    /**
+     * Version name, as it should be displayed.
+     */
+    public static final String VERSION_NAME = "1.3";
+    /**
+     * Program name, with version name
+     */
+    public static final String APP_NAME = "SyMAT " + VERSION_NAME;
+    /**
+     * Version number, for updates and //needs in scripts
+     */
+    public static final double APP_CODE = 15;
+    /**
+     * Base URL for building API calls
+     */
+    public static final String API_URL = "https://apis.symatapp.com/";
+
+    public static String argfile = ""; // For opening file from args
+    /**
+     * Ubuntu regular font.
+     */
+    public static Font ubuntuRegular;
     public static boolean skipPython = false; // Skip python init on start?
     public static boolean skipEditor = false; // Skip editor init on start?
 
     private static boolean recentItemsMinimized = false;
 
-    public static boolean updateAvailable = false;
+    public static boolean updateAvailable = false; // Update available?
     public static String updateString = "";
-    
-    // Logo for frames
+
+    /**
+     * Application icon, for setting frame icons.
+     */
     public static ArrayList<Image> symatlogo = new ArrayList<>();
 
     /**
@@ -99,11 +122,10 @@ public class MainGUI extends javax.swing.JFrame {
      */
     public MainGUI() {
         initComponents();
-        
+
         // Set icon
-        String[] sizes = {"16","32","48","64","128","256"};
         setIconImages(symatlogo);
-        
+
         // Center screen
         setLocationRelativeTo(null);
 
@@ -170,16 +192,13 @@ public class MainGUI extends javax.swing.JFrame {
         updateDisplay();
         setVisible(true);
         if (PrefStorage.getSetting("framemaxed", "no").equals("yes")) {
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-//                    try {
+            java.awt.EventQueue.invokeLater(() -> {
+                //                    try {
 //                        Thread.sleep(500);
 //                    } catch (InterruptedException ex) {
 //
 //                    }
-                    setExtendedState(MAXIMIZED_BOTH);
-                }
+                setExtendedState(MAXIMIZED_BOTH);
             });
         }
     }
@@ -325,6 +344,7 @@ public class MainGUI extends javax.swing.JFrame {
         arrangeWindowsBtn = new javax.swing.JButton();
         displaySettingsBtn = new javax.swing.JButton();
         helpBtn = new javax.swing.JButton();
+        notepadBtn = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         wikiBtn = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -360,6 +380,7 @@ public class MainGUI extends javax.swing.JFrame {
         });
 
         tabs.setBackground(new Color(240,240,240));
+        tabs.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         tabs.setOpaque(true);
 
         jPanel4.setFocusable(false);
@@ -421,7 +442,7 @@ public class MainGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(graphBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -482,6 +503,19 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
+        notepadBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/notepad.png"))); // NOI18N
+        notepadBtn.setText("Notepad");
+        notepadBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        notepadBtn.setFocusable(false);
+        notepadBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        notepadBtn.setOpaque(false);
+        notepadBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        notepadBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                notepadBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -493,8 +527,10 @@ public class MainGUI extends javax.swing.JFrame {
                 .addComponent(arrangeWindowsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(helpBtn)
-                .addGap(77, 77, 77)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(notepadBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -503,7 +539,8 @@ public class MainGUI extends javax.swing.JFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(arrangeWindowsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(displaySettingsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(helpBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(helpBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(notepadBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -553,7 +590,7 @@ public class MainGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(forumBtn)
                 .addGap(12, 12, 12)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE))
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -636,7 +673,7 @@ public class MainGUI extends javax.swing.JFrame {
             .addGroup(recentItemsPanelLayout.createSequentialGroup()
                 .addComponent(recentItemsTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(recentFileBtn)
                 .addContainerGap())
@@ -666,7 +703,7 @@ public class MainGUI extends javax.swing.JFrame {
                     .addComponent(appPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(mainPaneLayout.createSequentialGroup()
                         .addComponent(recentItemsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
                         .addComponent(jLabel2)))
                 .addContainerGap())
         );
@@ -678,8 +715,8 @@ public class MainGUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPane)
             .addComponent(tabs)
+            .addComponent(mainPane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -780,6 +817,10 @@ public class MainGUI extends javax.swing.JFrame {
         loadFrame(new WebBrowser("Community Forum", "http://forum.symatapp.com/", WebBrowser.FORUM_LOGO));
     }//GEN-LAST:event_forumBtnActionPerformed
 
+    private void notepadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notepadBtnActionPerformed
+        loadFrame(new Notepad());
+    }//GEN-LAST:event_notepadBtnActionPerformed
+
     /*
      End the button handlers.
      */
@@ -871,14 +912,6 @@ public class MainGUI extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException e) {
             java.util.logging.Logger.getLogger(MainGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, e);
         }
-
-        if (PrefStorage.getSetting("theme").equals("glass")) {
-            try {
-                UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
-            } catch (Exception ex) {
-
-            }
-        }
         //</editor-fold>
         //</editor-fold>
 
@@ -893,12 +926,12 @@ public class MainGUI extends javax.swing.JFrame {
             ubuntuRegular = Font.getFont(Font.SANS_SERIF);
             System.err.println("Error loading fonts: " + ex.getMessage());
         }
-        
+
         // Set icon
-        String[] sizes = {"16","32","48","64","128","256"};
+        String[] sizes = {"16", "32", "48", "64", "128", "256"};
         for (String s : sizes) {
             symatlogo.add(new ImageIcon(
-                MainGUI.class.getResource("logo-filled"+s+".png")).getImage());
+                    MainGUI.class.getResource("logo-filled" + s + ".png")).getImage());
         }
 
         // Command line args
@@ -924,13 +957,10 @@ public class MainGUI extends javax.swing.JFrame {
         }
 
         Platform.setImplicitExit(false);
-        
+
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new SplashScreen().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new SplashScreen().setVisible(true);
         });
     }
 
@@ -951,6 +981,7 @@ public class MainGUI extends javax.swing.JFrame {
     public static javax.swing.JPanel jPanel5;
     public static javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JDesktopPane mainPane;
+    public static javax.swing.JButton notepadBtn;
     public static javax.swing.JButton recentFileBtn;
     public static javax.swing.JList recentFileList;
     public static javax.swing.JPanel recentItemsPanel;

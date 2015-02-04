@@ -13,6 +13,8 @@ xlim(min,max)|Sets the x-axis min and max values.  Cannot be used after a formul
 plotclr()|Reset the graph.
 drawdot(x, y)|Places a dot at the given coordinates.
 simplify('')|Simplify the given function.
+readfile("")|Read a text file from the given filename.
+savefile(data,"")|Save the text data to a file.
 vpa('')|Computes numerical value or simplifies.
 fabs(0)|Absolute value of number.
 asin(0)|

@@ -30,8 +30,8 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="mainPane" max="32767" attributes="0"/>
           <Component id="tabs" max="32767" attributes="0"/>
+          <Component id="mainPane" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -50,6 +50,7 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new Color(240,240,240)" type="code"/>
         </Property>
+        <Property name="tabLayoutPolicy" type="int" value="1"/>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
 
@@ -79,7 +80,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="graphBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jLabel1" pref="506" max="32767" attributes="0"/>
+                      <Component id="jLabel1" pref="477" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -194,8 +195,10 @@
                       <Component id="arrangeWindowsBtn" min="-2" pref="57" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="helpBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
-                      <Component id="jLabel3" pref="439" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="notepadBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="8" max="32767" attributes="0"/>
+                      <Component id="jLabel3" pref="412" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -207,6 +210,7 @@
                           <Component id="arrangeWindowsBtn" alignment="0" max="32767" attributes="0"/>
                           <Component id="displaySettingsBtn" alignment="0" max="32767" attributes="0"/>
                           <Component id="helpBtn" alignment="0" max="32767" attributes="0"/>
+                          <Component id="notepadBtn" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -286,6 +290,26 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="helpBtnActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JButton" name="notepadBtn">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/net/apocalypselabs/symat/images/notepad.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Notepad"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                    <EmptyBorder bottom="5" left="5" right="5" top="5"/>
+                  </Border>
+                </Property>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="opaque" type="boolean" value="false"/>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="notepadBtnActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel5">
@@ -310,7 +334,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="forumBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                      <Component id="jLabel4" pref="571" max="32767" attributes="0"/>
+                      <Component id="jLabel4" pref="542" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -423,7 +447,7 @@
                       <Component id="appPanel" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="recentItemsPanel" max="32767" attributes="0"/>
-                          <EmptySpace pref="189" max="32767" attributes="0"/>
+                          <EmptySpace pref="157" max="32767" attributes="0"/>
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -486,7 +510,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="recentItemsTitle" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="206" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="256" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="recentFileBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
