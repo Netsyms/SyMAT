@@ -46,7 +46,6 @@
 package net.apocalypselabs.symat;
 
 import java.awt.Color;
-import java.awt.geom.RoundRectangle2D;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -69,8 +68,7 @@ public class SplashScreen extends javax.swing.JFrame {
     public SplashScreen() {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
-        setIconImage((new ImageIcon(
-                getClass().getResource("icon.png"))).getImage());
+        setIconImages(MainGUI.symatlogo);
         setLocationRelativeTo(null);
     }
 

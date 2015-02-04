@@ -54,6 +54,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -66,6 +67,10 @@ public class WebBrowser extends javax.swing.JInternalFrame {
     private JFXPanel jfxPanel;
     private Group root;
     private Scene scene;
+
+    public static final int DEFAULT_LOGO = 0;
+    public static final int WIKI_LOGO = 1;
+    public static final int FORUM_LOGO = 2;
 
     /**
      * Creates new form WebBrowser
@@ -100,6 +105,28 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         this();
         setTitle(title);
         loadURL(url);
+    }
+
+    public WebBrowser(String title, String url, int icon) {
+        this(title, url);
+        switch (icon) {
+            case WIKI_LOGO:
+                setFrameIcon(new ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/wiki.png")));
+                break;
+            case FORUM_LOGO:
+                setFrameIcon(new ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/forum.png")));
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        browser.getEngine().setJavaScriptEnabled(false);
+                    }
+                });
+                break;
+            case DEFAULT_LOGO:
+            default:
+                setFrameIcon(new ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/browser.png")));
+        }
+
     }
 
     public WebBrowser(String url, boolean isurl) {
@@ -141,6 +168,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setTitle("Browser");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/browser.png"))); // NOI18N
         setMinimumSize(new java.awt.Dimension(300, 300));
         setPreferredSize(new java.awt.Dimension(480, 400));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -192,7 +220,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
             @Override
             public void run() {
                 jfxPanel.setSize(getWidth(), getHeight());
-                browser.resize(getWidth() - 12, getHeight());
+                browser.resize(getWidth() - 12, getHeight() - 12);
             }
         });
     }

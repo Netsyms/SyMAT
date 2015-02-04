@@ -50,11 +50,14 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javafx.application.Platform;
@@ -86,6 +89,9 @@ public class MainGUI extends javax.swing.JFrame {
 
     public static boolean updateAvailable = false;
     public static String updateString = "";
+    
+    // Logo for frames
+    public static ArrayList<Image> symatlogo = new ArrayList<>();
 
     /**
      * Creates the main app window and does some quick things that aren't
@@ -93,8 +99,12 @@ public class MainGUI extends javax.swing.JFrame {
      */
     public MainGUI() {
         initComponents();
-        setIconImage((new ImageIcon(
-                getClass().getResource("icon.png"))).getImage());
+        
+        // Set icon
+        String[] sizes = {"16","32","48","64","128","256"};
+        setIconImages(symatlogo);
+        
+        // Center screen
         setLocationRelativeTo(null);
 
         // Run things when app closed
@@ -319,6 +329,7 @@ public class MainGUI extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         wikiBtn = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        forumBtn = new javax.swing.JButton();
         mainPane = mainPane = new javax.swing.JDesktopPane() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -536,6 +547,19 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel4.setText(namemark());
         jLabel4.setFocusable(false);
 
+        forumBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/forum.png"))); // NOI18N
+        forumBtn.setText("Forum");
+        forumBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        forumBtn.setFocusable(false);
+        forumBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        forumBtn.setOpaque(false);
+        forumBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        forumBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                forumBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -543,15 +567,18 @@ public class MainGUI extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(wikiBtn)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(forumBtn)
+                .addGap(12, 12, 12)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(wikiBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(wikiBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(forumBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -763,12 +790,16 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_recentItemsTitleMouseClicked
 
     private void wikiBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wikiBtnActionPerformed
-        loadFrame(new WebBrowser("SyMAT Wiki"));
+        loadFrame(new WebBrowser("SyMAT Wiki", "http://wiki.symatapp.com", WebBrowser.WIKI_LOGO));
     }//GEN-LAST:event_wikiBtnActionPerformed
 
     private void globalsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_globalsBtnActionPerformed
         loadFrame(new Globals());
     }//GEN-LAST:event_globalsBtnActionPerformed
+
+    private void forumBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forumBtnActionPerformed
+        loadFrame(new WebBrowser("Community Forum", "http://forum.symatapp.com/", WebBrowser.FORUM_LOGO));
+    }//GEN-LAST:event_forumBtnActionPerformed
 
     /*
      End the button handlers.
@@ -883,6 +914,13 @@ public class MainGUI extends javax.swing.JFrame {
             ubuntuRegular = Font.getFont(Font.SANS_SERIF);
             System.err.println("Error loading fonts: " + ex.getMessage());
         }
+        
+        // Set icon
+        String[] sizes = {"16","32","48","64","128","256"};
+        for (String s : sizes) {
+            symatlogo.add(new ImageIcon(
+                MainGUI.class.getResource("logo-filled"+s+".png")).getImage());
+        }
 
         // Command line args
         for (String arg : args) {
@@ -922,6 +960,7 @@ public class MainGUI extends javax.swing.JFrame {
     public static javax.swing.JButton arrangeWindowsBtn;
     public static javax.swing.JButton displaySettingsBtn;
     public static javax.swing.JButton editorBtn;
+    public static javax.swing.JButton forumBtn;
     public static javax.swing.JButton globalsBtn;
     public static javax.swing.JButton graphBtn;
     public static javax.swing.JButton helpBtn;
