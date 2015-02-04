@@ -14,8 +14,6 @@ plotclr()|Reset the graph.
 drawdot(x, y)|Places a dot at the given coordinates.
 simplify('')|Simplify the given function.
 vpa('')|Computes numerical value or simplifies.
-global("", obj)|Set global variable with the given id.
-global("")|Get global variable with the given id.
 fabs(0)|Absolute value of number.
 asin(0)|
 acos(0)|

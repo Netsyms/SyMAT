@@ -30,7 +30,3 @@ def simplify(expr):
     return _.simplify(expr)
 def vpa(expr):
     return _.vpa(expr)
-def setglobal(key,val):
-    _.setglobal(key,val)
-def getglobal(key):
-    return _.getglobal(key)

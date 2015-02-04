@@ -215,12 +215,15 @@ public class Globals extends javax.swing.JInternalFrame {
         if (keyList.getSelectedValue() != null) {
             valBox.setEditable(true);
             try {
-                Object item = Functions.GLOBALS.get(
-                        keyList.getSelectedValue());
-                if (item.getClass().equals(sun.org.mozilla.javascript.internal.NativeArray.class)) {
-                    Object[] arr = ((sun.org.mozilla.javascript.internal.NativeArray) item).toArray();
-                    valBox.setText(Arrays.toString(arr));
-                    valBox.setEditable(false);
+                Object item = Functions.GLOBALS.get(keyList.getSelectedValue());
+                /*if (item.getClass().equals(sun.org.mozilla.javascript.internal.NativeArray.class)) {
+                 Object[] arr = ((sun.org.mozilla.javascript.internal.NativeArray) item).toArray();
+                 valBox.setText(Arrays.toString(arr));
+                 valBox.setEditable(false);
+                 } else */
+                if (item == null) {
+                    valBox.setText("");
+                    valBox.setEditable(true);
                 } else if (item.getClass().equals(org.mozilla.javascript.NativeArray.class)) {
                     Object[] arr = ((org.mozilla.javascript.NativeArray) item).toArray();
                     valBox.setText(Arrays.toString(arr));

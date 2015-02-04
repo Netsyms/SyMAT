@@ -325,7 +325,6 @@ public class MainGUI extends javax.swing.JFrame {
         arrangeWindowsBtn = new javax.swing.JButton();
         displaySettingsBtn = new javax.swing.JButton();
         helpBtn = new javax.swing.JButton();
-        globalsBtn = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         wikiBtn = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -483,19 +482,6 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
-        globalsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/globals.png"))); // NOI18N
-        globalsBtn.setText("Vars");
-        globalsBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        globalsBtn.setFocusable(false);
-        globalsBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        globalsBtn.setOpaque(false);
-        globalsBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        globalsBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                globalsBtnActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -504,12 +490,10 @@ public class MainGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(displaySettingsBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(globalsBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(arrangeWindowsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(helpBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(77, 77, 77)
                 .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -519,8 +503,7 @@ public class MainGUI extends javax.swing.JFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(arrangeWindowsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(displaySettingsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(helpBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(globalsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(helpBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -793,10 +776,6 @@ public class MainGUI extends javax.swing.JFrame {
         loadFrame(new WebBrowser("SyMAT Wiki", "http://wiki.symatapp.com", WebBrowser.WIKI_LOGO));
     }//GEN-LAST:event_wikiBtnActionPerformed
 
-    private void globalsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_globalsBtnActionPerformed
-        loadFrame(new Globals());
-    }//GEN-LAST:event_globalsBtnActionPerformed
-
     private void forumBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forumBtnActionPerformed
         loadFrame(new WebBrowser("Community Forum", "http://forum.symatapp.com/", WebBrowser.FORUM_LOGO));
     }//GEN-LAST:event_forumBtnActionPerformed
@@ -961,7 +940,6 @@ public class MainGUI extends javax.swing.JFrame {
     public static javax.swing.JButton displaySettingsBtn;
     public static javax.swing.JButton editorBtn;
     public static javax.swing.JButton forumBtn;
-    public static javax.swing.JButton globalsBtn;
     public static javax.swing.JButton graphBtn;
     public static javax.swing.JButton helpBtn;
     public static javax.swing.JLabel jLabel1;

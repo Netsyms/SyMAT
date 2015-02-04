@@ -219,55 +219,57 @@ public class Functions {
         graphwin.drawDot(x, y);
     }
 
-    /*
-     Global variables are accessible across scripts.
-     */
-    /**
-     * Set a global variable.
-     *
-     * @param name The variable name
-     * @param var The variable
-     */
-    public static void global(String name, Object var) {
-        GLOBALS.put(name, var);
-    }
-
-    /**
-     * Get a global variable.
-     *
-     * @param name The variable name
-     * @return The variable
-     */
-    public static Object global(String name) {
-        Object item = GLOBALS.get(name);
-        return item;
-    }
     
-    // Fix for Python reserved word "global"
-    public static void setglobal(String name, Object var) {
-        global(name, var);
-    }
-    
-    // Fix for Python reserved word "global"
-    public static void getglobal(String name) {
-        global(name);
-    }
-    
-    /**
-     * Clear all the GLOBALS.
-     */
-    public static void clrglobals() {
-        GLOBALS.clear();
-    }
-    
-    /**
-     * Check if the given global key is set.
-     * @param name The key to check.
-     * @return True if the key exists, else false.
-     */
-    public static boolean globalcontains(String name) {
-        return GLOBALS.containsKey(name);
-    }
+    // TODO: Make globals work!
+//    /*
+//     Global variables are accessible across scripts.
+//     */
+//    /**
+//     * Set a global variable.
+//     *
+//     * @param name The variable name
+//     * @param var The variable
+//     */
+//    public static void global(String name, Object var) {
+//        GLOBALS.put(name, var);
+//    }
+//
+//    /**
+//     * Get a global variable.
+//     *
+//     * @param name The variable name
+//     * @return The variable
+//     */
+//    public static Object global(String name) {
+//        Object item = GLOBALS.get(name);
+//        return item;
+//    }
+//    
+//    // Fix for Python reserved word "global"
+//    public static void setglobal(String name, Object var) {
+//        global(name, var);
+//    }
+//    
+//    // Fix for Python reserved word "global"
+//    public static void getglobal(String name) {
+//        global(name);
+//    }
+//    
+//    /**
+//     * Clear all the GLOBALS.
+//     */
+//    public static void clrglobals() {
+//        GLOBALS.clear();
+//    }
+//    
+//    /**
+//     * Check if the given global key is set.
+//     * @param name The key to check.
+//     * @return True if the key exists, else false.
+//     */
+//    public static boolean globalcontains(String name) {
+//        return GLOBALS.containsKey(name);
+//    }
 
     /*
      Other
