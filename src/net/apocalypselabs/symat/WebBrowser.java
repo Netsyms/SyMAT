@@ -71,6 +71,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
     public static final int DEFAULT_LOGO = 0;
     public static final int WIKI_LOGO = 1;
     public static final int FORUM_LOGO = 2;
+    public static final int PAD_LOGO = 3;
 
     /**
      * Creates new form WebBrowser
@@ -89,7 +90,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
                 children.add(browser);
                 jfxPanel.setScene(scene);
                 webEngine = browser.getEngine();
-                webEngine.setUserAgent("SyMAT "+MainGUI.VERSION_NAME);
+                webEngine.setUserAgent("SyMAT " + MainGUI.VERSION_NAME);
                 webEngine.loadContent("<html><head><title></title></head><body><h3 style=\"font-family: sans-serif; text-align: center;\">Loading...</h3></body></html>");
             }
         });
@@ -117,7 +118,9 @@ public class WebBrowser extends javax.swing.JInternalFrame {
             case FORUM_LOGO:
                 setFrameIcon(new ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/forum.png")));
                 break;
-            case DEFAULT_LOGO:
+            case PAD_LOGO:
+                setFrameIcon(new ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/editor.png")));
+                break;
             default:
                 setFrameIcon(new ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/browser.png")));
         }
@@ -215,8 +218,8 @@ public class WebBrowser extends javax.swing.JInternalFrame {
             @Override
             public void run() {
                 jfxPanel.setSize(getWidth(), getHeight());
-                browser.setPrefSize(getWidth()-12, getHeight()-12);
-                browser.resize(getWidth() - 12, getHeight() - 12);
+                browser.setPrefSize(getWidth() - 12, getHeight() - 32);
+                browser.resize(getWidth() - 12, getHeight() - 32);
             }
         });
     }

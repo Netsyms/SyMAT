@@ -2,3 +2,4 @@ bin/
 dist/
 nbproject/
 *.exe
+/src/padkey

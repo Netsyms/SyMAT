@@ -52,6 +52,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -151,6 +153,18 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         });
     }
 
+    public CodeEditor(String text) {
+        this();
+        codeBox.setText(text);
+    }
+
+    public CodeEditor(String text, boolean openSaveDialog) {
+        this(text);
+        if (openSaveDialog) {
+            saveAsMenuActionPerformed(null);
+        }
+    }
+
     private void setEditorTheme(String themeName) {
         try {
             Theme theme = Theme.load(CodeEditor.class
@@ -205,6 +219,8 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         saveMenu = new javax.swing.JMenuItem();
         saveAsMenu = new javax.swing.JMenuItem();
         exportMenu = new javax.swing.JMenuItem();
+        shareMenu = new javax.swing.JMenuItem();
+        shareAsMenu = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         undoBtn = new javax.swing.JMenuItem();
         redoBtn = new javax.swing.JMenuItem();
@@ -359,6 +375,22 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             }
         });
         fileMenu.add(exportMenu);
+
+        shareMenu.setText("Share...");
+        shareMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                shareMenuActionPerformed(evt);
+            }
+        });
+        fileMenu.add(shareMenu);
+
+        shareAsMenu.setText("Share as...");
+        shareAsMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                shareAsMenuActionPerformed(evt);
+            }
+        });
+        fileMenu.add(shareAsMenu);
 
         jMenuBar1.add(fileMenu);
 
@@ -762,6 +794,41 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         codeBox.redoLastAction();
     }//GEN-LAST:event_redoBtnActionPerformed
 
+    private void shareMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shareMenuActionPerformed
+        createShared("");
+    }//GEN-LAST:event_shareMenuActionPerformed
+
+    private void shareAsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shareAsMenuActionPerformed
+        String id = JOptionPane.showInternalInputDialog(this, 
+                "Enter the pad ID to share to.  "
+                + "If the pad exists, it will be overwritten.",
+                "Share",
+                JOptionPane.QUESTION_MESSAGE);
+        if (!(id == null || id.equals(""))) {
+            createShared(id);
+        }
+    }//GEN-LAST:event_shareAsMenuActionPerformed
+
+    private void createShared(String id) {
+        try {
+            String padid = Pads.genPad(id, codeBox.getText());
+            Pads.addPad(padid);
+            MainGUI.loadFrame(new WebBrowser("Pad " + padid,
+                    Pads.PADS_URL + "/p/" + padid,
+                    WebBrowser.PAD_LOGO));
+            JOptionPane.showInternalMessageDialog(this,
+                    new SharePad(padid),
+                    "Share Pad",
+                    JOptionPane.PLAIN_MESSAGE);
+        } catch (Exception ex) {
+            Debug.stacktrace(ex);
+            JOptionPane.showInternalMessageDialog(this,
+                    "Could not create new pad: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     /**
      * Open a sample code file with the given name.<p>
      * Uses the current language.
@@ -847,6 +914,8 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem sampleHelloWorld;
     private javax.swing.JMenuItem saveAsMenu;
     private javax.swing.JMenuItem saveMenu;
+    private javax.swing.JMenuItem shareAsMenu;
+    private javax.swing.JMenuItem shareMenu;
     private javax.swing.JMenuItem undoBtn;
     // End of variables declaration//GEN-END:variables
 }

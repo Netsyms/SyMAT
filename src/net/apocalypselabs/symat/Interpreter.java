@@ -90,7 +90,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
         if (lang.equals("default")) {
             lang = PrefStorage.getSetting("shellLang", "javascript");
         }
-        cr = new CodeRunner(lang, true);
+        cr = new CodeRunner(lang);
 
         // Setup language
         if (lang.equals("python")) {

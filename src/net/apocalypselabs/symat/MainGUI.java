@@ -65,7 +65,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * This class is like the Force: A light theme, a dark theme, and it binds the
@@ -84,7 +83,7 @@ public class MainGUI extends javax.swing.JFrame {
     /**
      * Version name, as it should be displayed.
      */
-    public static final String VERSION_NAME = "1.3";
+    public static final String VERSION_NAME = "1.4";
     /**
      * Program name, with version name
      */
@@ -92,7 +91,7 @@ public class MainGUI extends javax.swing.JFrame {
     /**
      * Version number, for updates and //needs in scripts
      */
-    public static final double APP_CODE = 15;
+    public static final double APP_CODE = 16;
     /**
      * Base URL for building API calls
      */
@@ -349,6 +348,7 @@ public class MainGUI extends javax.swing.JFrame {
         wikiBtn = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         forumBtn = new javax.swing.JButton();
+        padsBtn = new javax.swing.JButton();
         mainPane = mainPane = new javax.swing.JDesktopPane() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -580,6 +580,19 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
+        padsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/pads.png"))); // NOI18N
+        padsBtn.setText("Pads");
+        padsBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        padsBtn.setFocusable(false);
+        padsBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        padsBtn.setOpaque(false);
+        padsBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        padsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                padsBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -589,8 +602,10 @@ public class MainGUI extends javax.swing.JFrame {
                 .addComponent(wikiBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(forumBtn)
-                .addGap(12, 12, 12)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(padsBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -598,11 +613,12 @@ public class MainGUI extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(wikiBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(forumBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(forumBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(padsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tabs.addTab("Community", jPanel5);
+        tabs.addTab("Web", jPanel5);
 
         mainPane.setBackground(new java.awt.Color(204, 204, 204));
         mainPane.setAutoscrolls(true);
@@ -821,6 +837,10 @@ public class MainGUI extends javax.swing.JFrame {
         loadFrame(new Notepad());
     }//GEN-LAST:event_notepadBtnActionPerformed
 
+    private void padsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_padsBtnActionPerformed
+        loadFrame(new Pads());
+    }//GEN-LAST:event_padsBtnActionPerformed
+
     /*
      End the button handlers.
      */
@@ -918,7 +938,7 @@ public class MainGUI extends javax.swing.JFrame {
         try {
             // Ubuntu font for prettifying
             ubuntuRegular = Font.createFont(Font.TRUETYPE_FONT, MainGUI.class.
-                    getResourceAsStream("/ubuntu.ttf"));
+                    getResourceAsStream("/Ubuntu-R.ttf"));
         } catch (FontFormatException | IOException ex) {
             ubuntuRegular = Font.getFont(Font.SANS_SERIF);
             System.err.println("Error loading fonts: " + ex.getMessage());
@@ -982,6 +1002,7 @@ public class MainGUI extends javax.swing.JFrame {
     public static javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JDesktopPane mainPane;
     public static javax.swing.JButton notepadBtn;
+    public static javax.swing.JButton padsBtn;
     public static javax.swing.JButton recentFileBtn;
     public static javax.swing.JList recentFileList;
     public static javax.swing.JPanel recentItemsPanel;
