@@ -62,12 +62,12 @@ import static net.apocalypselabs.symat.MainGUI.API_URL;
  *
  * @author Skylar
  */
-public class FirstRun extends javax.swing.JInternalFrame {
+public class License extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form FirstRun
      */
-    public FirstRun() {
+    public License() {
         initComponents();
     }
 

@@ -176,7 +176,7 @@ public class MainGUI extends javax.swing.JFrame {
             }
             if (!licValid) {
                 licenseRestrict(true);
-                loadFrame(new FirstRun());
+                loadFrame(new License());
                 loaded = true;
             }
         }
