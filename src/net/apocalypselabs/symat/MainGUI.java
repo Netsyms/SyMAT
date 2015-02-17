@@ -54,8 +54,12 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -159,9 +163,9 @@ public class MainGUI extends javax.swing.JFrame {
             argfile = "";
             loaded = true;
         }
+        boolean licValid = false;
         if (PrefStorage.getSetting("license").equals("")
                 || PrefStorage.getSetting("licensetype").equals("demo")) {
-            boolean licValid = false;
             if (PrefStorage.getSetting("licensetype").equals("demo")) {
                 Calendar c = Calendar.getInstance();
                 c.setTime(new Date());
@@ -174,11 +178,30 @@ public class MainGUI extends javax.swing.JFrame {
 
                 }
             }
-            if (!licValid) {
-                licenseRestrict(true);
-                loadFrame(new License());
-                loaded = true;
+        } else {
+            try {
+                Debug.println("Checking license...");
+                URL url = new URL(API_URL + "liccheck.php?email="
+                        + PrefStorage.getSetting("license")
+                        + "&quick=1");
+                String line;
+                try (InputStream is = url.openStream();
+                        BufferedReader br
+                        = new BufferedReader(new InputStreamReader(is))) {
+                    line = br.readLine();
+                }
+                if (line.equals("ok")) {
+                    licValid = true;
+                }
+            } catch (Exception ex) {
+                // Assume valid
+                licValid = true;
             }
+        }
+        if (!licValid) {
+            licenseRestrict(true);
+            loadFrame(new License());
+            loaded = true;
         }
         // Only load shell if nothing else is going on
         if (argfile.equals("") && !loaded) {
@@ -200,7 +223,7 @@ public class MainGUI extends javax.swing.JFrame {
                 setExtendedState(MAXIMIZED_BOTH);
             });
         }
-        
+
         if (!PrefStorage.getSetting("showrecent", "").equals("")) {
             recentItemsPanel.setVisible(false);
         }
@@ -210,6 +233,8 @@ public class MainGUI extends javax.swing.JFrame {
         editorBtn.setEnabled(!restricted);
         graphBtn.setEnabled(!restricted);
         helpBtn.setEnabled(!restricted);
+        padsBtn.setEnabled(!restricted);
+        recentFileList.setEnabled(!restricted);
     }
 
     /**
@@ -273,8 +298,9 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     public static void updateNamemark() {
-        jLabel1.setText(namemark());
-        jLabel3.setText(namemark());
+        namemark1.setText(namemark());
+        namemark2.setText(namemark());
+        namemark3.setText(namemark());
     }
 
     public static void loadRecentFiles() {
@@ -346,16 +372,16 @@ public class MainGUI extends javax.swing.JFrame {
         shellBtn = new javax.swing.JButton();
         editorBtn = new javax.swing.JButton();
         graphBtn = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        namemark1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        namemark2 = new javax.swing.JLabel();
         arrangeWindowsBtn = new javax.swing.JButton();
         displaySettingsBtn = new javax.swing.JButton();
         helpBtn = new javax.swing.JButton();
         notepadBtn = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         wikiBtn = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
+        namemark3 = new javax.swing.JLabel();
         forumBtn = new javax.swing.JButton();
         padsBtn = new javax.swing.JButton();
         mainPane = mainPane = new javax.swing.JDesktopPane() {
@@ -434,10 +460,10 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(MainGUI.ubuntuRegular.deriveFont(11.0F));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText(namemark());
-        jLabel1.setFocusable(false);
+        namemark1.setFont(MainGUI.ubuntuRegular.deriveFont(11.0F));
+        namemark1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        namemark1.setText(namemark());
+        namemark1.setFocusable(false);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -451,13 +477,13 @@ public class MainGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(graphBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE))
+                .addComponent(namemark1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(namemark1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(shellBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(editorBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(graphBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -468,10 +494,10 @@ public class MainGUI extends javax.swing.JFrame {
 
         jPanel2.setOpaque(false);
 
-        jLabel3.setFont(MainGUI.ubuntuRegular.deriveFont(11.0F));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel3.setText(namemark());
-        jLabel3.setFocusable(false);
+        namemark2.setFont(MainGUI.ubuntuRegular.deriveFont(11.0F));
+        namemark2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        namemark2.setText(namemark());
+        namemark2.setFocusable(false);
 
         arrangeWindowsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/cascade.png"))); // NOI18N
         arrangeWindowsBtn.setText("Arrange");
@@ -539,13 +565,13 @@ public class MainGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(notepadBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE))
+                .addComponent(namemark2, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(namemark2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(arrangeWindowsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(displaySettingsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(helpBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -571,10 +597,10 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setFont(MainGUI.ubuntuRegular.deriveFont(11.0F));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel4.setText(namemark());
-        jLabel4.setFocusable(false);
+        namemark3.setFont(MainGUI.ubuntuRegular.deriveFont(11.0F));
+        namemark3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        namemark3.setText(namemark());
+        namemark3.setFocusable(false);
 
         forumBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/forum.png"))); // NOI18N
         forumBtn.setText("Forum");
@@ -614,13 +640,13 @@ public class MainGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(padsBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(namemark3, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(namemark3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(wikiBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(forumBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(padsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -1001,15 +1027,15 @@ public class MainGUI extends javax.swing.JFrame {
     public static javax.swing.JButton forumBtn;
     public static javax.swing.JButton graphBtn;
     public static javax.swing.JButton helpBtn;
-    public static javax.swing.JLabel jLabel1;
     public static javax.swing.JLabel jLabel2;
-    public static javax.swing.JLabel jLabel3;
-    public static javax.swing.JLabel jLabel4;
     public static javax.swing.JPanel jPanel2;
     public static javax.swing.JPanel jPanel4;
     public static javax.swing.JPanel jPanel5;
     public static javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JDesktopPane mainPane;
+    public static javax.swing.JLabel namemark1;
+    public static javax.swing.JLabel namemark2;
+    public static javax.swing.JLabel namemark3;
     public static javax.swing.JButton notepadBtn;
     public static javax.swing.JButton padsBtn;
     public static javax.swing.JButton recentFileBtn;
