@@ -92,10 +92,10 @@ public class Display extends javax.swing.JInternalFrame {
 
         themeGroup.add(themeLight);
         themeLight.setSelected(true);
-        themeLight.setText("Day");
+        themeLight.setText("Light");
 
         themeGroup.add(themeDark);
-        themeDark.setText("NightDark");
+        themeDark.setText("Dark");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

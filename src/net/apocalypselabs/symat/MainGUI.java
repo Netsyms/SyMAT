@@ -553,7 +553,7 @@ public class MainGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tabs.addTab("Apps", jPanel2);
+        tabs.addTab("Tools", jPanel2);
 
         jPanel5.setFocusable(false);
         jPanel5.setOpaque(false);
