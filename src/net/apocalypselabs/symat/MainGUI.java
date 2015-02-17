@@ -200,6 +200,10 @@ public class MainGUI extends javax.swing.JFrame {
                 setExtendedState(MAXIMIZED_BOTH);
             });
         }
+        
+        if (!PrefStorage.getSetting("showrecent", "").equals("")) {
+            recentItemsPanel.setVisible(false);
+        }
     }
 
     public static void licenseRestrict(boolean restricted) {
@@ -236,6 +240,11 @@ public class MainGUI extends javax.swing.JFrame {
             tabs.setBackground(new Color(240, 240, 240));
             recentFileList.setForeground(Color.black);
             recentFileList.setBackground(Color.white);
+        }
+        if (!PrefStorage.getSetting("showrecent", "").equals("")) {
+            recentItemsPanel.setVisible(false);
+        } else {
+            recentItemsPanel.setVisible(true);
         }
     }
 
@@ -478,7 +487,7 @@ public class MainGUI extends javax.swing.JFrame {
         });
 
         displaySettingsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/display.png"))); // NOI18N
-        displaySettingsBtn.setText("Theme");
+        displaySettingsBtn.setText("Display");
         displaySettingsBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         displaySettingsBtn.setFocusable(false);
         displaySettingsBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

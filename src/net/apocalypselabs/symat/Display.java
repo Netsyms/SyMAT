@@ -72,14 +72,15 @@ public class Display extends javax.swing.JInternalFrame {
         themeLight = new javax.swing.JRadioButton();
         themeDark = new javax.swing.JRadioButton();
         saveBtn = new javax.swing.JButton();
+        showRecent = new javax.swing.JCheckBox();
 
         setClosable(true);
         setIconifiable(true);
-        setTitle("Theme");
+        setTitle("Display");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/settings.png"))); // NOI18N
-        setMaximumSize(new java.awt.Dimension(170, 188));
-        setMinimumSize(new java.awt.Dimension(170, 188));
-        setPreferredSize(new java.awt.Dimension(170, 188));
+        setMaximumSize(new java.awt.Dimension(160, 215));
+        setMinimumSize(new java.awt.Dimension(160, 215));
+        setPreferredSize(new java.awt.Dimension(160, 215));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -91,7 +92,7 @@ public class Display extends javax.swing.JInternalFrame {
 
         themeGroup.add(themeLight);
         themeLight.setSelected(true);
-        themeLight.setText("Daylight");
+        themeLight.setText("Day");
 
         themeGroup.add(themeDark);
         themeDark.setText("NightDark");
@@ -105,7 +106,7 @@ public class Display extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(themeLight)
                     .addComponent(themeDark))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,26 +125,32 @@ public class Display extends javax.swing.JInternalFrame {
             }
         });
 
+        showRecent.setSelected(true);
+        showRecent.setText("Show recent items");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                    .addComponent(saveBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(showRecent))))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(showRecent)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(saveBtn)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         pack();
@@ -161,6 +168,10 @@ public class Display extends javax.swing.JInternalFrame {
                     themeDark.setSelected(false);
             }
         }
+        
+        if (!PrefStorage.getSetting("showrecent", "").equals("")) {
+            showRecent.setSelected(false);
+        }
     }//GEN-LAST:event_formComponentShown
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
@@ -168,6 +179,11 @@ public class Display extends javax.swing.JInternalFrame {
             PrefStorage.saveSetting("theme", "dark");
         } else {
             PrefStorage.saveSetting("theme", "light");
+        }
+        if (showRecent.isSelected()) {
+            PrefStorage.saveSetting("showrecent", "");
+        } else {
+            PrefStorage.saveSetting("showrecent", "no");
         }
         PrefStorage.save();
         MainGUI.updateDisplay();
@@ -177,6 +193,7 @@ public class Display extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton saveBtn;
+    private javax.swing.JCheckBox showRecent;
     private javax.swing.JRadioButton themeDark;
     private javax.swing.ButtonGroup themeGroup;
     private javax.swing.JRadioButton themeLight;
