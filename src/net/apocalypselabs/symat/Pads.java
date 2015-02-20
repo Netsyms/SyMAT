@@ -169,7 +169,9 @@ public class Pads extends javax.swing.JInternalFrame {
     }
 
     /**
-     * Generate a random pad ID.
+     * Generate a random pad ID with length 15.  
+     * <br />There are about 7.6 x 10^26 possibilities (768 septillion).
+     * <br />If this starts giving used IDs, I'll be too rich to care.
      *
      * @return the ID.
      */
@@ -223,6 +225,12 @@ public class Pads extends javax.swing.JInternalFrame {
         return text;
     }
 
+    /**
+     * Set pad text.
+     *
+     * @param id Pad ID
+     * @param content Pad text
+     */
     public static void setPad(String id, String content) {
         try {
             getClient().setText(id, content);
@@ -253,9 +261,14 @@ public class Pads extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     * Display a pad.
+     *
+     * @param pad the pad ID
+     */
     public static void loadPad(String pad) {
         String theme = "";
-        if (PrefStorage.getSetting("theme").equals("dark")) {
+        if (Theme.currentTheme == Theme.THEME_DARK) {
             theme = "?theme=terminal";
         }
         MainGUI.loadFrame(new WebBrowser("Pad " + pad,
