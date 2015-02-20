@@ -243,6 +243,16 @@ public class Pads extends javax.swing.JInternalFrame {
         }
     }
 
+    public static void loadPad(String pad) {
+        String theme = "";
+        if (PrefStorage.getSetting("theme").equals("dark")) {
+            theme = "?theme=terminal";
+        }
+        MainGUI.loadFrame(new WebBrowser("Pad " + pad,
+                PADS_URL + "/p/" + pad + theme,
+                WebBrowser.PAD_LOGO));
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -429,9 +439,7 @@ public class Pads extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_previewBtnActionPerformed
 
     private void openBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBtnActionPerformed
-        MainGUI.loadFrame(new WebBrowser("Pad " + getSelectedPad(),
-                PADS_URL + "/p/" + getSelectedPad(),
-                WebBrowser.PAD_LOGO));
+        loadPad(getSelectedPad());
     }//GEN-LAST:event_openBtnActionPerformed
 
     private void purgeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purgeBtnActionPerformed

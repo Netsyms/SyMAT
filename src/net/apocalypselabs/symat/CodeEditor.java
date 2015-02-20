@@ -813,9 +813,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         try {
             String padid = Pads.genPad(id, codeBox.getText());
             Pads.addPad(padid);
-            MainGUI.loadFrame(new WebBrowser("Pad " + padid,
-                    Pads.PADS_URL + "/p/" + padid,
-                    WebBrowser.PAD_LOGO));
+            Pads.loadPad(padid);
             JOptionPane.showInternalMessageDialog(this,
                     new SharePad(padid),
                     "Share Pad",
