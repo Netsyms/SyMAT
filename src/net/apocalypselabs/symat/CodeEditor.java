@@ -52,8 +52,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -175,17 +173,10 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     }
 
     private void loadTheme() {
-        if (PrefStorage.getSetting("theme").equals("dark")) {
-            outputBox.setBackground(new Color(41, 49, 52));
-            outputBox.setForeground(Color.WHITE);
-            setBackground(Color.DARK_GRAY);
-            setEditorTheme("dark");
-        } else {
-            outputBox.setBackground(Color.WHITE);
-            outputBox.setForeground(Color.BLACK);
-            setBackground(Color.LIGHT_GRAY);
-            setEditorTheme("default");
-        }
+        outputBox.setBackground(net.apocalypselabs.symat.Theme.boxColor());
+        outputBox.setForeground(net.apocalypselabs.symat.Theme.textColor());
+        setBackground(net.apocalypselabs.symat.Theme.windowColor());
+        setEditorTheme(net.apocalypselabs.symat.Theme.editorTheme());
     }
 
     /**
@@ -799,7 +790,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_shareMenuActionPerformed
 
     private void shareAsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shareAsMenuActionPerformed
-        String id = JOptionPane.showInternalInputDialog(this, 
+        String id = JOptionPane.showInternalInputDialog(this,
                 "Enter the pad ID to share to.  "
                 + "If the pad exists, it will be overwritten.",
                 "Share",
@@ -826,7 +817,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     /**
      * Open a sample code file with the given name.<p>
      * Uses the current language.

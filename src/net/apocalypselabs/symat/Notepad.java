@@ -61,9 +61,14 @@ public class Notepad extends javax.swing.JInternalFrame {
      */
     public Notepad() {
         initComponents();
+        updateTheme();
         textBox.setText(PrefStorage.getSetting("notepad"));
     }
 
+    private void updateTheme() {
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -78,7 +83,6 @@ public class Notepad extends javax.swing.JInternalFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         eraseBtn = new javax.swing.JMenuItem();
-        saveBtn = new javax.swing.JMenuItem();
 
         setClosable(true);
         setIconifiable(true);
@@ -89,6 +93,7 @@ public class Notepad extends javax.swing.JInternalFrame {
 
         jScrollPane4.setFont(Font.getFont(Font.MONOSPACED));
 
+        textBox.setBackground(new java.awt.Color(255, 255, 204));
         textBox.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 textBoxKeyTyped(evt);
@@ -106,15 +111,6 @@ public class Notepad extends javax.swing.JInternalFrame {
             }
         });
         jMenu1.add(eraseBtn);
-
-        saveBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        saveBtn.setText("Save");
-        saveBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveBtnActionPerformed(evt);
-            }
-        });
-        jMenu1.add(saveBtn);
 
         jMenuBar1.add(jMenu1);
 
@@ -138,26 +134,23 @@ public class Notepad extends javax.swing.JInternalFrame {
         int ans = JOptionPane.showInternalConfirmDialog(this, "Erase notepad contents?", "Are you sure?", JOptionPane.YES_NO_OPTION);
         if (ans == JOptionPane.YES_OPTION) {
             textBox.setText("");
-            setTitle("Notepad *");
+            save();
         }
     }//GEN-LAST:event_eraseBtnActionPerformed
 
-    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-        PrefStorage.saveSetting("notepad", textBox.getText());
-        setTitle("Notepad");
-    }//GEN-LAST:event_saveBtnActionPerformed
-
     private void textBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textBoxKeyTyped
-        setTitle("Notepad *");
+        save();
     }//GEN-LAST:event_textBoxKeyTyped
 
+    private void save() {
+        PrefStorage.saveSetting("notepad", textBox.getText());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem eraseBtn;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JMenuItem saveBtn;
     private javax.swing.JEditorPane textBox;
     // End of variables declaration//GEN-END:variables
 }

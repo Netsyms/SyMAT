@@ -257,15 +257,9 @@ public class MainGUI extends javax.swing.JFrame {
     public static void updateDisplay() {
         mainPane.paintImmediately(0, 0,
                 mainPane.getWidth(), mainPane.getHeight());
-        if (PrefStorage.getSetting("theme").equals("dark")) {
-            tabs.setBackground(new Color(41, 49, 52));
-            recentFileList.setForeground(Color.white);
-            recentFileList.setBackground(new Color(41, 49, 52));
-        } else {
-            tabs.setBackground(new Color(240, 240, 240));
-            recentFileList.setForeground(Color.black);
-            recentFileList.setBackground(Color.white);
-        }
+        tabs.setBackground(Theme.tabColor());
+        recentFileList.setForeground(Theme.textColor());
+        recentFileList.setBackground(Theme.boxColor());
         if (!PrefStorage.getSetting("showrecent", "").equals("")) {
             recentItemsPanel.setVisible(false);
         } else {

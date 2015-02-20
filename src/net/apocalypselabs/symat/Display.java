@@ -56,6 +56,7 @@ public class Display extends javax.swing.JInternalFrame {
      */
     public Display() {
         initComponents();
+        setBackground(Theme.windowColor());
     }
 
     /**
@@ -176,9 +177,9 @@ public class Display extends javax.swing.JInternalFrame {
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
         if (themeDark.isSelected()) {
-            PrefStorage.saveSetting("theme", "dark");
+            Theme.setTheme("dark");
         } else {
-            PrefStorage.saveSetting("theme", "light");
+            Theme.setTheme("light");
         }
         if (showRecent.isSelected()) {
             PrefStorage.saveSetting("showrecent", "");

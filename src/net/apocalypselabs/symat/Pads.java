@@ -45,6 +45,7 @@
  */
 package net.apocalypselabs.symat;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -66,7 +67,16 @@ public class Pads extends javax.swing.JInternalFrame {
      */
     public Pads() {
         initComponents();
+        updateTheme();
         padPane.setListData(getPads());
+    }
+
+    private void updateTheme() {
+        padPane.setBackground(Theme.boxColor());
+        padPane.setForeground(Theme.textColor());
+        previewPane.setBackground(Theme.boxColor());
+        previewPane.setForeground(Theme.textColor());
+        setBackground(Theme.windowColor());
     }
 
     /**
@@ -283,6 +293,11 @@ public class Pads extends javax.swing.JInternalFrame {
         setTitle("Collaboration");
         setMinimumSize(new java.awt.Dimension(450, 280));
         setPreferredSize(new java.awt.Dimension(450, 280));
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                formMouseEntered(evt);
+            }
+        });
 
         padPane.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         padPane.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -493,6 +508,10 @@ public class Pads extends javax.swing.JInternalFrame {
                 "Share Pad",
                 JOptionPane.PLAIN_MESSAGE);
     }//GEN-LAST:event_shareBtnActionPerformed
+
+    private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
+        updateTheme();
+    }//GEN-LAST:event_formMouseEntered
 
     private String getSelectedPad() {
         return padPane.getSelectedValue().toString();

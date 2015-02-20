@@ -313,19 +313,11 @@ public class Interpreter extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_runBtnActionPerformed
 
     private void loadTheme() {
-        if (PrefStorage.getSetting("theme").equals("dark")) {
-            mainBox.setBackground(new Color(41, 49, 52));
-            mainBox.setForeground(Color.WHITE);
-            inputBox.setBackground(new Color(41, 49, 52));
-            inputBox.setForeground(Color.WHITE);
-            setBackground(Color.DARK_GRAY);
-        } else {
-            mainBox.setBackground(Color.WHITE);
-            mainBox.setForeground(Color.BLACK);
-            inputBox.setBackground(Color.WHITE);
-            inputBox.setForeground(Color.BLACK);
-            setBackground(Color.LIGHT_GRAY);
-        }
+        mainBox.setBackground(Theme.boxColor());
+        mainBox.setForeground(Theme.textColor());
+        inputBox.setBackground(Theme.boxColor());
+        inputBox.setForeground(Theme.textColor());
+        setBackground(Theme.windowColor());
     }
 
     private void inputBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputBoxKeyTyped
