@@ -45,10 +45,20 @@
  */
 package net.apocalypselabs.symat;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import static java.lang.Math.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import static net.apocalypselabs.symat.MainGUI.API_URL;
 import org.matheclipse.core.eval.EvalUtilities;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.parser.client.math.MathException;
@@ -89,7 +99,7 @@ public class Functions {
     public String diff(String function) {
         // Assume "x" as var
         return diff(function, "x");
-    }  
+    }
 
     @Deprecated
     public String D(String function, String idv) {
@@ -107,13 +117,13 @@ public class Functions {
     public String factor(String function) {
         return sym("Factor(" + function + ")");
     }
-    
+
     public String simplify(String expr) {
-        return sym("Simplify("+expr+")");
+        return sym("Simplify(" + expr + ")");
     }
-    
+
     public Object vpa(String expr) {
-        IExpr ans = util.evaluate("N("+expr+")");
+        IExpr ans = util.evaluate("N(" + expr + ")");
         if (ans.isNumber()) {
             return Double.parseDouble(ans.toString());
         }
@@ -219,20 +229,19 @@ public class Functions {
         showGraph();
         graphwin.drawDot(x, y);
     }
-    
+
     public String readfile(String path) throws IOException {
         return FileUtils.readFile(path);
     }
-    
+
     public void savefile(String content, String path) throws IOException {
         FileUtils.saveFile(content, path, false);
     }
-    
+
     public String md5sum(String data) {
         return FileUtils.MD5(data);
     }
 
-    
     // TODO: Make globals work!
 //    /*
 //     Global variables are accessible across scripts.
@@ -309,6 +318,44 @@ public class Functions {
             PrefStorage.unset("license");
             System.exit(0);
         }
+    }
+
+    public String license() {
+        String expires = "Error";
+        if (PrefStorage.getSetting("licensetype").equals("demo")) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date());
+            try {
+                long expire = Long.parseLong(PrefStorage.getSetting("license"));
+                long days = (((expire - c.getTimeInMillis())/(60*60*24))-999)/1000;
+                if (days < 0) {
+                    if (days == -1) {
+                        expires = "Today";
+                    } else {
+                        expires = abs(days)+" days ago";
+                    }
+                } else {
+                    expires = "In "+days+" days";
+                }
+            } catch (NumberFormatException e) {
+            }
+        } else {
+            try {
+                URL url = new URL(API_URL + "expire.php?email=" + PrefStorage.getSetting("license"));
+                try (InputStream is = url.openStream();
+                        BufferedReader br
+                        = new BufferedReader(new InputStreamReader(is))) {
+                    expires = br.readLine();
+                } catch (IOException ex) {
+                }
+            } catch (Exception ex) {
+            }
+        }
+        String lic = "==License Information==\n"
+                + "License: " + PrefStorage.getSetting("license")
+                + "\nType: " + PrefStorage.getSetting("licensetype")
+                + "\nExpires: " + expires;
+        return lic;
     }
 
     /**
