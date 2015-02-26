@@ -167,7 +167,7 @@ public class SplashScreen extends javax.swing.JFrame {
                 System.out.println("Preparing editor, to skip run with argument 'skipeditor'");
                 setProgress("Preparing editor...");
                 // Get editor going too
-                CodeEditor edit = new CodeEditor();
+                Editor edit = new Editor();
             }
             
             setProgress("Checking for updates...");

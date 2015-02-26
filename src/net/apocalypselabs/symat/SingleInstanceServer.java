@@ -64,7 +64,7 @@ public class SingleInstanceServer extends NanoHTTPD {
         String msg = "OK";
         Map<String, String> parms = session.getParms();
         if (parms.get("arg") != null) {
-            CodeEditor ed = new CodeEditor();
+            Editor ed = new Editor();
             Main.loadFrame(ed);
             ed.openFileFromName(parms.get("arg"));
             java.awt.EventQueue.invokeLater(new Runnable() {

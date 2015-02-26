@@ -73,11 +73,11 @@ import javax.swing.UIManager;
 /**
  * This class is like the Force: A light theme, a dark theme, and it binds the
  * app together. Also like duct tape, but that's not as cool.
-
- Contains a bunch of important variables and constants that are used all over.
-
- There should be only one Main per app instance, the important things are
- static.
+ *
+ * Contains a bunch of important variables and constants that are used all over.
+ *
+ * There should be only one Main per app instance, the important things are
+ * static.
  *
  * @author Skylar Ittner
  */
@@ -118,9 +118,9 @@ public class Main extends javax.swing.JFrame {
      * Application icon, for setting frame icons.
      */
     public static ArrayList<Image> symatlogo = new ArrayList<>();
-    
+
     public static SingleInstanceServer sisrv;
-    
+
     public static Main maingui;
 
     /**
@@ -162,7 +162,7 @@ public class Main extends javax.swing.JFrame {
         // Open initial windows
         boolean loaded = false;
         if (!argfile.equals("")) {
-            CodeEditor ed = new CodeEditor();
+            Editor ed = new Editor();
             loadFrame(ed);
             ed.openFileFromName(argfile);
             argfile = "";
@@ -804,7 +804,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_graphBtnActionPerformed
 
     private void editorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editorBtnActionPerformed
-        loadFrame(new CodeEditor());
+        loadFrame(new Editor());
     }//GEN-LAST:event_editorBtnActionPerformed
 
     private void shellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shellBtnActionPerformed
@@ -819,7 +819,7 @@ public class Main extends javax.swing.JFrame {
         if (file.isEmpty()) {
             return;
         }
-        CodeEditor edit = new CodeEditor();
+        Editor edit = new Editor();
         Debug.println(file.getValue());
         edit.openFileFromName(file.getValue());
         loadFrame(edit);
@@ -1011,9 +1011,9 @@ public class Main extends javax.swing.JFrame {
                     break;
             }
         }
-        
+
         SingleInstanceClient sicli = new SingleInstanceClient(argfile);
-        
+
         try {
             new SingleInstanceServer().start();
         } catch (IOException ex) {

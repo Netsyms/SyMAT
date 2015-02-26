@@ -70,7 +70,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  *
  * @author Skylar
  */
-public class CodeEditor extends javax.swing.JInternalFrame {
+public class Editor extends javax.swing.JInternalFrame {
 
     private final JFileChooser fc = new JFileChooser();
     private boolean isSaved = false;
@@ -88,7 +88,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
     /**
      * Creates new form CodeEditor
      */
-    public CodeEditor() {
+    public Editor() {
         initComponents();
 
         FileFilter filter = new FileNameExtensionFilter("SyMAT JavaScript (.syjs)", "syjs");
@@ -151,12 +151,12 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         });
     }
 
-    public CodeEditor(String text) {
+    public Editor(String text) {
         this();
         codeBox.setText(text);
     }
 
-    public CodeEditor(String text, boolean openSaveDialog) {
+    public Editor(String text, boolean openSaveDialog) {
         this(text);
         if (openSaveDialog) {
             saveAsMenuActionPerformed(null);
@@ -165,7 +165,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
 
     private void setEditorTheme(String themeName) {
         try {
-            Theme theme = Theme.load(CodeEditor.class
+            Theme theme = Theme.load(Editor.class
                     .getResourceAsStream("resources/" + themeName + ".xml"));
             theme.apply(codeBox);
         } catch (Exception e) {
@@ -833,7 +833,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         try {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(
-                            CodeEditor.class
+                            Editor.class
                             .getResourceAsStream("codesamples/" + name + "." + ext)));
             String line;
             while ((line = reader.readLine()) != null) {

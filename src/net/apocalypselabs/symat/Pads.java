@@ -484,7 +484,7 @@ public class Pads extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_purgeBtnActionPerformed
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-        Main.loadFrame(new CodeEditor(getPad(getSelectedPad()), true));
+        Main.loadFrame(new Editor(getPad(getSelectedPad()), true));
         updateList();
     }//GEN-LAST:event_saveBtnActionPerformed
 
