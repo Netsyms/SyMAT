@@ -118,6 +118,10 @@ public class Main extends javax.swing.JFrame {
      * Application icon, for setting frame icons.
      */
     public static ArrayList<Image> symatlogo = new ArrayList<>();
+    
+    public static SingleInstanceServer sisrv;
+    
+    public static Main maingui;
 
     /**
      * Creates the main app window and does some quick things that aren't
@@ -125,6 +129,7 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        maingui = this;
 
         // Set icon
         setIconImages(symatlogo);
@@ -1005,6 +1010,15 @@ public class Main extends javax.swing.JFrame {
                     argfile = arg;
                     break;
             }
+        }
+        
+        SingleInstanceClient sicli = new SingleInstanceClient(argfile);
+        
+        try {
+            new SingleInstanceServer().start();
+        } catch (IOException ex) {
+            Debug.printerr("Cannot start instance listener:\n\n");
+            Debug.stacktrace(ex);
         }
 
         Platform.setImplicitExit(false);

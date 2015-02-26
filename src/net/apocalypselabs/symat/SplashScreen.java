@@ -50,7 +50,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import static net.apocalypselabs.symat.Main.API_URL;
 import static net.apocalypselabs.symat.Main.APP_CODE;
@@ -67,7 +66,7 @@ public class SplashScreen extends javax.swing.JFrame {
      */
     public SplashScreen() {
         initComponents();
-        setBackground(new Color(0, 0, 0, 0));
+        setBackground(new Color(255, 255, 255, 0));
         setIconImages(Main.symatlogo);
         setLocationRelativeTo(null);
     }
@@ -103,7 +102,7 @@ public class SplashScreen extends javax.swing.JFrame {
 
         jLayeredPane1.setBackground(new java.awt.Color(255, 255, 255));
 
-        dispLabel.setFont(Main.ubuntuRegular.deriveFont(22.0F));
+        dispLabel.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(22.0F));
         dispLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         dispLabel.setText("Loading...");
         dispLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -111,9 +110,9 @@ public class SplashScreen extends javax.swing.JFrame {
         jLayeredPane1.add(dispLabel);
         dispLabel.setBounds(250, 250, 350, 80);
 
-        jLabel1.setFont(Main.ubuntuRegular.deriveFont(20.0F));
+        jLabel1.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(20.0F));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("v. "+Main.VERSION_NAME);
+        jLabel1.setText("v. "+net.apocalypselabs.symat.Main.VERSION_NAME);
         jLayeredPane1.add(jLabel1);
         jLabel1.setBounds(520, 70, 80, 30);
         jLayeredPane1.setLayer(jLabel1, javax.swing.JLayeredPane.POPUP_LAYER);
@@ -122,14 +121,14 @@ public class SplashScreen extends javax.swing.JFrame {
         jLayeredPane1.add(jLabel2);
         jLabel2.setBounds(0, 0, 700, 470);
 
-        jLabel3.setFont(Main.ubuntuRegular.deriveFont(12.0F));
+        jLabel3.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("<html><div style=\"text-align: center;\">Apocalypse<br>Laboratories</div>");
         jLayeredPane1.add(jLabel3);
         jLabel3.setBounds(50, 420, 120, 40);
         jLayeredPane1.setLayer(jLabel3, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        jLabel4.setFont(Main.ubuntuRegular.deriveFont(12.0F));
+        jLabel4.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("symatapp.com");
         jLayeredPane1.add(jLabel4);
