@@ -187,7 +187,7 @@ public class Display extends javax.swing.JInternalFrame {
             PrefStorage.saveSetting("showrecent", "no");
         }
         PrefStorage.save();
-        MainGUI.updateDisplay();
+        Main.updateDisplay();
         dispose();
     }//GEN-LAST:event_saveBtnActionPerformed
 

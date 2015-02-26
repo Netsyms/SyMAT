@@ -402,7 +402,7 @@ public class Graph extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_clrGraphBtnActionPerformed
 
     private void exportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportBtnActionPerformed
-        int result = fc.showSaveDialog(MainGUI.mainPane);
+        int result = fc.showSaveDialog(Main.mainPane);
         if (result == JFileChooser.APPROVE_OPTION) {
             File file = new File(addSaveExt(fc.getSelectedFile().toString()));
             try {

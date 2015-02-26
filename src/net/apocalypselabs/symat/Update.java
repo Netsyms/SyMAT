@@ -104,7 +104,7 @@ public class Update extends javax.swing.JInternalFrame {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Your version: "+MainGUI.VERSION_NAME);
+        jLabel4.setText("Your version: "+Main.VERSION_NAME);
 
         jButton1.setBackground(new java.awt.Color(51, 153, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
@@ -174,7 +174,7 @@ public class Update extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        PrefStorage.saveSetting("update-ignore", MainGUI.VERSION_NAME + "|" + latestVersion);
+        PrefStorage.saveSetting("update-ignore", Main.VERSION_NAME + "|" + latestVersion);
         dispose();
     }//GEN-LAST:event_jLabel5MouseClicked
 

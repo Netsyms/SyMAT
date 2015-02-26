@@ -58,7 +58,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import static net.apocalypselabs.symat.MainGUI.API_URL;
+import static net.apocalypselabs.symat.Main.API_URL;
 import org.matheclipse.core.eval.EvalUtilities;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.parser.client.math.MathException;
@@ -81,11 +81,11 @@ public class Functions {
      Useful interactions
      */
     public void notify(Object message) {
-        JOptionPane.showInternalMessageDialog(MainGUI.mainPane, message.toString());
+        JOptionPane.showInternalMessageDialog(Main.mainPane, message.toString());
     }
 
     public String ask(String question) {
-        return JOptionPane.showInternalInputDialog(MainGUI.mainPane, question);
+        return JOptionPane.showInternalInputDialog(Main.mainPane, question);
     }
 
     /*
@@ -370,6 +370,6 @@ public class Functions {
      */
 
     public Functions() {
-        MainGUI.loadFrame(graphwin, false);
+        Main.loadFrame(graphwin, false);
     }
 }

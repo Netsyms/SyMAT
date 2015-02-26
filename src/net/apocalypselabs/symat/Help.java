@@ -237,7 +237,7 @@ public class Help extends javax.swing.JInternalFrame {
                         + "Scripts and commands can be written in "
                         + "JavaScript or Python.</p>"
                         + "<p>This is SyMAT version "
-                        + MainGUI.VERSION_NAME + " (" + (int) MainGUI.APP_CODE + ")."
+                        + Main.VERSION_NAME + " (" + (int) Main.APP_CODE + ")."
                         + "</p>"
                         + "<p>SyMAT is copyright &copy; "
                         + Calendar.getInstance().get(Calendar.YEAR)
@@ -266,7 +266,7 @@ public class Help extends javax.swing.JInternalFrame {
                     }
                     setText(text, "Manual (" + topicList.getSelectedValue().toString() + ")");
                 } catch (Exception e) {
-                    //JOptionPane.showInternalMessageDialog(MainGUI.mainPane,
+                    //JOptionPane.showInternalMessageDialog(Main.mainPane,
                     //"Error: Cannot load help topic "+name+".\n\n"+e.getMessage());
                     setText("<html><head></head><body><p><b>Error:</b><br>Cannot get help topic \""
                             + name + "\".<br>(" + e.getMessage() + ")</p></body></html>", "Manual");

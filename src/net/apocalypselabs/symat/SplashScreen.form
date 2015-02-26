@@ -57,7 +57,7 @@
         <Component class="javax.swing.JLabel" name="dispLabel">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="MainGUI.ubuntuRegular.deriveFont(22.0F)" type="code"/>
+              <Connection code="net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(22.0F)" type="code"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Loading..."/>
@@ -75,11 +75,11 @@
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="MainGUI.ubuntuRegular.deriveFont(20.0F)" type="code"/>
+              <Connection code="net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(20.0F)" type="code"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="11"/>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;v. &quot;+MainGUI.VERSION_NAME" type="code"/>
+              <Connection code="&quot;v. &quot;+net.apocalypselabs.symat.Main.VERSION_NAME" type="code"/>
             </Property>
           </Properties>
           <AuxValues>
@@ -106,7 +106,7 @@
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="MainGUI.ubuntuRegular.deriveFont(12.0F)" type="code"/>
+              <Connection code="net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F)" type="code"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;div style=&quot;text-align: center;&quot;&gt;Apocalypse&lt;br&gt;Laboratories&lt;/div&gt;"/>
@@ -123,7 +123,7 @@
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="MainGUI.ubuntuRegular.deriveFont(12.0F)" type="code"/>
+              <Connection code="net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F)" type="code"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="symatapp.com"/>

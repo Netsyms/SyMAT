@@ -73,21 +73,21 @@ import javax.swing.UIManager;
 /**
  * This class is like the Force: A light theme, a dark theme, and it binds the
  * app together. Also like duct tape, but that's not as cool.
- *
- * Contains a bunch of important variables and constants that are used all over.
- *
- * There should be only one MainGUI per app instance, the important things are
- * static.
+
+ Contains a bunch of important variables and constants that are used all over.
+
+ There should be only one Main per app instance, the important things are
+ static.
  *
  * @author Skylar Ittner
  */
-public class MainGUI extends javax.swing.JFrame {
+public class Main extends javax.swing.JFrame {
 
     // TODO: Add more code comments and stuff in case anybody else reads this
     /**
      * Version name, as it should be displayed.
      */
-    public static final String VERSION_NAME = "1.4";
+    public static final String VERSION_NAME = "1.5";
     /**
      * Program name, with version name
      */
@@ -95,7 +95,7 @@ public class MainGUI extends javax.swing.JFrame {
     /**
      * Version number, for updates and //needs in scripts
      */
-    public static final double APP_CODE = 16;
+    public static final double APP_CODE = 17;
     /**
      * Base URL for building API calls
      */
@@ -123,7 +123,7 @@ public class MainGUI extends javax.swing.JFrame {
      * Creates the main app window and does some quick things that aren't
      * threaded in SplashScreen.
      */
-    public MainGUI() {
+    public Main() {
         initComponents();
 
         // Set icon
@@ -136,7 +136,7 @@ public class MainGUI extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
-                int p = JOptionPane.showConfirmDialog(MainGUI.mainPane,
+                int p = JOptionPane.showConfirmDialog(Main.mainPane,
                         "Are you sure you want to exit SyMAT?",
                         "Exit SyMAT",
                         JOptionPane.YES_NO_OPTION,
@@ -454,7 +454,7 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
-        namemark1.setFont(MainGUI.ubuntuRegular.deriveFont(11.0F));
+        namemark1.setFont(Main.ubuntuRegular.deriveFont(11.0F));
         namemark1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         namemark1.setText(namemark());
         namemark1.setFocusable(false);
@@ -488,7 +488,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         jPanel2.setOpaque(false);
 
-        namemark2.setFont(MainGUI.ubuntuRegular.deriveFont(11.0F));
+        namemark2.setFont(Main.ubuntuRegular.deriveFont(11.0F));
         namemark2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         namemark2.setText(namemark());
         namemark2.setFocusable(false);
@@ -591,7 +591,7 @@ public class MainGUI extends javax.swing.JFrame {
             }
         });
 
-        namemark3.setFont(MainGUI.ubuntuRegular.deriveFont(11.0F));
+        namemark3.setFont(Main.ubuntuRegular.deriveFont(11.0F));
         namemark3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         namemark3.setText(namemark());
         namemark3.setFocusable(false);
@@ -654,7 +654,7 @@ public class MainGUI extends javax.swing.JFrame {
         mainPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         mainPane.setOpaque(false);
 
-        jLabel2.setFont(MainGUI.ubuntuRegular.deriveFont(48.0F));
+        jLabel2.setFont(Main.ubuntuRegular.deriveFont(48.0F));
         jLabel2.setForeground(new java.awt.Color(153, 153, 153));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel2.setText("SyMAT");
@@ -959,14 +959,16 @@ public class MainGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException e) {
-            java.util.logging.Logger.getLogger(MainGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, e);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         try {
             // Ubuntu font for prettifying
-            ubuntuRegular = Font.createFont(Font.TRUETYPE_FONT, MainGUI.class.
+            ubuntuRegular = Font.createFont(Font.TRUETYPE_FONT, Main.class.
                     getResourceAsStream("/Ubuntu-R.ttf"));
         } catch (FontFormatException | IOException ex) {
             ubuntuRegular = Font.getFont(Font.SANS_SERIF);
@@ -980,7 +982,7 @@ public class MainGUI extends javax.swing.JFrame {
         String[] sizes = {"16", "32", "48", "64", "128", "256"};
         for (String s : sizes) {
             symatlogo.add(new ImageIcon(
-                    MainGUI.class.getResource("logo-filled" + s + ".png")).getImage());
+                    Main.class.getResource("logo-filled" + s + ".png")).getImage());
         }
 
         // Command line args

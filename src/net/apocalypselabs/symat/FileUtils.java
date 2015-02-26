@@ -106,7 +106,7 @@ public class FileUtils {
             out.print(content);
         }
         if (addToRecent) {
-            MainGUI.addRecentFile((new File(path)).getAbsolutePath());
+            Main.addRecentFile((new File(path)).getAbsolutePath());
         }
     }
 

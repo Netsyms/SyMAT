@@ -52,9 +52,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
-import static net.apocalypselabs.symat.MainGUI.API_URL;
-import static net.apocalypselabs.symat.MainGUI.APP_CODE;
-import static net.apocalypselabs.symat.MainGUI.VERSION_NAME;
+import static net.apocalypselabs.symat.Main.API_URL;
+import static net.apocalypselabs.symat.Main.APP_CODE;
+import static net.apocalypselabs.symat.Main.VERSION_NAME;
 
 /**
  *
@@ -68,7 +68,7 @@ public class SplashScreen extends javax.swing.JFrame {
     public SplashScreen() {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
-        setIconImages(MainGUI.symatlogo);
+        setIconImages(Main.symatlogo);
         setLocationRelativeTo(null);
     }
 
@@ -103,7 +103,7 @@ public class SplashScreen extends javax.swing.JFrame {
 
         jLayeredPane1.setBackground(new java.awt.Color(255, 255, 255));
 
-        dispLabel.setFont(MainGUI.ubuntuRegular.deriveFont(22.0F));
+        dispLabel.setFont(Main.ubuntuRegular.deriveFont(22.0F));
         dispLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         dispLabel.setText("Loading...");
         dispLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -111,9 +111,9 @@ public class SplashScreen extends javax.swing.JFrame {
         jLayeredPane1.add(dispLabel);
         dispLabel.setBounds(250, 250, 350, 80);
 
-        jLabel1.setFont(MainGUI.ubuntuRegular.deriveFont(20.0F));
+        jLabel1.setFont(Main.ubuntuRegular.deriveFont(20.0F));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("v. "+MainGUI.VERSION_NAME);
+        jLabel1.setText("v. "+Main.VERSION_NAME);
         jLayeredPane1.add(jLabel1);
         jLabel1.setBounds(520, 70, 80, 30);
         jLayeredPane1.setLayer(jLabel1, javax.swing.JLayeredPane.POPUP_LAYER);
@@ -122,14 +122,14 @@ public class SplashScreen extends javax.swing.JFrame {
         jLayeredPane1.add(jLabel2);
         jLabel2.setBounds(0, 0, 700, 470);
 
-        jLabel3.setFont(MainGUI.ubuntuRegular.deriveFont(12.0F));
+        jLabel3.setFont(Main.ubuntuRegular.deriveFont(12.0F));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("<html><div style=\"text-align: center;\">Apocalypse<br>Laboratories</div>");
         jLayeredPane1.add(jLabel3);
         jLabel3.setBounds(50, 420, 120, 40);
         jLayeredPane1.setLayer(jLabel3, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        jLabel4.setFont(MainGUI.ubuntuRegular.deriveFont(12.0F));
+        jLabel4.setFont(Main.ubuntuRegular.deriveFont(12.0F));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("symatapp.com");
         jLayeredPane1.add(jLabel4);
@@ -153,7 +153,7 @@ public class SplashScreen extends javax.swing.JFrame {
         @Override
         public void run() {
             setProgress("Starting up...");
-            if (!MainGUI.skipPython) {
+            if (!Main.skipPython) {
                 // Python laggggsss when used for first time, this fixes the wait later.
                 System.out.println("Warming up Python engine, to skip run with argument 'skippython'");
                 setProgress("Initializing code engine...");
@@ -164,7 +164,7 @@ public class SplashScreen extends javax.swing.JFrame {
                 }
             }
 
-            if (!MainGUI.skipEditor) {
+            if (!Main.skipEditor) {
                 System.out.println("Preparing editor, to skip run with argument 'skipeditor'");
                 setProgress("Preparing editor...");
                 // Get editor going too
@@ -175,7 +175,7 @@ public class SplashScreen extends javax.swing.JFrame {
             checkUpdates();
 
             setProgress("Loading main interface...");
-            MainGUI main = new MainGUI();
+            Main main = new Main();
             setProgress("Done!");
             dispose();
         }
@@ -199,8 +199,8 @@ public class SplashScreen extends javax.swing.JFrame {
                                 + "but has been ignored by the user.");
                     } else {
                         Debug.println("Update available.");
-                        MainGUI.updateString = line.split("\\|")[1];
-                        MainGUI.updateAvailable = true;
+                        Main.updateString = line.split("\\|")[1];
+                        Main.updateAvailable = true;
                     }
                 } else {
                     Debug.println("No updates found.");

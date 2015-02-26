@@ -362,14 +362,14 @@ public class Interpreter extends javax.swing.JInternalFrame {
 
     private void javascriptMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javascriptMenuActionPerformed
         if (!lang.equals("javascript")) {
-            MainGUI.loadFrame(new Interpreter("javascript"));
+            Main.loadFrame(new Interpreter("javascript"));
             dispose();
         }
     }//GEN-LAST:event_javascriptMenuActionPerformed
 
     private void pythonMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pythonMenuActionPerformed
         if (!lang.equals("python")) {
-            MainGUI.loadFrame(new Interpreter("python"));
+            Main.loadFrame(new Interpreter("python"));
             dispose();
         }
     }//GEN-LAST:event_pythonMenuActionPerformed

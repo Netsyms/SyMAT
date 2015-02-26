@@ -237,7 +237,7 @@ public class Pads extends javax.swing.JInternalFrame {
         } catch (Exception ex) {
             Debug.stacktrace(ex);
             JOptionPane.showInternalMessageDialog(
-                    MainGUI.mainPane,
+                    Main.mainPane,
                     "Could not sync pad contents: " + ex.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -273,7 +273,7 @@ public class Pads extends javax.swing.JInternalFrame {
         } else {
             theme += "default";
         }
-        MainGUI.loadFrame(new WebBrowser("Pad " + pad,
+        Main.loadFrame(new WebBrowser("Pad " + pad,
                 PADS_URL + "/p/" + pad + theme,
                 WebBrowser.PAD_LOGO));
     }
@@ -484,7 +484,7 @@ public class Pads extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_purgeBtnActionPerformed
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-        MainGUI.loadFrame(new CodeEditor(getPad(getSelectedPad()), true));
+        Main.loadFrame(new CodeEditor(getPad(getSelectedPad()), true));
         updateList();
     }//GEN-LAST:event_saveBtnActionPerformed
 

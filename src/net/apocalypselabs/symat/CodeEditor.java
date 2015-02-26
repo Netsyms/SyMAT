@@ -517,9 +517,9 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             openString(FileUtils.readFile(f.getAbsolutePath()),
                     f.getAbsolutePath(), true);
         } catch (IOException ex) {
-            JOptionPane.showInternalMessageDialog(MainGUI.mainPane,
+            JOptionPane.showInternalMessageDialog(Main.mainPane,
                     "Error:  Cannot load file: " + ex.getMessage());
-            MainGUI.loadRecentFiles();
+            Main.loadRecentFiles();
         }
     }
 
@@ -674,8 +674,8 @@ public class CodeEditor extends javax.swing.JInternalFrame {
             try {
                 int minNum = Integer.parseInt(min);
                 int maxNum = Integer.parseInt(max);
-                if (!(minNum <= MainGUI.APP_CODE
-                        && maxNum >= MainGUI.APP_CODE)) {
+                if (!(minNum <= Main.APP_CODE
+                        && maxNum >= Main.APP_CODE)) {
                     JOptionPane.showInternalMessageDialog(this, "This script "
                             + "cannot be run on this version of SyMAT.");
                     return false;
@@ -730,7 +730,7 @@ public class CodeEditor extends javax.swing.JInternalFrame {
         if (pythonOption.isSelected()) {
             lang = "python";
         }
-        MainGUI.loadFrame(new CodeExport(codeBox.getText(), lang));
+        Main.loadFrame(new CodeExport(codeBox.getText(), lang));
     }//GEN-LAST:event_exportMenuActionPerformed
 
     private void javascriptOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javascriptOptionActionPerformed

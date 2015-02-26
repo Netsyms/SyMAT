@@ -90,7 +90,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
                 children.add(browser);
                 jfxPanel.setScene(scene);
                 webEngine = browser.getEngine();
-                webEngine.setUserAgent("SyMAT " + MainGUI.VERSION_NAME);
+                webEngine.setUserAgent("SyMAT " + Main.VERSION_NAME);
                 webEngine.loadContent("<html><head><title></title></head><body><h3 style=\"font-family: sans-serif; text-align: center;\">Loading...</h3></body></html>");
             }
         });

@@ -56,7 +56,7 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JOptionPane;
-import static net.apocalypselabs.symat.MainGUI.API_URL;
+import static net.apocalypselabs.symat.Main.API_URL;
 
 /**
  *
@@ -223,7 +223,7 @@ public class License extends javax.swing.JInternalFrame {
     private void openShop() {
         if (Desktop.isDesktopSupported()) {
             try {
-                Desktop.getDesktop().browse(new URI(MainGUI.API_URL + "shoplink.php"));
+                Desktop.getDesktop().browse(new URI(Main.API_URL + "shoplink.php"));
             } catch (IOException | URISyntaxException ex) {
                 JOptionPane.showInternalMessageDialog(this, "Please go to symatapp.com to purchase a license.");
             }
@@ -306,7 +306,7 @@ public class License extends javax.swing.JInternalFrame {
     }
 
     public void exit() {
-        MainGUI.updateNamemark(); // Make sure it displays trial or not
+        Main.updateNamemark(); // Make sure it displays trial or not
         dispose();
     }
 
@@ -356,16 +356,16 @@ public class License extends javax.swing.JInternalFrame {
         private void success(String type) {
             PrefStorage.saveSetting("license", email);
             PrefStorage.saveSetting("licensetype", type);
-            JOptionPane.showInternalMessageDialog(MainGUI.mainPane,
+            JOptionPane.showInternalMessageDialog(Main.mainPane,
                     "Thank you for activating SyMAT!",
                     "Success",
                     JOptionPane.INFORMATION_MESSAGE);
-            MainGUI.licenseRestrict(false);
+            Main.licenseRestrict(false);
             exit();
         }
 
         private void fail() {
-            JOptionPane.showInternalMessageDialog(MainGUI.mainPane,
+            JOptionPane.showInternalMessageDialog(Main.mainPane,
                     "There is not a valid license for that email address.",
                     "Activation failure",
                     JOptionPane.ERROR_MESSAGE);
@@ -373,7 +373,7 @@ public class License extends javax.swing.JInternalFrame {
 
         private void email() {
             try {
-                String code = JOptionPane.showInternalInputDialog(MainGUI.mainPane,
+                String code = JOptionPane.showInternalInputDialog(Main.mainPane,
                         "A code has been emailed to you.  "
                         + "Enter it below to verify.",
                         "Almost done!",
@@ -390,7 +390,7 @@ public class License extends javax.swing.JInternalFrame {
                 if (code.equals(line)) {
                     success("domain");
                 } else {
-                    JOptionPane.showInternalMessageDialog(MainGUI.mainPane,
+                    JOptionPane.showInternalMessageDialog(Main.mainPane,
                             "Code invalid.",
                             "Error",
                             JOptionPane.ERROR_MESSAGE);
@@ -401,7 +401,7 @@ public class License extends javax.swing.JInternalFrame {
         }
 
         private void ioerror() {
-            JOptionPane.showMessageDialog(MainGUI.mainPane,
+            JOptionPane.showMessageDialog(Main.mainPane,
                     "An error occured while verifying your license.  "
                     + "Ensure you have an Internet connection and "
                     + "try again later.",
