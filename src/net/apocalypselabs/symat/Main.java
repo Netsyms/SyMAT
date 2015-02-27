@@ -456,7 +456,12 @@ public class Main extends JRibbonFrame {
                 JCommandButton.CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION);
 
         if (recent == null) {
-            openbtn.addSecondaryMenuGroup("Recent Files");
+            RibbonApplicationMenuEntrySecondary blanksubbtn
+                = new RibbonApplicationMenuEntrySecondary(
+                        null, "No recent files", null,
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+            blanksubbtn.setEnabled(false);
+            openbtn.addSecondaryMenuGroup("Recent Files", blanksubbtn);
         } else {
             openbtn.addSecondaryMenuGroup("Recent Files", recent);
         }
@@ -500,6 +505,8 @@ public class Main extends JRibbonFrame {
     public static void loadRecentFiles() {
         String files = PrefStorage.getSetting("recentfiles");
         if (files.equals("")) {
+            loadRibbonMenu(null);
+            recentFileList.setListData(new String[0]);
             return;
         }
         String[] fileList = files.split("\n");
