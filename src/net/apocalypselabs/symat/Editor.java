@@ -112,7 +112,6 @@ public class Editor extends javax.swing.JInternalFrame {
 
         codeBox.setCodeFoldingEnabled(true);
         codeBox.setAntiAliasingEnabled(true);
-        codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
         sp = new RTextScrollPane(codeBox);
         sp.setFoldIndicatorEnabled(true);
         editPanel.add(sp);
@@ -127,8 +126,10 @@ public class Editor extends javax.swing.JInternalFrame {
             pyac.install(codeBox);
             javascriptOption.setSelected(false);
             pythonOption.setSelected(true);
+            codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
         } else {
             jsac.install(codeBox);
+            codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
         }
         sp.setVisible(true);
         codeBox.setVisible(true);
