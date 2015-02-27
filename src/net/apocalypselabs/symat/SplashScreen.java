@@ -69,6 +69,7 @@ public class SplashScreen extends javax.swing.JFrame {
         setBackground(new Color(255, 255, 255, 0));
         setIconImages(Main.symatlogo);
         setLocationRelativeTo(null);
+        logoOverlay.setSize(0, 140);
     }
 
     /**
@@ -86,6 +87,7 @@ public class SplashScreen extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        logoOverlay = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SyMAT Starting");
@@ -135,6 +137,11 @@ public class SplashScreen extends javax.swing.JFrame {
         jLabel4.setBounds(370, 430, 110, 14);
         jLayeredPane1.setLayer(jLabel4, javax.swing.JLayeredPane.POPUP_LAYER);
 
+        logoOverlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/logo-overlay.png"))); // NOI18N
+        jLayeredPane1.add(logoOverlay);
+        logoOverlay.setBounds(184, 85, 380, 140);
+        jLayeredPane1.setLayer(logoOverlay, javax.swing.JLayeredPane.POPUP_LAYER);
+
         getContentPane().add(jLayeredPane1, java.awt.BorderLayout.CENTER);
 
         pack();
@@ -152,6 +159,7 @@ public class SplashScreen extends javax.swing.JFrame {
         @Override
         public void run() {
             setProgress("Starting up...");
+            logoOverlay.setSize(100, 140);
             if (!Main.skipPython) {
                 // Python laggggsss when used for first time, this fixes the wait later.
                 System.out.println("Warming up Python engine, to skip run with argument 'skippython'");
@@ -161,18 +169,24 @@ public class SplashScreen extends javax.swing.JFrame {
                 } catch (Exception ex) {
                     // Ignore
                 }
+                logoOverlay.setSize(130, 140);
             }
 
             if (!Main.skipEditor) {
                 System.out.println("Preparing editor, to skip run with argument 'skipeditor'");
                 setProgress("Preparing editor...");
+                logoOverlay.setSize(152, 140);
                 // Get editor going too
                 Editor edit = new Editor();
+                logoOverlay.setSize(205, 140);
             }
             
+            logoOverlay.setSize(235, 140);
             setProgress("Checking for updates...");
             checkUpdates();
+            logoOverlay.setSize(300, 140);
 
+            logoOverlay.setSize(380, 140);
             setProgress("Loading main interface...");
             Main main = new Main();
             setProgress("Done!");
@@ -190,6 +204,7 @@ public class SplashScreen extends javax.swing.JFrame {
                 String line = br.readLine();
                 br.close();
                 is.close();
+                logoOverlay.setSize(280, 140);
                 double version = Double.parseDouble(line.split("\\|")[0]);
                 if (version > APP_CODE) {
                     if (PrefStorage.getSetting("update-ignore")
@@ -232,5 +247,6 @@ public class SplashScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JLabel logoOverlay;
     // End of variables declaration//GEN-END:variables
 }
