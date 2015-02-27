@@ -54,7 +54,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -126,7 +125,7 @@ public class Main extends JRibbonFrame {
     public static boolean skipEditor = false; // Skip editor init on start?
 
     private static boolean recentItemsMinimized = false;
-    
+
     public static boolean updateAvailable = false; // Update available?
     public static String updateString = "";
 
@@ -139,7 +138,7 @@ public class Main extends JRibbonFrame {
      * The http server that handles opening other instances.
      */
     public static SingleInstanceServer sisrv;
-    
+
     public static Main maingui;
 
     /**
@@ -197,7 +196,7 @@ public class Main extends JRibbonFrame {
                         licValid = true;
                     }
                 } catch (NumberFormatException e) {
-                    
+
                 }
             }
         } else {
@@ -240,7 +239,7 @@ public class Main extends JRibbonFrame {
                 setExtendedState(MAXIMIZED_BOTH);
             });
         }
-        
+
         if (!PrefStorage.getSetting("showrecent", "").equals("")) {
             recentItemsPanel.setVisible(false);
         }
@@ -258,7 +257,7 @@ public class Main extends JRibbonFrame {
         JRibbonBand appsband = new JRibbonBand("Apps", null);
         JRibbonBand webband = new JRibbonBand("Community", null);
         JRibbonBand collabband = new JRibbonBand("Team", null);
-        
+
         RibbonApplicationMenuEntryPrimary helpbtn
                 = new RibbonApplicationMenuEntryPrimary(
                         getRibbonIcon("help"),
@@ -332,7 +331,7 @@ public class Main extends JRibbonFrame {
                                 loadFrame(new Settings());
                             }
                         });
-        
+
         RibbonApplicationMenu menu = new RibbonApplicationMenu();
         menu.addMenuEntry(newbtn);
         menu.addMenuSeparator();
@@ -341,7 +340,7 @@ public class Main extends JRibbonFrame {
         menu.addMenuSeparator();
         menu.addMenuEntry(exitbtn);
         menu.addFooterEntry(displaybtn);
-        
+
         shellbtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -388,7 +387,7 @@ public class Main extends JRibbonFrame {
                 loadFrame(new Pads());
             }
         });
-        
+
         shellbtn.setPopupKeyTip("Open a window "
                 + "for running interactive commands.");
         editorbtn.setPopupKeyTip("Write and run multiple-line scripts.");
@@ -397,18 +396,18 @@ public class Main extends JRibbonFrame {
         wikibtn.setPopupKeyTip("View online documentation and tutorials.");
         forumbtn.setPopupKeyTip("Discuss and share with the SyMAT community.");
         padsbtn.setPopupKeyTip("Collaborate over the Internet on projects.");
-        
+
         coreband.addCommandButton(shellbtn, RibbonElementPriority.TOP);
         coreband.addCommandButton(editorbtn, RibbonElementPriority.TOP);
-        
+
         appsband.addCommandButton(graphbtn, RibbonElementPriority.MEDIUM);
         appsband.addCommandButton(notepadbtn, RibbonElementPriority.MEDIUM);
-        
+
         webband.addCommandButton(wikibtn, RibbonElementPriority.LOW);
         webband.addCommandButton(forumbtn, RibbonElementPriority.LOW);
-        
+
         collabband.addCommandButton(padsbtn, RibbonElementPriority.MEDIUM);
-        
+
         coreband.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.None(coreband.getControlPanel()),
                 new IconRibbonBandResizePolicy(coreband.getControlPanel())));
@@ -421,22 +420,22 @@ public class Main extends JRibbonFrame {
         collabband.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
                 new IconRibbonBandResizePolicy(appsband.getControlPanel())));
-        
+
         RibbonTask hometask = new RibbonTask("Home", coreband, appsband);
         RibbonTask webtask = new RibbonTask("Web", webband, collabband);
-        
+
         ribbon.setApplicationMenu(menu);
-        
+
         ribbon.addTask(hometask);
         ribbon.addTask(webtask);
     }
-    
+
     public static ResizableIcon getRibbonIcon(String name) {
         return ImageWrapperResizableIcon.getIcon(
                 Main.class.getResource("images/" + name + ".png"),
                 new Dimension(100, 76));
     }
-    
+
     public static ResizableIcon getTinyRibbonIcon(String name) {
         int d = 32;
         if (name.endsWith("icon")) {
@@ -446,7 +445,7 @@ public class Main extends JRibbonFrame {
                 Main.class.getResource("icons/" + name + ".png"),
                 new Dimension(d, d));
     }
-    
+
     public static void licenseRestrict(boolean restricted) {
         graphbtn.setEnabled(!restricted);
         padsbtn.setEnabled(!restricted);
@@ -467,7 +466,7 @@ public class Main extends JRibbonFrame {
         mainPane.paintImmediately(0, 0,
                 mainPane.getWidth(), mainPane.getHeight());
     }
-    
+
     public static void loadRecentFiles() {
         String files = PrefStorage.getSetting("recentfiles");
         if (files.equals("")) {
@@ -492,7 +491,7 @@ public class Main extends JRibbonFrame {
                 i++;
             }
         }
-        
+
         recentFileList.setListData(items);
 
         // Re-save list to remove bad entries
@@ -502,7 +501,7 @@ public class Main extends JRibbonFrame {
         }
         PrefStorage.saveSetting("recentfiles", list);
     }
-    
+
     public static void addRecentFile(String file) {
         file = (new File(file)).getAbsolutePath();
         String files = PrefStorage.getSetting("recentfiles");
@@ -806,7 +805,7 @@ public class Main extends JRibbonFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
-        
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -862,16 +861,16 @@ public class Main extends JRibbonFrame {
                     break;
             }
         }
-        
+
         SingleInstanceClient sicli = new SingleInstanceClient(argfile);
-        
+
         try {
             new SingleInstanceServer().start();
         } catch (IOException ex) {
             Debug.printerr("Cannot start instance listener:\n\n");
             Debug.stacktrace(ex);
         }
-        
+
         Platform.setImplicitExit(false);
 
         /* Create and display the form */
@@ -879,7 +878,7 @@ public class Main extends JRibbonFrame {
             new SplashScreen().setVisible(true);
         });
     }
-    
+
     public static JCommandButton shellbtn
             = new JCommandButton("Shell", getRibbonIcon("shell"));
     public static JCommandButton editorbtn

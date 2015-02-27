@@ -351,7 +351,7 @@ public class Pads extends javax.swing.JInternalFrame {
             }
         });
 
-        saveBtn.setText("Save");
+        saveBtn.setText("Download");
         saveBtn.setToolTipText("Save pad locally");
         saveBtn.setEnabled(false);
         saveBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -484,7 +484,7 @@ public class Pads extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_purgeBtnActionPerformed
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-        Main.loadFrame(new Editor(getPad(getSelectedPad()), true));
+        Main.loadFrame(new Editor(getPad(getSelectedPad()), false));
         updateList();
     }//GEN-LAST:event_saveBtnActionPerformed
 
