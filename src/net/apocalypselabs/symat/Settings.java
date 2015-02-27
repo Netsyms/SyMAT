@@ -56,6 +56,7 @@ public class Settings extends javax.swing.JInternalFrame {
      */
     public Settings() {
         initComponents();
+        jPanel3.setVisible(false);
         setBackground(Theme.windowColor());
     }
 
@@ -187,6 +188,11 @@ public class Settings extends javax.swing.JInternalFrame {
         );
 
         applyBtn.setText("Apply");
+        applyBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                applyBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -265,6 +271,10 @@ public class Settings extends javax.swing.JInternalFrame {
         PrefStorage.saveSetting("recentfiles", "");
         Main.loadRecentFiles();
     }//GEN-LAST:event_clrRecentBtnActionPerformed
+
+    private void applyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyBtnActionPerformed
+        doSave();
+    }//GEN-LAST:event_applyBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton applyBtn;

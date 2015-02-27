@@ -355,6 +355,9 @@ public class Main extends JRibbonFrame {
 
     public static ResizableIcon getTinyRibbonIcon(String name) {
         int d = 32;
+        if (name.endsWith("icon")) {
+            d = 24;
+        }
         return ImageWrapperResizableIcon.getIcon(
                 Main.class.getResource("icons/" + name + ".png"),
                 new Dimension(d, d));
@@ -502,6 +505,9 @@ public class Main extends JRibbonFrame {
         maingui.getRibbon().setApplicationMenu(menu);
     }
 
+    /**
+     * (Re)load recent file lists from storage.
+     */
     public static void loadRecentFiles() {
         String files = PrefStorage.getSetting("recentfiles");
         if (files.equals("")) {
@@ -556,6 +562,10 @@ public class Main extends JRibbonFrame {
         PrefStorage.saveSetting("recentfiles", list);
     }
 
+    /**
+     * Add a file to the recent files lists.
+     * @param file The file path.
+     */
     public static void addRecentFile(String file) {
         file = (new File(file)).getAbsolutePath();
         String files = PrefStorage.getSetting("recentfiles");
