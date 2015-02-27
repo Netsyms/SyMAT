@@ -45,7 +45,6 @@
  */
 package net.apocalypselabs.symat;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.io.BufferedReader;
@@ -86,9 +85,9 @@ public class Editor extends javax.swing.JInternalFrame {
     private File filedata;
 
     /**
-     * Creates new form CodeEditor
+     * @param python If true sets to Python
      */
-    public Editor() {
+    public Editor(boolean python) {
         initComponents();
 
         FileFilter filter = new FileNameExtensionFilter("SyMAT JavaScript (.syjs)", "syjs");
@@ -124,7 +123,13 @@ public class Editor extends javax.swing.JInternalFrame {
             }
         });
 
-        jsac.install(codeBox);
+        if (python) {
+            pyac.install(codeBox);
+            javascriptOption.setSelected(false);
+            pythonOption.setSelected(true);
+        } else {
+            jsac.install(codeBox);
+        }
         sp.setVisible(true);
         codeBox.setVisible(true);
         codeBox.requestFocus();
@@ -151,16 +156,28 @@ public class Editor extends javax.swing.JInternalFrame {
         });
     }
 
+    /**
+     * @param text Text to load.
+     */
     public Editor(String text) {
         this();
         codeBox.setText(text);
     }
 
+    /**
+     *
+     * @param text Text to load
+     * @param openSaveDialog If true, prompts for save immediately
+     */
     public Editor(String text, boolean openSaveDialog) {
         this(text);
         if (openSaveDialog) {
             saveAsMenuActionPerformed(null);
         }
+    }
+
+    public Editor() {
+        this(false);
     }
 
     private void setEditorTheme(String themeName) {
@@ -496,7 +513,7 @@ public class Editor extends javax.swing.JInternalFrame {
                 codeBox.setText(FileUtils.readFile(f.toString()));
                 isSaved = true;
                 filedata = f;
-                setTitle("Editor - " + f.getName());
+                setTitle(f.getName());
             } catch (IOException ex) {
                 JOptionPane.showInternalMessageDialog(this,
                         "Error:  Cannot load file: " + ex.getMessage());
@@ -533,7 +550,7 @@ public class Editor extends javax.swing.JInternalFrame {
         codeBox.setText(data);
         isSaved = saved;
         fileChanged = false;
-        setTitle("Editor - " + (new File(file)).getName());
+        setTitle((new File(file)).getName());
         if (file.matches(".*\\.(js|mls|symt|syjs)")) {
             javascriptOption.setSelected(true);
             pythonOption.setSelected(false);
@@ -559,8 +576,7 @@ public class Editor extends javax.swing.JInternalFrame {
                     FileUtils.saveFile(codeBox.getText(), filedata.getAbsolutePath(), true);
                     isSaved = true;
                     fileChanged = false;
-                    setTitle("Editor - "
-                            + FileUtils.getFileWithExtension(fc).getName());
+                    setTitle(FileUtils.getFileWithExtension(fc).getName());
                 } catch (IOException ex) {
                     JOptionPane.showInternalMessageDialog(this,
                             "Error:  Cannot save file: " + ex.getMessage());

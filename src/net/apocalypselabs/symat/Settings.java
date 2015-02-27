@@ -49,12 +49,12 @@ package net.apocalypselabs.symat;
  *
  * @author Skylar
  */
-public class Display extends javax.swing.JInternalFrame {
+public class Settings extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Display
      */
-    public Display() {
+    public Settings() {
         initComponents();
         setBackground(Theme.windowColor());
     }
@@ -74,14 +74,15 @@ public class Display extends javax.swing.JInternalFrame {
         themeDark = new javax.swing.JRadioButton();
         saveBtn = new javax.swing.JButton();
         showRecent = new javax.swing.JCheckBox();
+        miniRibbon = new javax.swing.JCheckBox();
 
         setClosable(true);
         setIconifiable(true);
-        setTitle("Display");
+        setTitle("Settings");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/settings.png"))); // NOI18N
-        setMaximumSize(new java.awt.Dimension(160, 215));
-        setMinimumSize(new java.awt.Dimension(160, 215));
-        setPreferredSize(new java.awt.Dimension(160, 215));
+        setMaximumSize(new java.awt.Dimension(145, 237));
+        setMinimumSize(new java.awt.Dimension(145, 237));
+        setPreferredSize(new java.awt.Dimension(145, 237));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -129,19 +130,25 @@ public class Display extends javax.swing.JInternalFrame {
         showRecent.setSelected(true);
         showRecent.setText("Show recent items");
 
+        miniRibbon.setText("Minimize ribbon");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(saveBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(showRecent))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(saveBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(showRecent))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(miniRibbon)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,8 +157,10 @@ public class Display extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(showRecent)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(miniRibbon)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(saveBtn)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -173,19 +182,15 @@ public class Display extends javax.swing.JInternalFrame {
         if (!PrefStorage.getSetting("showrecent", "").equals("")) {
             showRecent.setSelected(false);
         }
+        if (PrefStorage.getSetting("miniribbon", "").equals("yes")) {
+            miniRibbon.setSelected(true);
+        }
     }//GEN-LAST:event_formComponentShown
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-        if (themeDark.isSelected()) {
-            Theme.setTheme("dark");
-        } else {
-            Theme.setTheme("light");
-        }
-        if (showRecent.isSelected()) {
-            PrefStorage.saveSetting("showrecent", "");
-        } else {
-            PrefStorage.saveSetting("showrecent", "no");
-        }
+        Theme.setTheme(themeDark.isSelected() ? "dark" : "light");
+        PrefStorage.saveSetting("showrecent", showRecent.isSelected() ? "" : "no");
+        PrefStorage.saveSetting("miniribbon", miniRibbon.isSelected() ? "yes" : "");
         PrefStorage.save();
         Main.updateDisplay();
         dispose();
@@ -193,6 +198,7 @@ public class Display extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JCheckBox miniRibbon;
     private javax.swing.JButton saveBtn;
     private javax.swing.JCheckBox showRecent;
     private javax.swing.JRadioButton themeDark;

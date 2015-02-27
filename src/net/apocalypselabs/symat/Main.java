@@ -46,11 +46,14 @@
 package net.apocalypselabs.symat;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -61,14 +64,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javafx.application.Platform;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.UIManager;
+import org.pushingpixels.flamingo.api.ribbon.*;
+import org.pushingpixels.flamingo.api.ribbon.resize.*;
+import org.pushingpixels.flamingo.api.common.*;
+import org.pushingpixels.flamingo.api.common.icon.*;
 
 /**
  * This class is like the Force: A light theme, a dark theme, and it binds the
@@ -76,22 +85,26 @@ import javax.swing.UIManager;
  *
  * Contains a bunch of important variables and constants that are used all over.
  *
- * There should be only one Main per app instance, the important things are
- * static.
+ * There is only one Main per app instance, the important things are static.
  *
  * @author Skylar Ittner
  */
-public class Main extends javax.swing.JFrame {
+public class Main extends JRibbonFrame {
 
     // TODO: Add more code comments and stuff in case anybody else reads this
     /**
      * Version name, as it should be displayed.
      */
     public static final String VERSION_NAME = "1.5";
+
+    /**
+     * The word "SyMAT".
+     */
+    public static final String SYMAT = "SyMAT";
     /**
      * Program name, with version name
      */
-    public static final String APP_NAME = "SyMAT " + VERSION_NAME;
+    public static final String APP_NAME = SYMAT + " " + VERSION_NAME;
     /**
      * Version number, for updates and //needs in scripts
      */
@@ -100,27 +113,33 @@ public class Main extends javax.swing.JFrame {
      * Base URL for building API calls
      */
     public static final String API_URL = "https://apis.symatapp.com/";
-
-    public static String argfile = ""; // For opening file from args
     /**
-     * Ubuntu regular font.
+     * Contains the filename argument passed to SyMAT, if any.
+     */
+    public static String argfile = "";
+
+    /**
+     * Ubuntu font. Loaded from Ubuntu-R.ttf in the default package at runtime.
      */
     public static Font ubuntuRegular;
     public static boolean skipPython = false; // Skip python init on start?
     public static boolean skipEditor = false; // Skip editor init on start?
 
     private static boolean recentItemsMinimized = false;
-
+    
     public static boolean updateAvailable = false; // Update available?
     public static String updateString = "";
 
     /**
-     * Application icon, for setting frame icons.
+     * Application icon, for setting frame icons. Has different sizes.
      */
     public static ArrayList<Image> symatlogo = new ArrayList<>();
 
+    /**
+     * The http server that handles opening other instances.
+     */
     public static SingleInstanceServer sisrv;
-
+    
     public static Main maingui;
 
     /**
@@ -128,11 +147,11 @@ public class Main extends javax.swing.JFrame {
      * threaded in SplashScreen.
      */
     public Main() {
-        initComponents();
-        maingui = this;
-
         // Set icon
         setIconImages(symatlogo);
+        initComponents();
+        loadRibbon();
+        maingui = this;
 
         // Center screen
         setLocationRelativeTo(null);
@@ -157,8 +176,6 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        setButtonShortcuts();
-
         // Open initial windows
         boolean loaded = false;
         if (!argfile.equals("")) {
@@ -180,7 +197,7 @@ public class Main extends javax.swing.JFrame {
                         licValid = true;
                     }
                 } catch (NumberFormatException e) {
-
+                    
                 }
             }
         } else {
@@ -220,88 +237,237 @@ public class Main extends javax.swing.JFrame {
         setVisible(true);
         if (PrefStorage.getSetting("framemaxed", "no").equals("yes")) {
             java.awt.EventQueue.invokeLater(() -> {
-                //                    try {
-//                        Thread.sleep(500);
-//                    } catch (InterruptedException ex) {
-//
-//                    }
                 setExtendedState(MAXIMIZED_BOTH);
             });
         }
-
+        
         if (!PrefStorage.getSetting("showrecent", "").equals("")) {
             recentItemsPanel.setVisible(false);
         }
     }
 
-    public static void licenseRestrict(boolean restricted) {
-        editorBtn.setEnabled(!restricted);
-        graphBtn.setEnabled(!restricted);
-        helpBtn.setEnabled(!restricted);
-        padsBtn.setEnabled(!restricted);
-        recentFileList.setEnabled(!restricted);
-    }
-
     /**
-     * Set keyboard shortcuts for buttons.
+     * Load the ribbon in all its glory.
      */
-    private void setButtonShortcuts() {
-        shellBtn.setMnemonic(KeyEvent.VK_S);
-        editorBtn.setMnemonic(KeyEvent.VK_E);
-        graphBtn.setMnemonic(KeyEvent.VK_G);
-        helpBtn.setMnemonic(KeyEvent.VK_M);
-        displaySettingsBtn.setMnemonic(KeyEvent.VK_T);
-        arrangeWindowsBtn.setMnemonic(KeyEvent.VK_C);
-        tabs.setMnemonicAt(0, KeyEvent.VK_0);
-        tabs.setMnemonicAt(1, KeyEvent.VK_1);
+    private void loadRibbon() {
+        setApplicationIcon(ImageWrapperResizableIcon.getIcon(
+                Main.class.getResource("icon32.png"),
+                new Dimension(32, 32)));
+        JRibbon ribbon = getRibbon();
+        JRibbonBand coreband = new JRibbonBand("Core", null);
+        JRibbonBand appsband = new JRibbonBand("Apps", null);
+        JRibbonBand webband = new JRibbonBand("Community", null);
+        JRibbonBand collabband = new JRibbonBand("Team", null);
+        
+        RibbonApplicationMenuEntryPrimary helpbtn
+                = new RibbonApplicationMenuEntryPrimary(
+                        getRibbonIcon("help"),
+                        "Manual",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                loadFrame(new Help());
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntryPrimary cascadebtn
+                = new RibbonApplicationMenuEntryPrimary(
+                        getRibbonIcon("cascade"),
+                        "Arrange all",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                cascade();
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntryPrimary exitbtn
+                = new RibbonApplicationMenuEntryPrimary(
+                        getRibbonIcon("closeall"),
+                        "Exit",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                dispatchEvent(new WindowEvent(maingui,
+                                                WindowEvent.WINDOW_CLOSING));
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntrySecondary newjsbtn
+                = new RibbonApplicationMenuEntrySecondary(
+                        getTinyRibbonIcon("jsicon"),
+                        "JavaScript",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                loadFrame(new Editor());
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntrySecondary newpybtn
+                = new RibbonApplicationMenuEntrySecondary(
+                        getTinyRibbonIcon("pyicon"),
+                        "Python",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                loadFrame(new Editor(true));
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntryPrimary newbtn
+                = new RibbonApplicationMenuEntryPrimary(
+                        getRibbonIcon("newfile"),
+                        "New",
+                        null,
+                        JCommandButton.CommandButtonKind.POPUP_ONLY);
+        newbtn.addSecondaryMenuGroup("Script", newjsbtn, newpybtn);
+        RibbonApplicationMenuEntryFooter displaybtn
+                = new RibbonApplicationMenuEntryFooter(
+                        getTinyRibbonIcon("settings"),
+                        "Settings",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                loadFrame(new Settings());
+                            }
+                        });
+        
+        RibbonApplicationMenu menu = new RibbonApplicationMenu();
+        menu.addMenuEntry(newbtn);
+        menu.addMenuSeparator();
+        menu.addMenuEntry(helpbtn);
+        menu.addMenuEntry(cascadebtn);
+        menu.addMenuSeparator();
+        menu.addMenuEntry(exitbtn);
+        menu.addFooterEntry(displaybtn);
+        
+        shellbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                loadFrame(new Interpreter());
+            }
+        });
+        editorbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                loadFrame(new Editor());
+            }
+        });
+        graphbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                loadFrame(new Graph());
+            }
+        });
+        notepadbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                loadFrame(new Notepad());
+            }
+        });
+        wikibtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                loadFrame(new WebBrowser("SyMAT Wiki",
+                        "http://wiki.symatapp.com",
+                        WebBrowser.WIKI_LOGO));
+            }
+        });
+        forumbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                loadFrame(new WebBrowser("Community Forum",
+                        "http://forum.symatapp.com/",
+                        WebBrowser.FORUM_LOGO));
+            }
+        });
+        padsbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                loadFrame(new Pads());
+            }
+        });
+        
+        shellbtn.setPopupKeyTip("Open a window "
+                + "for running interactive commands.");
+        editorbtn.setPopupKeyTip("Write and run multiple-line scripts.");
+        graphbtn.setPopupKeyTip("Plot mathematical functions.");
+        notepadbtn.setPopupKeyTip("Write quick notes on a virtual napkin.");
+        wikibtn.setPopupKeyTip("View online documentation and tutorials.");
+        forumbtn.setPopupKeyTip("Discuss and share with the SyMAT community.");
+        padsbtn.setPopupKeyTip("Collaborate over the Internet on projects.");
+        
+        coreband.addCommandButton(shellbtn, RibbonElementPriority.TOP);
+        coreband.addCommandButton(editorbtn, RibbonElementPriority.TOP);
+        
+        appsband.addCommandButton(graphbtn, RibbonElementPriority.MEDIUM);
+        appsband.addCommandButton(notepadbtn, RibbonElementPriority.MEDIUM);
+        
+        webband.addCommandButton(wikibtn, RibbonElementPriority.LOW);
+        webband.addCommandButton(forumbtn, RibbonElementPriority.LOW);
+        
+        collabband.addCommandButton(padsbtn, RibbonElementPriority.MEDIUM);
+        
+        coreband.setResizePolicies((List) Arrays.asList(
+                new CoreRibbonResizePolicies.None(coreband.getControlPanel()),
+                new IconRibbonBandResizePolicy(coreband.getControlPanel())));
+        appsband.setResizePolicies((List) Arrays.asList(
+                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
+                new IconRibbonBandResizePolicy(appsband.getControlPanel())));
+        webband.setResizePolicies((List) Arrays.asList(
+                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
+                new IconRibbonBandResizePolicy(appsband.getControlPanel())));
+        collabband.setResizePolicies((List) Arrays.asList(
+                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
+                new IconRibbonBandResizePolicy(appsband.getControlPanel())));
+        
+        RibbonTask hometask = new RibbonTask("Home", coreband, appsband);
+        RibbonTask webtask = new RibbonTask("Web", webband, collabband);
+        
+        ribbon.setApplicationMenu(menu);
+        
+        ribbon.addTask(hometask);
+        ribbon.addTask(webtask);
+    }
+    
+    public static ResizableIcon getRibbonIcon(String name) {
+        return ImageWrapperResizableIcon.getIcon(
+                Main.class.getResource("images/" + name + ".png"),
+                new Dimension(100, 76));
+    }
+    
+    public static ResizableIcon getTinyRibbonIcon(String name) {
+        int d = 32;
+        if (name.endsWith("icon")) {
+            d = 64;
+        }
+        return ImageWrapperResizableIcon.getIcon(
+                Main.class.getResource("icons/" + name + ".png"),
+                new Dimension(d, d));
+    }
+    
+    public static void licenseRestrict(boolean restricted) {
+        graphbtn.setEnabled(!restricted);
+        padsbtn.setEnabled(!restricted);
+        recentFileList.setEnabled(!restricted);
     }
 
     /**
      * (Re)load display settings.
      */
     public static void updateDisplay() {
-        mainPane.paintImmediately(0, 0,
-                mainPane.getWidth(), mainPane.getHeight());
-        tabs.setBackground(Theme.tabColor());
+        maingui.getRibbon().setBackground(Theme.tabColor());
         recentFileList.setForeground(Theme.textColor());
         recentFileList.setBackground(Theme.boxColor());
-        if (!PrefStorage.getSetting("showrecent", "").equals("")) {
-            recentItemsPanel.setVisible(false);
-        } else {
-            recentItemsPanel.setVisible(true);
-        }
+        recentItemsPanel.setVisible(PrefStorage.getSetting("showrecent", "")
+                .equals(""));
+        maingui.getRibbon().setMinimized(PrefStorage.getSetting(
+                "miniribbon", "").equals("yes"));
+        mainPane.paintImmediately(0, 0,
+                mainPane.getWidth(), mainPane.getHeight());
     }
-
-    /**
-     * Get the markup for the watermark thing on the Ribbon.
-     *
-     * @return HTML for a JLabel.
-     */
-    private static String namemark() {
-        String nbsp = "";
-        String demo = "";
-        for (int i = 0; i < 8; i++) {
-            nbsp += "&nbsp;";
-        }
-        if (PrefStorage.getSetting("licensetype").equals("demo")) {
-            demo = " Trial";
-        }
-        if (PrefStorage.getSetting("license").equals("")) {
-            demo = " Unregistered";
-        }
-        return "<html>"
-                + nbsp
-                + "<span style=\"color: gray; font-size: 130%;\"><i>"
-                + APP_NAME + demo
-                + "</i></span>&nbsp;&nbsp;";
-    }
-
-    public static void updateNamemark() {
-        namemark1.setText(namemark());
-        namemark2.setText(namemark());
-        namemark3.setText(namemark());
-    }
-
+    
     public static void loadRecentFiles() {
         String files = PrefStorage.getSetting("recentfiles");
         if (files.equals("")) {
@@ -326,7 +492,7 @@ public class Main extends javax.swing.JFrame {
                 i++;
             }
         }
-
+        
         recentFileList.setListData(items);
 
         // Re-save list to remove bad entries
@@ -336,7 +502,7 @@ public class Main extends javax.swing.JFrame {
         }
         PrefStorage.saveSetting("recentfiles", list);
     }
-
+    
     public static void addRecentFile(String file) {
         file = (new File(file)).getAbsolutePath();
         String files = PrefStorage.getSetting("recentfiles");
@@ -366,23 +532,7 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tabs = new javax.swing.JTabbedPane();
-        jPanel4 = new javax.swing.JPanel();
-        shellBtn = new javax.swing.JButton();
-        editorBtn = new javax.swing.JButton();
-        graphBtn = new javax.swing.JButton();
-        namemark1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        namemark2 = new javax.swing.JLabel();
-        arrangeWindowsBtn = new javax.swing.JButton();
-        displaySettingsBtn = new javax.swing.JButton();
-        helpBtn = new javax.swing.JButton();
-        notepadBtn = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        wikiBtn = new javax.swing.JButton();
-        namemark3 = new javax.swing.JLabel();
-        forumBtn = new javax.swing.JButton();
-        padsBtn = new javax.swing.JButton();
+        jMenuItem1 = new javax.swing.JMenuItem();
         mainPane = mainPane = new javax.swing.JDesktopPane() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -404,6 +554,8 @@ public class Main extends javax.swing.JFrame {
         recentItemsTitle = new javax.swing.JLabel();
         appPanel = new javax.swing.JPanel();
 
+        jMenuItem1.setText("jMenuItem1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("SyMAT");
         setMinimumSize(new java.awt.Dimension(640, 540));
@@ -412,247 +564,6 @@ public class Main extends javax.swing.JFrame {
                 formComponentShown(evt);
             }
         });
-
-        tabs.setBackground(new Color(240,240,240));
-        tabs.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabs.setOpaque(true);
-
-        jPanel4.setFocusable(false);
-        jPanel4.setOpaque(false);
-
-        shellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/shell.png"))); // NOI18N
-        shellBtn.setText("Shell");
-        shellBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        shellBtn.setFocusable(false);
-        shellBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        shellBtn.setOpaque(false);
-        shellBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        shellBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                shellBtnActionPerformed(evt);
-            }
-        });
-
-        editorBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/editor.png"))); // NOI18N
-        editorBtn.setText("Editor");
-        editorBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        editorBtn.setFocusable(false);
-        editorBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        editorBtn.setOpaque(false);
-        editorBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        editorBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editorBtnActionPerformed(evt);
-            }
-        });
-
-        graphBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/graph.png"))); // NOI18N
-        graphBtn.setText("Graph");
-        graphBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        graphBtn.setFocusable(false);
-        graphBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        graphBtn.setOpaque(false);
-        graphBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        graphBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                graphBtnActionPerformed(evt);
-            }
-        });
-
-        namemark1.setFont(Main.ubuntuRegular.deriveFont(11.0F));
-        namemark1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        namemark1.setText(namemark());
-        namemark1.setFocusable(false);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(shellBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(editorBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(graphBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(namemark1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(namemark1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(shellBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(editorBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(graphBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        tabs.addTab("Home", jPanel4);
-
-        jPanel2.setOpaque(false);
-
-        namemark2.setFont(Main.ubuntuRegular.deriveFont(11.0F));
-        namemark2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        namemark2.setText(namemark());
-        namemark2.setFocusable(false);
-
-        arrangeWindowsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/cascade.png"))); // NOI18N
-        arrangeWindowsBtn.setText("Arrange");
-        arrangeWindowsBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        arrangeWindowsBtn.setFocusable(false);
-        arrangeWindowsBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        arrangeWindowsBtn.setOpaque(false);
-        arrangeWindowsBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        arrangeWindowsBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                arrangeWindowsBtnActionPerformed(evt);
-            }
-        });
-
-        displaySettingsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/display.png"))); // NOI18N
-        displaySettingsBtn.setText("Display");
-        displaySettingsBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        displaySettingsBtn.setFocusable(false);
-        displaySettingsBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        displaySettingsBtn.setOpaque(false);
-        displaySettingsBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        displaySettingsBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                displaySettingsBtnActionPerformed(evt);
-            }
-        });
-
-        helpBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/help.png"))); // NOI18N
-        helpBtn.setText("Manual");
-        helpBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        helpBtn.setFocusable(false);
-        helpBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        helpBtn.setOpaque(false);
-        helpBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        helpBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                helpBtnActionPerformed(evt);
-            }
-        });
-
-        notepadBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/notepad.png"))); // NOI18N
-        notepadBtn.setText("Notepad");
-        notepadBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        notepadBtn.setFocusable(false);
-        notepadBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        notepadBtn.setOpaque(false);
-        notepadBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        notepadBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                notepadBtnActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(displaySettingsBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(arrangeWindowsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(helpBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(notepadBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(namemark2, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(namemark2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(arrangeWindowsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(displaySettingsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(helpBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(notepadBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-
-        tabs.addTab("Tools", jPanel2);
-
-        jPanel5.setFocusable(false);
-        jPanel5.setOpaque(false);
-
-        wikiBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/wiki.png"))); // NOI18N
-        wikiBtn.setText("Wiki");
-        wikiBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        wikiBtn.setFocusable(false);
-        wikiBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        wikiBtn.setOpaque(false);
-        wikiBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        wikiBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wikiBtnActionPerformed(evt);
-            }
-        });
-
-        namemark3.setFont(Main.ubuntuRegular.deriveFont(11.0F));
-        namemark3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        namemark3.setText(namemark());
-        namemark3.setFocusable(false);
-
-        forumBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/forum.png"))); // NOI18N
-        forumBtn.setText("Forum");
-        forumBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        forumBtn.setFocusable(false);
-        forumBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        forumBtn.setOpaque(false);
-        forumBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        forumBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                forumBtnActionPerformed(evt);
-            }
-        });
-
-        padsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/pads.png"))); // NOI18N
-        padsBtn.setText("Pads");
-        padsBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        padsBtn.setFocusable(false);
-        padsBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        padsBtn.setOpaque(false);
-        padsBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        padsBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                padsBtnActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(wikiBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(forumBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(padsBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
-                .addComponent(namemark3, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(namemark3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(wikiBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(forumBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(padsBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        tabs.addTab("Web", jPanel5);
 
         mainPane.setBackground(new java.awt.Color(204, 204, 204));
         mainPane.setAutoscrolls(true);
@@ -723,7 +634,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(recentItemsPanelLayout.createSequentialGroup()
                 .addComponent(recentItemsTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(recentFileBtn)
                 .addContainerGap())
@@ -753,7 +664,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(appPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(mainPaneLayout.createSequentialGroup()
                         .addComponent(recentItemsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                         .addComponent(jLabel2)))
                 .addContainerGap())
         );
@@ -761,20 +672,7 @@ public class Main extends javax.swing.JFrame {
         mainPane.setLayer(recentItemsPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         mainPane.setLayer(appPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabs)
-            .addComponent(mainPane)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(mainPane))
-        );
+        getContentPane().add(mainPane, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -782,34 +680,6 @@ public class Main extends javax.swing.JFrame {
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         setLocationRelativeTo(null);
     }//GEN-LAST:event_formComponentShown
-
-    /*
-     This section has all the buttons!
-     */
-
-    private void displaySettingsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displaySettingsBtnActionPerformed
-        loadFrame(new Display());
-    }//GEN-LAST:event_displaySettingsBtnActionPerformed
-
-    private void arrangeWindowsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrangeWindowsBtnActionPerformed
-        cascade();
-    }//GEN-LAST:event_arrangeWindowsBtnActionPerformed
-
-    private void helpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpBtnActionPerformed
-        loadFrame(new Help());
-    }//GEN-LAST:event_helpBtnActionPerformed
-
-    private void graphBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphBtnActionPerformed
-        loadFrame(new Graph());
-    }//GEN-LAST:event_graphBtnActionPerformed
-
-    private void editorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editorBtnActionPerformed
-        loadFrame(new Editor());
-    }//GEN-LAST:event_editorBtnActionPerformed
-
-    private void shellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shellBtnActionPerformed
-        loadFrame(new Interpreter());
-    }//GEN-LAST:event_shellBtnActionPerformed
 
     private void recentFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recentFileBtnActionPerformed
         if (recentFileList.getSelectedValue() == null) {
@@ -859,25 +729,6 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_recentItemsTitleMouseClicked
 
-    private void wikiBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wikiBtnActionPerformed
-        loadFrame(new WebBrowser("SyMAT Wiki", "http://wiki.symatapp.com", WebBrowser.WIKI_LOGO));
-    }//GEN-LAST:event_wikiBtnActionPerformed
-
-    private void forumBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forumBtnActionPerformed
-        loadFrame(new WebBrowser("Community Forum", "http://forum.symatapp.com/", WebBrowser.FORUM_LOGO));
-    }//GEN-LAST:event_forumBtnActionPerformed
-
-    private void notepadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notepadBtnActionPerformed
-        loadFrame(new Notepad());
-    }//GEN-LAST:event_notepadBtnActionPerformed
-
-    private void padsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_padsBtnActionPerformed
-        loadFrame(new Pads());
-    }//GEN-LAST:event_padsBtnActionPerformed
-
-    /*
-     End the button handlers.
-     */
     /**
      * Adds the given JInternalFrame to the mainPane. Automatically does layout
      * and sets visible (if show==true).
@@ -955,7 +806,7 @@ public class Main extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
-
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -1011,16 +862,16 @@ public class Main extends javax.swing.JFrame {
                     break;
             }
         }
-
+        
         SingleInstanceClient sicli = new SingleInstanceClient(argfile);
-
+        
         try {
             new SingleInstanceServer().start();
         } catch (IOException ex) {
             Debug.printerr("Cannot start instance listener:\n\n");
             Debug.stacktrace(ex);
         }
-
+        
         Platform.setImplicitExit(false);
 
         /* Create and display the form */
@@ -1028,32 +879,31 @@ public class Main extends javax.swing.JFrame {
             new SplashScreen().setVisible(true);
         });
     }
+    
+    public static JCommandButton shellbtn
+            = new JCommandButton("Shell", getRibbonIcon("shell"));
+    public static JCommandButton editorbtn
+            = new JCommandButton("Editor", getRibbonIcon("editor"));
+    public static JCommandButton graphbtn
+            = new JCommandButton("Graph", getRibbonIcon("graph"));
+    public static JCommandButton notepadbtn
+            = new JCommandButton("Notepad", getRibbonIcon("notepad"));
+    public static JCommandButton wikibtn
+            = new JCommandButton("Wiki", getRibbonIcon("wiki"));
+    public static JCommandButton forumbtn
+            = new JCommandButton("Forum", getRibbonIcon("forum"));
+    public static JCommandButton padsbtn
+            = new JCommandButton("Pads", getRibbonIcon("pads"));
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel appPanel;
-    public static javax.swing.JButton arrangeWindowsBtn;
-    public static javax.swing.JButton displaySettingsBtn;
-    public static javax.swing.JButton editorBtn;
-    public static javax.swing.JButton forumBtn;
-    public static javax.swing.JButton graphBtn;
-    public static javax.swing.JButton helpBtn;
     public static javax.swing.JLabel jLabel2;
-    public static javax.swing.JPanel jPanel2;
-    public static javax.swing.JPanel jPanel4;
-    public static javax.swing.JPanel jPanel5;
+    public static javax.swing.JMenuItem jMenuItem1;
     public static javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JDesktopPane mainPane;
-    public static javax.swing.JLabel namemark1;
-    public static javax.swing.JLabel namemark2;
-    public static javax.swing.JLabel namemark3;
-    public static javax.swing.JButton notepadBtn;
-    public static javax.swing.JButton padsBtn;
     public static javax.swing.JButton recentFileBtn;
     public static javax.swing.JList recentFileList;
     public static javax.swing.JPanel recentItemsPanel;
     public static javax.swing.JLabel recentItemsTitle;
-    public static javax.swing.JButton shellBtn;
-    public static javax.swing.JTabbedPane tabs;
-    public static javax.swing.JButton wikiBtn;
     // End of variables declaration//GEN-END:variables
 }

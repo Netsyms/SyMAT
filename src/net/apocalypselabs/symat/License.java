@@ -306,7 +306,6 @@ public class License extends javax.swing.JInternalFrame {
     }
 
     public void exit() {
-        Main.updateNamemark(); // Make sure it displays trial or not
         dispose();
     }
 
