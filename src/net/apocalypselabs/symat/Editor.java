@@ -180,6 +180,15 @@ public class Editor extends javax.swing.JInternalFrame {
     public Editor() {
         this(false);
     }
+    
+    /**
+     * Show open dialog.
+     * @param openfile Nothing to see here, move along.
+     */
+    public Editor(int openfile) {
+        this("");
+        openMenuActionPerformed(null);
+    }
 
     private void setEditorTheme(String themeName) {
         try {

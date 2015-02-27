@@ -146,11 +146,11 @@ public class Main extends JRibbonFrame {
      * threaded in SplashScreen.
      */
     public Main() {
+        maingui = this;
         // Set icon
         setIconImages(symatlogo);
         initComponents();
         loadRibbon();
-        maingui = this;
 
         // Center screen
         setLocationRelativeTo(null);
@@ -258,89 +258,6 @@ public class Main extends JRibbonFrame {
         JRibbonBand webband = new JRibbonBand("Community", null);
         JRibbonBand collabband = new JRibbonBand("Team", null);
 
-        RibbonApplicationMenuEntryPrimary helpbtn
-                = new RibbonApplicationMenuEntryPrimary(
-                        getRibbonIcon("help"),
-                        "Manual",
-                        new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent evt) {
-                                loadFrame(new Help());
-                            }
-                        },
-                        JCommandButton.CommandButtonKind.ACTION_ONLY);
-        RibbonApplicationMenuEntryPrimary cascadebtn
-                = new RibbonApplicationMenuEntryPrimary(
-                        getRibbonIcon("cascade"),
-                        "Arrange all",
-                        new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent evt) {
-                                cascade();
-                            }
-                        },
-                        JCommandButton.CommandButtonKind.ACTION_ONLY);
-        RibbonApplicationMenuEntryPrimary exitbtn
-                = new RibbonApplicationMenuEntryPrimary(
-                        getRibbonIcon("closeall"),
-                        "Exit",
-                        new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent evt) {
-                                dispatchEvent(new WindowEvent(maingui,
-                                                WindowEvent.WINDOW_CLOSING));
-                            }
-                        },
-                        JCommandButton.CommandButtonKind.ACTION_ONLY);
-        RibbonApplicationMenuEntrySecondary newjsbtn
-                = new RibbonApplicationMenuEntrySecondary(
-                        getTinyRibbonIcon("jsicon"),
-                        "JavaScript",
-                        new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent evt) {
-                                loadFrame(new Editor());
-                            }
-                        },
-                        JCommandButton.CommandButtonKind.ACTION_ONLY);
-        RibbonApplicationMenuEntrySecondary newpybtn
-                = new RibbonApplicationMenuEntrySecondary(
-                        getTinyRibbonIcon("pyicon"),
-                        "Python",
-                        new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent evt) {
-                                loadFrame(new Editor(true));
-                            }
-                        },
-                        JCommandButton.CommandButtonKind.ACTION_ONLY);
-        RibbonApplicationMenuEntryPrimary newbtn
-                = new RibbonApplicationMenuEntryPrimary(
-                        getRibbonIcon("newfile"),
-                        "New",
-                        null,
-                        JCommandButton.CommandButtonKind.POPUP_ONLY);
-        newbtn.addSecondaryMenuGroup("Script", newjsbtn, newpybtn);
-        RibbonApplicationMenuEntryFooter displaybtn
-                = new RibbonApplicationMenuEntryFooter(
-                        getTinyRibbonIcon("settings"),
-                        "Settings",
-                        new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent evt) {
-                                loadFrame(new Settings());
-                            }
-                        });
-
-        RibbonApplicationMenu menu = new RibbonApplicationMenu();
-        menu.addMenuEntry(newbtn);
-        menu.addMenuSeparator();
-        menu.addMenuEntry(helpbtn);
-        menu.addMenuEntry(cascadebtn);
-        menu.addMenuSeparator();
-        menu.addMenuEntry(exitbtn);
-        menu.addFooterEntry(displaybtn);
-
         shellbtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -424,7 +341,7 @@ public class Main extends JRibbonFrame {
         RibbonTask hometask = new RibbonTask("Home", coreband, appsband);
         RibbonTask webtask = new RibbonTask("Web", webband, collabband);
 
-        ribbon.setApplicationMenu(menu);
+        loadRibbonMenu(null);
 
         ribbon.addTask(hometask);
         ribbon.addTask(webtask);
@@ -438,9 +355,6 @@ public class Main extends JRibbonFrame {
 
     public static ResizableIcon getTinyRibbonIcon(String name) {
         int d = 32;
-        if (name.endsWith("icon")) {
-            d = 64;
-        }
         return ImageWrapperResizableIcon.getIcon(
                 Main.class.getResource("icons/" + name + ".png"),
                 new Dimension(d, d));
@@ -467,6 +381,122 @@ public class Main extends JRibbonFrame {
                 mainPane.getWidth(), mainPane.getHeight());
     }
 
+    public static void loadRibbonMenu(RibbonApplicationMenuEntrySecondary[] recent) {
+        RibbonApplicationMenuEntryPrimary helpbtn
+                = new RibbonApplicationMenuEntryPrimary(
+                        getRibbonIcon("help"),
+                        "Manual",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                loadFrame(new Help());
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntryPrimary cascadebtn
+                = new RibbonApplicationMenuEntryPrimary(
+                        getRibbonIcon("cascade"),
+                        "Arrange all",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                cascade();
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntryPrimary exitbtn
+                = new RibbonApplicationMenuEntryPrimary(
+                        getRibbonIcon("closeall"),
+                        "Exit",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                maingui.dispatchEvent(new WindowEvent(maingui,
+                                                WindowEvent.WINDOW_CLOSING));
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntrySecondary newjsbtn
+                = new RibbonApplicationMenuEntrySecondary(
+                        getTinyRibbonIcon("jsicon"),
+                        "JavaScript",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                loadFrame(new Editor());
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntrySecondary newpybtn
+                = new RibbonApplicationMenuEntrySecondary(
+                        getTinyRibbonIcon("pyicon"),
+                        "Python",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                loadFrame(new Editor(true));
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntryPrimary newbtn
+                = new RibbonApplicationMenuEntryPrimary(
+                        getRibbonIcon("newfile"),
+                        "New",
+                        null,
+                        JCommandButton.CommandButtonKind.POPUP_ONLY);
+        openbtn = new RibbonApplicationMenuEntryPrimary(
+                getRibbonIcon("openfile"),
+                "Open",
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        loadFrame(new Editor(1337));
+                    }
+                },
+                JCommandButton.CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION);
+
+        if (recent == null) {
+            openbtn.addSecondaryMenuGroup("Recent Files");
+        } else {
+            openbtn.addSecondaryMenuGroup("Recent Files", recent);
+        }
+        newbtn.addSecondaryMenuGroup("New Script", newjsbtn, newpybtn);
+
+        RibbonApplicationMenuEntryFooter displaybtn
+                = new RibbonApplicationMenuEntryFooter(
+                        getTinyRibbonIcon("settings"),
+                        "Settings",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                loadFrame(new Settings());
+                            }
+                        });
+
+        RibbonApplicationMenuEntryPrimary blankbtn
+                = new RibbonApplicationMenuEntryPrimary(
+                        null, "", null,
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        blankbtn.setEnabled(false);
+
+        RibbonApplicationMenu menu = new RibbonApplicationMenu();
+        menu.addMenuEntry(newbtn);
+        menu.addMenuEntry(openbtn);
+        menu.addMenuSeparator();
+        menu.addMenuEntry(helpbtn);
+        menu.addMenuEntry(cascadebtn);
+        menu.addMenuSeparator();
+        menu.addMenuEntry(exitbtn);
+        menu.addFooterEntry(displaybtn);
+
+        menu.addMenuEntry(blankbtn);
+        menu.addMenuEntry(blankbtn);
+        menu.addMenuEntry(blankbtn);
+        menu.addMenuEntry(blankbtn);
+
+        maingui.getRibbon().setApplicationMenu(menu);
+    }
+
     public static void loadRecentFiles() {
         String files = PrefStorage.getSetting("recentfiles");
         if (files.equals("")) {
@@ -484,14 +514,31 @@ public class Main extends JRibbonFrame {
         }
         KeyValListItem[] items = new KeyValListItem[neededLength];
         int i = 0;
+        RibbonApplicationMenuEntrySecondary[] recentmenu
+                = new RibbonApplicationMenuEntrySecondary[fileList.length];
         for (String f : fileList) {
             File file = new File(f);
             if (file.isFile() && i < neededLength) {
                 items[i] = new KeyValListItem(file.getName(), file.getPath());
+                recentmenu[i] = (new RibbonApplicationMenuEntrySecondary(
+                        null,
+                        file.getName(),
+                        new ActionListener() {
+                            final String path = file.getPath();
+
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                Editor edit = new Editor();
+                                edit.openFileFromName(path);
+                                loadFrame(edit);
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY));
                 i++;
             }
         }
 
+        loadRibbonMenu(recentmenu);
         recentFileList.setListData(items);
 
         // Re-save list to remove bad entries
@@ -715,17 +762,7 @@ public class Main extends JRibbonFrame {
     }//GEN-LAST:event_recentFileListMouseMoved
 
     private void recentItemsTitleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recentItemsTitleMouseClicked
-        if (evt.getClickCount() == 2) {
-            if (recentItemsMinimized) {
-                recentItemsPanel.setSize(recentItemsPanel.getWidth(),
-                        (int) recentItemsPanel.getMaximumSize().getHeight());
-                recentItemsMinimized = false;
-            } else {
-                recentItemsPanel.setSize(recentItemsPanel.getWidth(),
-                        recentItemsTitle.getHeight());
-                recentItemsMinimized = true;
-            }
-        }
+
     }//GEN-LAST:event_recentItemsTitleMouseClicked
 
     /**
@@ -893,6 +930,7 @@ public class Main extends JRibbonFrame {
             = new JCommandButton("Forum", getRibbonIcon("forum"));
     public static JCommandButton padsbtn
             = new JCommandButton("Pads", getRibbonIcon("pads"));
+    public static RibbonApplicationMenuEntryPrimary openbtn;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JPanel appPanel;
