@@ -80,10 +80,21 @@ public class Functions {
     /*
      Useful interactions
      */
+    /**
+     * Display a message dialog box.
+     *
+     * @param message The message to give.
+     */
     public void notify(Object message) {
         JOptionPane.showInternalMessageDialog(Main.mainPane, message.toString());
     }
 
+    /**
+     * Display an input dialog box with a text field.
+     *
+     * @param question Text to label dialog
+     * @return The inputted text
+     */
     public String ask(String question) {
         return JOptionPane.showInternalInputDialog(Main.mainPane, question);
     }
@@ -91,11 +102,23 @@ public class Functions {
     /*
      Math commands
      */
-    // Derivative of function with respect to idv
+    /**
+     * Differentiate the function with respect to idv.
+     *
+     * @param function Function
+     * @param idv independent variable
+     * @return Differentiated function
+     */
     public String diff(String function, String idv) {
         return util.evaluate("diff(" + function + "," + idv + ")").toString();
     }
 
+    /**
+     * Differentiate the function with respect to x.
+     *
+     * @param function Function
+     * @return Differentiated function
+     */
     public String diff(String function) {
         // Assume "x" as var
         return diff(function, "x");
@@ -106,10 +129,23 @@ public class Functions {
         return diff(function, idv);
     }
 
+    /**
+     * Integrate the function with respect to idv.
+     *
+     * @param function Function
+     * @param idv independent variable
+     * @return Integrated function
+     */
     public String integrate(String function, String idv) {
         return util.evaluate("integrate(" + function + "," + idv + ")").toString();
     }
 
+    /**
+     * Integrate the function with respect to x.
+     *
+     * @param function Function
+     * @return Integrated function
+     */
     public String integrate(String function) {
         return integrate(function, "x");
     }
@@ -118,6 +154,12 @@ public class Functions {
         return sym("Factor(" + function + ")");
     }
 
+    /**
+     * Simplify the given expression.
+     *
+     * @param expr expression
+     * @return simplified expression
+     */
     public String simplify(String expr) {
         return sym("Simplify(" + expr + ")");
     }
@@ -130,10 +172,172 @@ public class Functions {
         return ans.toString();
     }
 
+    /**
+     * Multiplies the given numbers together.
+     *
+     * @param a numbers. Calculates first * second * third, etc.
+     * @return The product of the numbers or the value of input if there is only
+     * one input.
+     */
+    public double times(double... a) {
+        double ans = 0;
+        for (int i = 0; i < a.length; i++) {
+            if (i == 0) {
+                ans = a[i];
+            } else {
+                ans *= a[i];
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * Divide the given numbers.
+     *
+     * @param a numbers. Calculates (first / second) / third, etc.
+     * @return The quotient of the numbers or the value of input if there is
+     * only one input.
+     */
+    public double divide(double... a) {
+        double ans = 0;
+        for (int i = 0; i < a.length; i++) {
+            if (i == 0) {
+                ans = a[i];
+            } else {
+                ans /= a[i];
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * Divide the first number by the second and return the remainder.
+     *
+     * @param a numbers. Calculates (first mod second) mod third, etc.
+     * @return The modulus of the numbers or the value of input if there is only
+     * one input.
+     */
+    public double mod(double... a) {
+        double ans = 0;
+        for (int i = 0; i < a.length; i++) {
+            if (i == 0) {
+                ans = a[i];
+            } else {
+                ans %= a[i];
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * Add the given numbers together.
+     *
+     * @param a numbers. Calculates first + second + third, etc.
+     * @return The sum of the numbers or the value of input if there is only one
+     * input.
+     */
+    public double add(double... a) {
+        double ans = 0;
+        for (double d : a) {
+            ans += d;
+        }
+        return ans;
+    }
+
+    /**
+     * Subtract the given numbers.
+     *
+     * @param a numbers. Calculates (first - second) - third, etc.
+     * @return The difference of the numbers or the value of input if there is
+     * only one input.
+     */
+    public double subtract(double... a) {
+        double ans = 0;
+        for (int i = 0; i < a.length; i++) {
+            if (i == 0) {
+                ans = a[i];
+            } else {
+                ans -= a[i];
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * Multiply two matrices.
+     *
+     * @param a First matrix
+     * @param b Second matrix
+     * @return The multiplied matrices
+     * @throws net.apocalypselabs.symat.BadInputException When the matrices are
+     * wrong.
+     */
+    public double[][] mtimes(double[][] a, double[][] b) throws BadInputException {
+        double[][] ans = new double[a.length][b[0].length];
+        double sum = 0;
+        int c, d, k, m = a.length, q = b[0].length, p = b.length;
+
+        if (a[0].length != b.length) {
+            throw new BadInputException("First matrix column count must match second matrix row count.");
+        }
+
+        for (c = 0; c < m; c++) {
+            for (d = 0; d < q; d++) {
+                for (k = 0; k < p; k++) {
+                    sum = sum + a[c][k] * b[k][d];
+                }
+                ans[c][d] = sum;
+                sum = 0;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * Multiply the given matrix by itself b times.
+     *
+     * @param a Square matrix
+     * @param b Power ( >= 0 )
+     * @return The matrix result
+     * @throws BadInputException if the matrix is not square or power is less
+     * than 0
+     */
+    public double[][] mpower(double[][] a, int b) throws BadInputException {
+        if (a.length != a[0].length) {
+            throw new BadInputException("Matrix needs to be square.");
+        }
+        if (b < 0) {
+            throw new BadInputException("Power cannot be negative.");
+        }
+
+        double[][] ans = a;
+
+        for (int i = 0; i < b; i++) {
+            if (i == 0) {
+                ans = a;
+            } else {
+                ans = mtimes(a, ans);
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * Convert the given number of degrees to radians.
+     *
+     * @param degrees Number in degrees
+     * @return Radians (degrees * (pi/180))
+     */
     public double rad(double degrees) {
         return degrees * (PI / 180);
     }
 
+    /**
+     * Convert the given number of radians to degrees.
+     *
+     * @param radians Number in radians
+     * @return Degrees (radians * (180/pi))
+     */
     public double deg(double radians) {
         return radians * (180 / PI);
     }
@@ -142,19 +346,46 @@ public class Functions {
         return util.evaluate(input).toString();
     }
 
-    // Shortcut for symja evaluation.
+    /**
+     * Evaluate the given text with the builtin Symja parser.
+     *
+     * @param input
+     * @return
+     */
     public String $(String input) {
         return sym(input);
     }
 
+    /**
+     * Replace all occurrences of variable with newvar in function.
+     *
+     * @param function Text input
+     * @param variable Text to replace
+     * @param newvar Text to replace with
+     * @return function with text replaced.
+     */
     public String replace(String function, String variable, String newvar) {
         return function.replaceAll(variable, newvar);
     }
 
+    /**
+     * Substitute newvar for variable in function and attempt to calculate a
+     * numerical answer.
+     * <br />Example: subs('32*x','x',2) = 64.0
+     * @param function Function
+     * @param variable Variable to substitute
+     * @param newvar Value to replace with
+     * @return The numerical answer or zero if there is no numerical answer.
+     */
     public double subs(String function, String variable, String newvar) {
         return numof(function.replaceAll(variable, newvar));
     }
 
+    /**
+     * Attempt to find numerical value of input.
+     * @param f Function
+     * @return answer or zero if it doesn't exist
+     */
     public double numof(String f) {
         try {
             return Double.parseDouble(util.evaluate("N(" + f + ")").toString());
@@ -327,15 +558,15 @@ public class Functions {
             c.setTime(new Date());
             try {
                 long expire = Long.parseLong(PrefStorage.getSetting("license"));
-                long days = (((expire - c.getTimeInMillis())/(60*60*24))-999)/1000;
+                long days = (((expire - c.getTimeInMillis()) / (60 * 60 * 24)) - 999) / 1000;
                 if (days < 0) {
                     if (days == -1) {
                         expires = "Today";
                     } else {
-                        expires = abs(days)+" days ago";
+                        expires = abs(days) + " days ago";
                     }
                 } else {
-                    expires = "In "+days+" days";
+                    expires = "In " + days + " days";
                 }
             } catch (NumberFormatException e) {
             }
