@@ -46,6 +46,7 @@
 package net.apocalypselabs.symat;
 
 import fi.iki.elonen.NanoHTTPD;
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -64,9 +65,14 @@ public class SingleInstanceServer extends NanoHTTPD {
         String msg = "OK";
         Map<String, String> parms = session.getParms();
         if (parms.get("arg") != null) {
-            Editor ed = new Editor();
-            Main.loadFrame(ed);
-            ed.openFileFromName(parms.get("arg"));
+            if (parms.get("arg").endsWith(".sytt")) {
+                Tasks tt = new Tasks(new File(parms.get("arg")));
+                Main.loadFrame(tt);
+            } else {
+                Editor ed = new Editor();
+                Main.loadFrame(ed);
+                ed.openFileFromName(parms.get("arg"));
+            }
             java.awt.EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {

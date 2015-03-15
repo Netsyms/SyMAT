@@ -287,7 +287,7 @@ public class Tasks extends javax.swing.JInternalFrame {
         }
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
-                saveTasks(fc.getSelectedFile());
+                saveTasks(FileUtils.getFileWithExtension(fc));
             } catch (IOException ex) {
                 JOptionPane.showInternalMessageDialog(Main.mainPane,
                         "Cannot save task list: " + ex.getMessage(),

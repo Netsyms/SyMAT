@@ -70,10 +70,13 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import javafx.application.Platform;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.pushingpixels.flamingo.api.ribbon.*;
 import org.pushingpixels.flamingo.api.ribbon.resize.*;
 import org.pushingpixels.flamingo.api.common.*;
@@ -179,10 +182,16 @@ public class Main extends JRibbonFrame {
         // Open initial windows
         boolean loaded = false;
         if (!argfile.equals("")) {
-            Editor ed = new Editor();
-            loadFrame(ed);
-            ed.openFileFromName(argfile);
-            argfile = "";
+            if (argfile.endsWith(".sytt")) {
+                Tasks tt = new Tasks(new File(argfile));
+                loadFrame(tt);
+                argfile = "";
+            } else {
+                Editor ed = new Editor();
+                loadFrame(ed);
+                ed.openFileFromName(argfile);
+                argfile = "";
+            }
             loaded = true;
         }
         boolean licValid = false;
@@ -381,9 +390,6 @@ public class Main extends JRibbonFrame {
 
     public static ResizableIcon getTinyRibbonIcon(String name) {
         int d = 32;
-        if (name.endsWith("icon")) {
-            d = 24;
-        }
         return ImageWrapperResizableIcon.getIcon(
                 Main.class.getResource("icons/" + name + ".png"),
                 new Dimension(d, d));
@@ -467,6 +473,17 @@ public class Main extends JRibbonFrame {
                             }
                         },
                         JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntrySecondary newtaskbtn
+                = new RibbonApplicationMenuEntrySecondary(
+                        getTinyRibbonIcon("taskicon"),
+                        "Task List",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                loadFrame(new Tasks());
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
         RibbonApplicationMenuEntryPrimary newbtn
                 = new RibbonApplicationMenuEntryPrimary(
                         getRibbonIcon("newfile"),
@@ -479,7 +496,32 @@ public class Main extends JRibbonFrame {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent evt) {
-                        loadFrame(new Editor(1337));
+                        JFileChooser fc = new JFileChooser();
+                        FileFilter script
+                        = new FileNameExtensionFilter("Script"
+                                + "(syjs, sypy, js, py)",
+                                "syjs", "sypy", "js", "py");
+                        FileFilter all
+                        = new FileNameExtensionFilter("SyMAT File"
+                                + "(syjs, sypy, js, py, sytt)",
+                                "syjs", "sypy", "js", "py", "sytt");
+                        FileFilter tasklist =
+                                new FileNameExtensionFilter("Task List (sytt)",
+                                "sytt");
+                        fc.setFileFilter(all);
+                        fc.addChoosableFileFilter(script);
+                        fc.addChoosableFileFilter(tasklist);
+                        int result = fc.showOpenDialog(maingui);
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            File f = fc.getSelectedFile();
+                            if (f.getName().endsWith(".sytt")) {
+                                loadFrame(new Tasks(f));
+                            } else {
+                                Editor ed = new Editor();
+                                ed.openFileFromName(f.getAbsolutePath());
+                                loadFrame(ed);
+                            }
+                        }
                     }
                 },
                 JCommandButton.CommandButtonKind.ACTION_AND_POPUP_MAIN_ACTION);
@@ -494,7 +536,8 @@ public class Main extends JRibbonFrame {
         } else {
             openbtn.addSecondaryMenuGroup("Recent Files", recent);
         }
-        newbtn.addSecondaryMenuGroup("New Script", newjsbtn, newpybtn);
+        newbtn.addSecondaryMenuGroup("Code File", newjsbtn, newpybtn);
+        newbtn.addSecondaryMenuGroup("Other", newtaskbtn);
 
         RibbonApplicationMenuEntryFooter displaybtn
                 = new RibbonApplicationMenuEntryFooter(
@@ -532,7 +575,7 @@ public class Main extends JRibbonFrame {
         maingui.getRibbon().setApplicationMenuRichTooltip(
                 new RichTooltip("SyMAT Menu",
                         "Create files, open documents, "
-                                + "get help, and change settings")
+                        + "get help, and change settings")
         );
     }
 
