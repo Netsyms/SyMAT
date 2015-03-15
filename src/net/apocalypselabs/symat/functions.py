@@ -48,3 +48,9 @@ def divide(*a):
     return _.divide(a)
 def mod(*a):
     return _.mod(a)
+def rand():
+    return _.rand()
+def rand(min,max):
+    return _.rand(min,max)
+def randb():
+    return _.randb()

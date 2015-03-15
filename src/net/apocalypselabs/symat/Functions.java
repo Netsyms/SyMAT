@@ -52,6 +52,7 @@ import java.io.InputStreamReader;
 import static java.lang.Math.*;
 import java.lang.reflect.Array;
 import java.net.URL;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -82,6 +83,8 @@ public class Functions {
     Graph graphwin = new Graph(true);
 
     private String lang = "py";
+
+    private SecureRandom rng = new SecureRandom();
 
     /*
      Useful interactions
@@ -301,20 +304,50 @@ public class Functions {
 
     /**
      * Get all unique permutations of the given array.
+     *
      * @param objs Array of items.
      * @return Matrix
      */
     public Object[] perms(Object... objs) {
         Permutations<Object> perm = new Permutations<>(objs);
-        
+
         Set perms = new HashSet<>();
-        
+
         while (perm.hasNext()) {
             perms.add(perm.next());
         }
-        
+
         Object[][] a = new Object[perms.size()][objs.length];
         return perms.toArray(a);
+    }
+
+    /**
+     * Get a uniform random fraction between 0.0 (inclusive) and 1.0
+     * (exclusive).
+     *
+     * @return random fraction
+     */
+    public double rand() {
+        return rng.nextDouble();
+    }
+
+    /**
+     * Get a random boolean value.
+     * @return true or false
+     */
+    public boolean randb() {
+        return rng.nextBoolean();
+    }
+
+    /**
+     * Get a uniform random integer.
+     *
+     * @param min Minimum value, inclusive
+     * @param max Maximum value, inclusive
+     * @return random integer
+     */
+    public int rand(int min, int max) {
+        return rng.nextInt((max - min) + 1) + min;
     }
 
     /**

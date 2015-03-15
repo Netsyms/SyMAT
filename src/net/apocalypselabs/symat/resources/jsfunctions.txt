@@ -16,6 +16,14 @@ plotclr()|Reset the graph.
 drawdot(x, y)|Places a dot at the given coordinates.
 readfile("")|Read a text file from the given filename.
 savefile(data,"")|Save the text data to a file.
+rand()|Random fraction from 0 (inclusive) to 1 (exclusive)
+rand(min,max)|Random number between min and max, inclusive
+randb()|Random boolean (true or false)
+add(n1,n2,...)|Add the given numbers.
+subtract(n1,n2,...)|Subtract the given numbers.
+times(n1,n2,...)|Multiply the given numbers.
+divide(n1,n2,...)|Divide the given numbers.
+mod(n1,n2,...)|Divide the numbers and return the remainder.
 abs(0)|Absolute value of number.
 asin(0)|
 acos(0)|
