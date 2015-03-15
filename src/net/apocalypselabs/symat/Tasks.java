@@ -69,6 +69,8 @@ public class Tasks extends javax.swing.JInternalFrame {
     private String tltitle = "Untitled";
 
     private final JFileChooser fc = new JFileChooser();
+    
+    private File ondisk = null;
 
     /**
      * Creates new form Tasks
@@ -104,6 +106,7 @@ public class Tasks extends javax.swing.JInternalFrame {
         }
         setTitle(tl.getTitle());
         tltitle = tl.getTitle();
+        ondisk = f;
         redraw();
     }
 
@@ -117,6 +120,7 @@ public class Tasks extends javax.swing.JInternalFrame {
         try (ObjectOutputStream oos = new ObjectOutputStream(fout)) {
             oos.writeObject(tl);
             oos.close();
+            ondisk = f;
         }
     }
 
@@ -134,11 +138,11 @@ public class Tasks extends javax.swing.JInternalFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         openBtn = new javax.swing.JMenuItem();
+        appendBtn = new javax.swing.JMenuItem();
         saveBtn = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        saveAsBtn = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        insertItem = new javax.swing.JMenuItem();
+        insertItemBtn = new javax.swing.JMenuItem();
         setTitleBtn = new javax.swing.JMenuItem();
 
         setClosable(true);
@@ -162,6 +166,15 @@ public class Tasks extends javax.swing.JInternalFrame {
         });
         jMenu1.add(openBtn);
 
+        appendBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        appendBtn.setText("Append...");
+        appendBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                appendBtnActionPerformed(evt);
+            }
+        });
+        jMenu1.add(appendBtn);
+
         saveBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveBtn.setText("Save...");
         saveBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -171,30 +184,27 @@ public class Tasks extends javax.swing.JInternalFrame {
         });
         jMenu1.add(saveBtn);
 
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem4.setText("Save As...");
-        jMenu1.add(jMenuItem4);
-
-        jMenuItem1.setText("Sample");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        saveAsBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        saveAsBtn.setText("Save As...");
+        saveAsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                saveAsBtnActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(saveAsBtn);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
 
-        insertItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        insertItem.setText("Insert item");
-        insertItem.addActionListener(new java.awt.event.ActionListener() {
+        insertItemBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        insertItemBtn.setText("Insert item");
+        insertItemBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertItemActionPerformed(evt);
+                insertItemBtnActionPerformed(evt);
             }
         });
-        jMenu2.add(insertItem);
+        jMenu2.add(insertItemBtn);
 
         setTitleBtn.setText("List title...");
         setTitleBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -222,29 +232,18 @@ public class Tasks extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        for (int i = 1; i <= 5; i++) {
-            Task t = new Task(
-                    (i % 2 == 0),
-                    "Name " + i,
-                    "Description " + i);
-            listPanel.add(t);
-            t.setVisible(true);
-        }
-        redraw();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void insertItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertItemActionPerformed
+    private void insertItemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertItemBtnActionPerformed
         Task t = new Task(0, "Untitled Task",
                 "No description");
         listPanel.add(t);
         t.setVisible(true);
         redraw();
-    }//GEN-LAST:event_insertItemActionPerformed
+    }//GEN-LAST:event_insertItemBtnActionPerformed
 
     private void openBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBtnActionPerformed
         int result = fc.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
+            listPanel.removeAll();
             try {
                 openTaskFile(fc.getSelectedFile());
             } catch (IOException ex) {
@@ -279,7 +278,13 @@ public class Tasks extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_setTitleBtnActionPerformed
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-        int result = fc.showSaveDialog(this);
+        int result;
+        if (ondisk == null) {
+            result = fc.showSaveDialog(this);
+        } else {
+            fc.setSelectedFile(ondisk);
+            result = JFileChooser.APPROVE_OPTION;
+        }
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 saveTasks(fc.getSelectedFile());
@@ -293,20 +298,46 @@ public class Tasks extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_saveBtnActionPerformed
 
+    private void saveAsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsBtnActionPerformed
+        ondisk = null;
+        saveBtn.doClick();
+    }//GEN-LAST:event_saveAsBtnActionPerformed
+
+    private void appendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appendBtnActionPerformed
+        int result = fc.showDialog(this, "Merge List");
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                openTaskFile(fc.getSelectedFile());
+            } catch (IOException ex) {
+                JOptionPane.showInternalMessageDialog(Main.mainPane,
+                        "Cannot open task list: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                Debug.stacktrace(ex);
+            } catch (ClassNotFoundException ex) {
+                JOptionPane.showInternalMessageDialog(Main.mainPane,
+                        "Cannot open task list: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                Debug.stacktrace(ex);
+            }
+        }
+    }//GEN-LAST:event_appendBtnActionPerformed
+
     private void redraw() {
         setSize(getWidth() + 1, getHeight());
         setSize(getWidth() - 1, getHeight());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem insertItem;
+    private javax.swing.JMenuItem appendBtn;
+    private javax.swing.JMenuItem insertItemBtn;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel listPanel;
     private javax.swing.JMenuItem openBtn;
+    private javax.swing.JMenuItem saveAsBtn;
     private javax.swing.JMenuItem saveBtn;
     private javax.swing.JMenuItem setTitleBtn;
     private javax.swing.JScrollPane taskList;
