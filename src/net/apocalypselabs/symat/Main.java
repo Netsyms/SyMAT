@@ -365,7 +365,7 @@ public class Main extends JRibbonFrame {
                 new IconRibbonBandResizePolicy(appsband.getControlPanel())));
 
         RibbonTask hometask = new RibbonTask("Home", coreband, appsband);
-        RibbonTask webtask = new RibbonTask("Web", webband, collabband);
+        RibbonTask webtask = new RibbonTask("Tools", webband, collabband);
 
         loadRibbonMenu(null);
 
@@ -529,6 +529,11 @@ public class Main extends JRibbonFrame {
         menu.addMenuEntry(blankbtn);
 
         maingui.getRibbon().setApplicationMenu(menu);
+        maingui.getRibbon().setApplicationMenuRichTooltip(
+                new RichTooltip("SyMAT Menu",
+                        "Create files, open documents, "
+                                + "get help, and change settings")
+        );
     }
 
     /**

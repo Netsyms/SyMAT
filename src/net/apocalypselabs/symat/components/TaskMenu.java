@@ -53,13 +53,13 @@ public class TaskMenu extends javax.swing.JPanel {
 
     /**
      * Creates new TaskMenu
-     * @param complete If the task is completed.
+     * @param percent Task completion percentage.
      * @param name Task name
      * @param desc Task description
      */
-    public TaskMenu(boolean complete, String name, String desc) {
+    public TaskMenu(int percent, String name, String desc) {
         this();
-        completeBox.setSelected(complete);
+        percentSlider.setValue(percent);
         nameBox.setText(name);
         descBox.setText(desc);
     }
@@ -71,12 +71,8 @@ public class TaskMenu extends javax.swing.JPanel {
         initComponents();
     }
     
-    /**
-     * Check if the task is marked as done.
-     * @return true if it is.
-     */
-    public boolean isComplete() {
-        return completeBox.isSelected();
+    public int getPercent() {
+        return percentSlider.getValue();
     }
     
     /**
@@ -105,14 +101,13 @@ public class TaskMenu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        completeBox = new javax.swing.JCheckBox();
         nameBox = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         descBox = new javax.swing.JTextArea();
-
-        completeBox.setText("Task complete");
+        jLabel3 = new javax.swing.JLabel();
+        percentSlider = new javax.swing.JSlider();
 
         jLabel1.setText("Task Name:");
 
@@ -122,41 +117,55 @@ public class TaskMenu extends javax.swing.JPanel {
         descBox.setRows(5);
         jScrollPane1.setViewportView(descBox);
 
+        jLabel3.setText("Percent complete:");
+
+        percentSlider.setMajorTickSpacing(10);
+        percentSlider.setMinorTickSpacing(5);
+        percentSlider.setPaintLabels(true);
+        percentSlider.setPaintTicks(true);
+        percentSlider.setSnapToTicks(true);
+        percentSlider.setValue(0);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(nameBox)
+            .addComponent(jScrollPane1)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(completeBox)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+            .addComponent(percentSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(completeBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(percentSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nameBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE))
+                .addGap(7, 7, 7)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox completeBox;
     private javax.swing.JTextArea descBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nameBox;
+    private javax.swing.JSlider percentSlider;
     // End of variables declaration//GEN-END:variables
 }

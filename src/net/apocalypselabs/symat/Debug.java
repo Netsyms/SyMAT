@@ -17,7 +17,7 @@ package net.apocalypselabs.symat;
 public class Debug {
 
     // If output should be on or off
-    public static boolean debug = false;
+    public static boolean debug = true;
     
     /**
      * Turn debug output on and off.

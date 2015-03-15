@@ -54,16 +54,32 @@ import javax.swing.JOptionPane;
  */
 public class Task extends javax.swing.JPanel {
 
-    private boolean taskDone = false;
+    private int percent = 0;
 
     public Task(boolean complete, String name, String desc) {
+        this((complete ? 100 : 0), name, desc);
+    }
+    
+    public Task(int complete, String name, String desc) {
         this();
-        taskDone = complete;
-        setComplete(complete);
+        percent = complete;
+        setComplete(percent);
         taskName.setText(name);
-        taskDesc.setText(desc);
+        taskDesc.setText(desc);        
+    }
+    
+    @Override
+    public String toString() {
+        return taskName.getText();
     }
 
+    public String getDesc() {
+        return taskDesc.getText();
+    }
+    
+    public int getComplete() {
+        return percent;
+    }
     /**
      * Creates new form Task
      */
@@ -71,13 +87,16 @@ public class Task extends javax.swing.JPanel {
         initComponents();
     }
 
-    private void setComplete(boolean b) {
+    private void setComplete(int i) {
+        percent = i;
         statusLabel.setIcon(new ImageIcon(
                 getClass().getResource(
                         "/net/apocalypselabs/symat/icons/"
-                        + (b ? "green" : "red") + "light.png"
+                        + (i == 100 ? "green" : "red") + "light.png"
                 )));
-        statusLabel.setToolTipText(b ? "Complete" : "Incomplete");
+        statusLabel.setToolTipText(i == 100 ? "Complete" : "Incomplete");
+        percentDone.setValue(i);
+        percentDone.setString(i+"%");
     }
 
     /**
@@ -93,6 +112,9 @@ public class Task extends javax.swing.JPanel {
         taskDesc = new javax.swing.JLabel();
         menuBtn = new javax.swing.JButton();
         statusLabel = new javax.swing.JLabel();
+        percentDone = new javax.swing.JProgressBar();
+
+        setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         taskName.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(20.0F));
         taskName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -111,40 +133,44 @@ public class Task extends javax.swing.JPanel {
 
         statusLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/redlight.png"))); // NOI18N
 
+        percentDone.setStringPainted(true);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(taskName, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(taskName, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(menuBtn))
             .addComponent(taskDesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(percentDone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(menuBtn)
-                        .addGap(0, 7, Short.MAX_VALUE))
-                    .addComponent(taskName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(menuBtn)
+                    .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(taskName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(taskDesc, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
+                .addComponent(percentDone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(taskDesc, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBtnActionPerformed
-        TaskMenu tm = new TaskMenu(taskDone,
+        TaskMenu tm = new TaskMenu(percent,
                 taskName.getText(),
                 taskDesc.getText());
         JOptionPane.showInternalMessageDialog(this, tm,
                 "Task Options", JOptionPane.PLAIN_MESSAGE);
-        taskDone = tm.isComplete();
-        setComplete(taskDone);
+        percent = tm.getPercent();
+        setComplete(percent);
         taskName.setText(tm.toString());
         taskDesc.setText(tm.getDesc());
     }//GEN-LAST:event_menuBtnActionPerformed
@@ -152,6 +178,7 @@ public class Task extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton menuBtn;
+    private javax.swing.JProgressBar percentDone;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JLabel taskDesc;
     private javax.swing.JLabel taskName;
