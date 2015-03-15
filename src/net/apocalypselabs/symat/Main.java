@@ -66,6 +66,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javafx.application.Platform;
 import javax.swing.ImageIcon;
@@ -94,7 +95,7 @@ public class Main extends JRibbonFrame {
     /**
      * Version name, as it should be displayed.
      */
-    public static final String VERSION_NAME = "1.5";
+    public static final String VERSION_NAME = "1.6";
 
     /**
      * The word "SyMAT".
@@ -107,7 +108,7 @@ public class Main extends JRibbonFrame {
     /**
      * Version number, for updates and //needs in scripts
      */
-    public static final double APP_CODE = 17;
+    public static final double APP_CODE = 18;
     /**
      * Base URL for building API calls
      */
@@ -243,6 +244,16 @@ public class Main extends JRibbonFrame {
         if (!PrefStorage.getSetting("showrecent", "").equals("")) {
             recentItemsPanel.setVisible(false);
         }
+
+        // Pi Day easter egg
+        GregorianCalendar piday = new GregorianCalendar();
+        if ((piday.get(Calendar.MONTH) == 2)
+                && (piday.get(Calendar.DAY_OF_MONTH) == 14)) {
+            JOptionPane.showInternalMessageDialog(mainPane,
+                    "Happy Pi Day from the SyMAT team!",
+                    "3/14",
+                    JOptionPane.PLAIN_MESSAGE);
+        }
     }
 
     /**
@@ -304,15 +315,29 @@ public class Main extends JRibbonFrame {
                 loadFrame(new Pads());
             }
         });
+        tasksbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                loadFrame(new Tasks());
+            }
+        });
 
-        shellbtn.setPopupKeyTip("Open a window "
-                + "for running interactive commands.");
-        editorbtn.setPopupKeyTip("Write and run multiple-line scripts.");
-        graphbtn.setPopupKeyTip("Plot mathematical functions.");
-        notepadbtn.setPopupKeyTip("Write quick notes on a virtual napkin.");
-        wikibtn.setPopupKeyTip("View online documentation and tutorials.");
-        forumbtn.setPopupKeyTip("Discuss and share with the SyMAT community.");
-        padsbtn.setPopupKeyTip("Collaborate over the Internet on projects.");
+        shellbtn.setActionRichTooltip(new RichTooltip("Command Shell",
+                "Open a window for running interactive commands."));
+        editorbtn.setActionRichTooltip(new RichTooltip("Code Editor",
+                "Write and run JavaScript and Python scripts."));
+        graphbtn.setActionRichTooltip(new RichTooltip("Graph",
+                "Plot mathematical functions on a 2D graph."));
+        notepadbtn.setActionRichTooltip(new RichTooltip("Notepad",
+                "Write quick notes on a virtual napkin."));
+        wikibtn.setActionRichTooltip(new RichTooltip("SyMAT Wiki",
+                "View and edit online documentation and tutorials."));
+        forumbtn.setActionRichTooltip(new RichTooltip("Support Forum",
+                "Discuss and share with the SyMAT community."));
+        padsbtn.setActionRichTooltip(new RichTooltip("Code Pads",
+                "Collaborate over the Internet on projects."));
+        tasksbtn.setActionRichTooltip(new RichTooltip("Task List",
+                "Manage tasks and to-do lists for projects."));
 
         coreband.addCommandButton(shellbtn, RibbonElementPriority.TOP);
         coreband.addCommandButton(editorbtn, RibbonElementPriority.TOP);
@@ -324,6 +349,7 @@ public class Main extends JRibbonFrame {
         webband.addCommandButton(forumbtn, RibbonElementPriority.LOW);
 
         collabband.addCommandButton(padsbtn, RibbonElementPriority.MEDIUM);
+        collabband.addCommandButton(tasksbtn, RibbonElementPriority.MEDIUM);
 
         coreband.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.None(coreband.getControlPanel()),
@@ -460,9 +486,9 @@ public class Main extends JRibbonFrame {
 
         if (recent == null) {
             RibbonApplicationMenuEntrySecondary blanksubbtn
-                = new RibbonApplicationMenuEntrySecondary(
-                        null, "No recent files", null,
-                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+                    = new RibbonApplicationMenuEntrySecondary(
+                            null, "No recent files", null,
+                            JCommandButton.CommandButtonKind.ACTION_ONLY);
             blanksubbtn.setEnabled(false);
             openbtn.addSecondaryMenuGroup("Recent Files", blanksubbtn);
         } else {
@@ -564,6 +590,7 @@ public class Main extends JRibbonFrame {
 
     /**
      * Add a file to the recent files lists.
+     *
      * @param file The file path.
      */
     public static void addRecentFile(String file) {
@@ -947,6 +974,8 @@ public class Main extends JRibbonFrame {
             = new JCommandButton("Forum", getRibbonIcon("forum"));
     public static JCommandButton padsbtn
             = new JCommandButton("Pads", getRibbonIcon("pads"));
+    public static JCommandButton tasksbtn
+            = new JCommandButton("Tasks", getRibbonIcon("tasks"));
     public static RibbonApplicationMenuEntryPrimary openbtn;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

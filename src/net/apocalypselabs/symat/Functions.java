@@ -50,13 +50,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import static java.lang.Math.*;
-import java.net.MalformedURLException;
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
 import javax.swing.JOptionPane;
 import static net.apocalypselabs.symat.Main.API_URL;
 import org.matheclipse.core.eval.EvalUtilities;
@@ -76,6 +80,8 @@ public class Functions {
 
     private final EvalUtilities util = new EvalUtilities(true, true);
     Graph graphwin = new Graph(true);
+
+    private String lang = "py";
 
     /*
      Useful interactions
@@ -264,6 +270,54 @@ public class Functions {
     }
 
     /**
+     * Get all prime factors of input number.
+     *
+     * @param n An integer number.
+     * @return Array of primes.
+     *
+     * Thanks to
+     * http://www.javacodegeeks.com/2014/05/how-to-find-prime-factors-of-integer-numbers-in-java-factorization.html
+     * and http://stackoverflow.com/a/2451219/2534036
+     */
+    public long[] factor(long n) {
+        long i;
+        Set primes = new HashSet<>();
+        long copyOfInput = n;
+
+        for (i = 2; i <= copyOfInput; i++) {
+            if (copyOfInput % i == 0) {
+                primes.add(i); // prime factor
+                copyOfInput /= i;
+                i--;
+            }
+        }
+        long[] a = new long[primes.size()];
+        int j = 0;
+        for (Object val : primes) {
+            a[j++] = (long) val;
+        }
+        return a;
+    }
+
+    /**
+     * Get all unique permutations of the given array.
+     * @param objs Array of items.
+     * @return Matrix
+     */
+    public Object[] perms(Object... objs) {
+        Permutations<Object> perm = new Permutations<>(objs);
+        
+        Set perms = new HashSet<>();
+        
+        while (perm.hasNext()) {
+            perms.add(perm.next());
+        }
+        
+        Object[][] a = new Object[perms.size()][objs.length];
+        return perms.toArray(a);
+    }
+
+    /**
      * Multiply two matrices.
      *
      * @param a First matrix
@@ -272,13 +326,18 @@ public class Functions {
      * @throws net.apocalypselabs.symat.BadInputException When the matrices are
      * wrong.
      */
-    public double[][] mtimes(double[][] a, double[][] b) throws BadInputException {
+    public Object mtimes(double[][] a, double[][] b) throws BadInputException {
+        return tonativearray(mTimes(a, b));
+    }
+
+    private double[][] mTimes(double[][] a, double[][] b) throws BadInputException {
         double[][] ans = new double[a.length][b[0].length];
         double sum = 0;
         int c, d, k, m = a.length, q = b[0].length, p = b.length;
 
         if (a[0].length != b.length) {
-            throw new BadInputException("First matrix column count must match second matrix row count.");
+            throw new BadInputException("First matrix column count must match "
+                    + "second matrix row count.");
         }
 
         for (c = 0; c < m; c++) {
@@ -302,7 +361,7 @@ public class Functions {
      * @throws BadInputException if the matrix is not square or power is less
      * than 0
      */
-    public double[][] mpower(double[][] a, int b) throws BadInputException {
+    public Object mpower(double[][] a, int b) throws BadInputException {
         if (a.length != a[0].length) {
             throw new BadInputException("Matrix needs to be square.");
         }
@@ -316,9 +375,13 @@ public class Functions {
             if (i == 0) {
                 ans = a;
             } else {
-                ans = mtimes(a, ans);
+                ans = mTimes(a, ans);
             }
         }
+        return tonativearray(ans);
+    }
+
+    private double[][] tonativearray(double[][] ans) {
         return ans;
     }
 
@@ -372,6 +435,7 @@ public class Functions {
      * Substitute newvar for variable in function and attempt to calculate a
      * numerical answer.
      * <br />Example: subs('32*x','x',2) = 64.0
+     *
      * @param function Function
      * @param variable Variable to substitute
      * @param newvar Value to replace with
@@ -383,6 +447,7 @@ public class Functions {
 
     /**
      * Attempt to find numerical value of input.
+     *
      * @param f Function
      * @return answer or zero if it doesn't exist
      */
@@ -602,5 +667,104 @@ public class Functions {
 
     public Functions() {
         Main.loadFrame(graphwin, false);
+    }
+
+    public void setLang(String l) {
+        lang = l;
+    }
+
+    /**
+     * This class finds permutations of an array.
+     *
+     * Credit to http://stackoverflow.com/a/14444037/2534036
+     *
+     * License: CC-BY-SA 3.0
+     *
+     * @param <E>
+     */
+    class Permutations<E> implements Iterator<E[]> {
+
+        private E[] arr;
+        private int[] ind;
+        private boolean has_next;
+
+        public E[] output;//next() returns this array, make it public
+
+        Permutations(E[] arr) {
+            this.arr = arr.clone();
+            ind = new int[arr.length];
+            //convert an array of any elements into array of integers - first occurrence is used to enumerate
+            Map<E, Integer> hm = new HashMap<E, Integer>();
+            for (int i = 0; i < arr.length; i++) {
+                Integer n = hm.get(arr[i]);
+                if (n == null) {
+                    hm.put(arr[i], i);
+                    n = i;
+                }
+                ind[i] = n.intValue();
+            }
+            Arrays.sort(ind);//start with ascending sequence of integers
+
+            //output = new E[arr.length]; <-- cannot do in Java with generics, so use reflection
+            output = (E[]) Array.newInstance(arr.getClass().getComponentType(), arr.length);
+            has_next = true;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return has_next;
+        }
+
+        /**
+         * Computes next permutations. Same array instance is returned every
+         * time!
+         *
+         * @return
+         */
+        @Override
+        public E[] next() {
+            if (!has_next) {
+                throw new NoSuchElementException();
+            }
+
+            for (int i = 0; i < ind.length; i++) {
+                output[i] = arr[ind[i]];
+            }
+
+            //get next permutation
+            has_next = false;
+            for (int tail = ind.length - 1; tail > 0; tail--) {
+                if (ind[tail - 1] < ind[tail]) {//still increasing
+
+                    //find last element which does not exceed ind[tail-1]
+                    int s = ind.length - 1;
+                    while (ind[tail - 1] >= ind[s]) {
+                        s--;
+                    }
+
+                    swap(ind, tail - 1, s);
+
+                    //reverse order of elements in the tail
+                    for (int i = tail, j = ind.length - 1; i < j; i++, j--) {
+                        swap(ind, i, j);
+                    }
+                    has_next = true;
+                    break;
+                }
+
+            }
+            return output;
+        }
+
+        private void swap(int[] arr, int i, int j) {
+            int t = arr[i];
+            arr[i] = arr[j];
+            arr[j] = t;
+        }
+
+        @Override
+        public void remove() {
+
+        }
     }
 }

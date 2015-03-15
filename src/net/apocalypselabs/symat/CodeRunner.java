@@ -83,6 +83,7 @@ public class CodeRunner {
                     // Add custom functions.
                     se.eval("importClass(net.apocalypselabs.symat.Functions);"
                             + "SyMAT_Functions = new net.apocalypselabs.symat.Functions();"
+                            + "SyMAT_Functions.setLang('js');\n"
                             + getFunctions("js"));
                     // Allow engine access from scripts.
                     se.put("engine", se);
@@ -91,12 +92,14 @@ public class CodeRunner {
                 }
                 break;
             case "python":
+            case "jython":
             case "py":
                 se = new ScriptEngineManager().getEngineByName("python");
                 try {
                     se.eval("from math import *\n"
                             + "from net.apocalypselabs.symat import Functions\n"
-                            + "_=Functions()\n\n"
+                            + "_=Functions()\n"
+                            + "_.setLang('py')\n\n"
                             + getFunctions("py"));
                     // Allow engine access from scripts.
                     se.put("engine", se);
