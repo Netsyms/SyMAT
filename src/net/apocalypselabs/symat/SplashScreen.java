@@ -159,6 +159,10 @@ public class SplashScreen extends javax.swing.JFrame {
         @Override
         public void run() {
             setProgress("Starting up...");
+            if (PrefStorage.getSetting("quickstart").equals("yes")) {
+                Main.skipPython = true;
+                Main.skipEditor = true;
+            }
             logoOverlay.setSize(100, 140);
             if (!Main.skipPython) {
                 // Python laggggsss when used for first time, this fixes the wait later.
@@ -182,8 +186,10 @@ public class SplashScreen extends javax.swing.JFrame {
             }
             
             logoOverlay.setSize(235, 140);
-            setProgress("Checking for updates...");
-            checkUpdates();
+            if (!PrefStorage.getSetting("skipupdates").equals("yes")) {
+                setProgress("Checking for updates...");
+                checkUpdates();
+            }
             logoOverlay.setSize(300, 140);
 
             logoOverlay.setSize(380, 140);

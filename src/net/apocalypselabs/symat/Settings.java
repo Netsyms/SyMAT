@@ -52,11 +52,10 @@ package net.apocalypselabs.symat;
 public class Settings extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form Display
+     * Creates new form Settings
      */
     public Settings() {
         initComponents();
-        jPanel3.setVisible(false);
         setBackground(Theme.windowColor());
     }
 
@@ -78,16 +77,17 @@ public class Settings extends javax.swing.JInternalFrame {
         showRecent = new javax.swing.JCheckBox();
         clrRecentBtn = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        miniRibbon = new javax.swing.JCheckBox();
+        quickStart = new javax.swing.JCheckBox();
+        skipUpdates = new javax.swing.JCheckBox();
         applyBtn = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
         setTitle("Settings");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/settings.png"))); // NOI18N
-        setMaximumSize(new java.awt.Dimension(375, 220));
-        setMinimumSize(new java.awt.Dimension(375, 220));
-        setPreferredSize(new java.awt.Dimension(375, 220));
+        setMaximumSize(new java.awt.Dimension(390, 260));
+        setMinimumSize(new java.awt.Dimension(390, 260));
+        setPreferredSize(new java.awt.Dimension(390, 260));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -113,7 +113,7 @@ public class Settings extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(themeLight)
                     .addComponent(themeDark))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,9 +166,11 @@ public class Settings extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("View"));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Startup"));
 
-        miniRibbon.setText("Minimize ribbon");
+        quickStart.setText("Quick Start");
+
+        skipUpdates.setText("Skip Update Check");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -176,14 +178,18 @@ public class Settings extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(miniRibbon)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(quickStart)
+                    .addComponent(skipUpdates))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(miniRibbon)
+                .addComponent(quickStart)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(skipUpdates)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -200,9 +206,9 @@ public class Settings extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -210,23 +216,21 @@ public class Settings extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveBtn))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(saveBtn)
-                            .addComponent(applyBtn))))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(applyBtn)
+                        .addComponent(saveBtn))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
 
@@ -246,12 +250,12 @@ public class Settings extends javax.swing.JInternalFrame {
             }
         }
 
-        if (!PrefStorage.getSetting("showrecent", "").equals("")) {
-            showRecent.setSelected(false);
-        }
-        if (PrefStorage.getSetting("miniribbon", "").equals("yes")) {
-            miniRibbon.setSelected(true);
-        }
+        showRecent.setSelected(
+                PrefStorage.getSetting("showrecent", "").equals(""));
+        quickStart.setSelected(
+                PrefStorage.getSetting("quickstart", "").equals("yes"));
+        skipUpdates.setSelected(
+                PrefStorage.getSetting("skipupdates", "").equals("yes"));
     }//GEN-LAST:event_formComponentShown
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
@@ -262,7 +266,8 @@ public class Settings extends javax.swing.JInternalFrame {
     private void doSave() {
         Theme.setTheme(themeDark.isSelected() ? "dark" : "light");
         PrefStorage.saveSetting("showrecent", showRecent.isSelected() ? "" : "no");
-        PrefStorage.saveSetting("miniribbon", miniRibbon.isSelected() ? "yes" : "");
+        PrefStorage.saveSetting("quickstart", quickStart.isSelected() ? "yes" : "");
+        PrefStorage.saveSetting("skipupdates", skipUpdates.isSelected() ? "yes" : "");
         PrefStorage.save();
         Main.updateDisplay();
     }
@@ -282,9 +287,10 @@ public class Settings extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JCheckBox miniRibbon;
+    private javax.swing.JCheckBox quickStart;
     private javax.swing.JButton saveBtn;
     private javax.swing.JCheckBox showRecent;
+    private javax.swing.JCheckBox skipUpdates;
     private javax.swing.JRadioButton themeDark;
     private javax.swing.ButtonGroup themeGroup;
     private javax.swing.JRadioButton themeLight;
