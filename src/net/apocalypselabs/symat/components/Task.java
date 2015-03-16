@@ -109,20 +109,17 @@ public class Task extends javax.swing.JPanel {
     private void initComponents() {
 
         taskName = new javax.swing.JLabel();
-        taskDesc = new javax.swing.JLabel();
         menuBtn = new javax.swing.JButton();
         statusLabel = new javax.swing.JLabel();
         percentDone = new javax.swing.JProgressBar();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        taskDesc = new javax.swing.JTextArea();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         taskName.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(20.0F));
         taskName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         taskName.setText("Unnamed task");
-
-        taskDesc.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F));
-        taskDesc.setText("No description");
-        taskDesc.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         menuBtn.setText("Menu");
         menuBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -135,6 +132,14 @@ public class Task extends javax.swing.JPanel {
 
         percentDone.setStringPainted(true);
 
+        taskDesc.setEditable(false);
+        taskDesc.setColumns(1);
+        taskDesc.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F));
+        taskDesc.setLineWrap(true);
+        taskDesc.setRows(1);
+        taskDesc.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(taskDesc);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -142,11 +147,11 @@ public class Task extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(taskName, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                .addComponent(taskName, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(menuBtn))
-            .addComponent(taskDesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(percentDone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,7 +163,7 @@ public class Task extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(percentDone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(taskDesc, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -177,10 +182,11 @@ public class Task extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton menuBtn;
     private javax.swing.JProgressBar percentDone;
     private javax.swing.JLabel statusLabel;
-    private javax.swing.JLabel taskDesc;
+    private javax.swing.JTextArea taskDesc;
     private javax.swing.JLabel taskName;
     // End of variables declaration//GEN-END:variables
 }

@@ -636,6 +636,13 @@ public class Editor extends javax.swing.JInternalFrame {
 
         @Override
         public void run() {
+            if (filedata == null && codeBox.getText().contains("//include ")) {
+                JOptionPane.showInternalMessageDialog(Main.mainPane,
+                        "You must save this file before using file includes!",
+                        "Save Required",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             setRunning(true);
             execCode(lang);
             setRunning(false);

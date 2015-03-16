@@ -26,12 +26,12 @@
           <Group type="102" attributes="0">
               <Component id="statusLabel" min="-2" pref="16" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="taskName" pref="258" max="32767" attributes="0"/>
+              <Component id="taskName" pref="136" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="menuBtn" min="-2" max="-2" attributes="0"/>
           </Group>
-          <Component id="taskDesc" max="32767" attributes="0"/>
           <Component id="percentDone" alignment="0" max="32767" attributes="0"/>
+          <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -45,7 +45,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="percentDone" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="taskDesc" pref="47" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="72" max="32767" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -59,15 +59,6 @@
         </Property>
         <Property name="horizontalAlignment" type="int" value="2"/>
         <Property name="text" type="java.lang.String" value="Unnamed task"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="taskDesc">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F)" type="code"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="No description"/>
-        <Property name="verticalAlignment" type="int" value="1"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="menuBtn">
@@ -90,5 +81,26 @@
         <Property name="stringPainted" type="boolean" value="true"/>
       </Properties>
     </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="taskDesc">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="columns" type="int" value="1"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F)" type="code"/>
+            </Property>
+            <Property name="lineWrap" type="boolean" value="true"/>
+            <Property name="rows" type="int" value="1"/>
+            <Property name="wrapStyleWord" type="boolean" value="true"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>

@@ -630,6 +630,7 @@ public class Functions {
         info += "Java version: " + System.getProperty("java.version");
         info += "\nJava vendor: " + System.getProperty("java.vendor");
         info += "\nJava home: " + System.getProperty("java.home");
+        
         return info;
     }
 
