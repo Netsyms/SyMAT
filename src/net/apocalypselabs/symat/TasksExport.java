@@ -45,11 +45,14 @@
  */
 package net.apocalypselabs.symat;
 
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.html.simpleparser.HTMLWorker;
-import com.itextpdf.text.html.simpleparser.StyleSheet;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -57,73 +60,113 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.StringReader;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.image.WritableImage;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import net.apocalypselabs.symat.components.Task;
+import net.apocalypselabs.symat.components.TaskList;
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.SimpleHtmlSerializer;
 import org.htmlcleaner.TagNode;
-import prettify.PrettifyParser;
-import syntaxhighlight.ParseResult;
 
 /**
  *
  * @author Skylar
  */
-public class CodeExport extends javax.swing.JInternalFrame {
+public class TasksExport extends javax.swing.JInternalFrame {
 
-    private String codeLang = "js";
     private String html;
-    private final String origCode;
+    private TaskList tl;
+
+    private WebView browser;
+    private WebEngine webEngine;
+    private JFXPanel jfxPanel;
+    private Group root;
+    private Scene scene;
 
     /**
-     * Creates new form CodeExport
+     * Creates new form TasksExport
      *
-     * @param code The code.
+     * @param t Task List to generate from.
      */
-    public CodeExport(String code) {
-        origCode = code;
+    public TasksExport(TaskList t) {
         initComponents();
-        html = genHtml(code);
-        previewPane.setText(html);
-        previewPane.setCaretPosition(0);
+        jfxPanel = new JFXPanel();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                browser = new WebView();
+                browser.setPrefSize(getWidth(), getHeight());
+                root = new Group();
+                scene = new Scene(root);
+                ObservableList<Node> children = root.getChildren();
+                children.add(browser);
+                jfxPanel.setScene(scene);
+                webEngine = browser.getEngine();
+                webEngine.setUserAgent("SyMAT " + Main.VERSION_NAME);
+                webEngine.loadContent("<html><head><title></title></head><body><h3 style=\"font-family: sans-serif; text-align: center;\">Loading...</h3></body></html>");
+                webPanel.add(jfxPanel, BorderLayout.CENTER);
+            }
+        });
+        tl = t;
+        titleBox.setText(t.getTitle());
+        html = genHtml(t);
+        loadString(html);
     }
 
-    /**
-     * Create CodeExport window with a set language for syntax highlighting.
-     *
-     * @param code The code.
-     * @param lang Options are "js" or "python".
-     */
-    public CodeExport(String code, String lang) {
-        this(code);
-        codeLang = lang;
+    private void resizeAll() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                jfxPanel.setSize(webPanel.getWidth(), webPanel.getHeight());
+                browser.setPrefSize(webPanel.getWidth(), webPanel.getHeight());
+                browser.resize(webPanel.getWidth(), webPanel.getHeight());
+            }
+        });
     }
 
-    private String genHtml(String code) {
+    public void loadString(final String content) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                webEngine.loadContent(content);
+                resizeAll();
+            }
+        });
+    }
+
+    private String genHtml(TaskList tt) {
         String css = "";
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
-                        CodeExport.class
-                        .getResourceAsStream("pretty.css")));
+                        TasksExport.class
+                        .getResourceAsStream("tasks.css")));
         String line;
         try {
             while ((line = reader.readLine()) != null) {
                 css += line;
             }
         } catch (IOException ex) {
-            Logger.getLogger(CodeExport.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TasksExport.class.getName()).log(Level.SEVERE, null, ex);
         }
         html = "<!DOCTYPE html>"
                 + "<html><head>"
                 + "<meta charset=\"utf-8\">"
-                + "<title></title>"
+                + "<title>" + titleBox.getText() + "</title>"
                 + "<style type=\"text/css\"><!--" + css + "--></style>"
                 + "</head>"
                 + "<body>"
@@ -137,9 +180,15 @@ public class CodeExport extends javax.swing.JInternalFrame {
         if (!headerBox.getText().equals("")) {
             html += "<p class=\"header\">" + headerBox.getText() + "</p>";
         }
-        PrettifyParser parser = new PrettifyParser();
-        List<ParseResult> parseResults = parser.parse(codeLang, code);
-        html += PrettifyToHtml.toHtml(code, parseResults);
+
+        for (Task t : tt.getTasks()) {
+            html += "<div class=\"task\">"
+                    + "<h4 class=\"taskheading\">" + t.toString() + "</h4>"
+                    + percentBar(t.getComplete())
+                    + "<p>" + t.getDesc() + "</p>"
+                    + "</div>";
+        }
+
         html += "</body></html>";
         html = html.replace("\t", "<span class=\"tab\">&nbsp;&nbsp;&nbsp;&nbsp;</span>");
         html = html.replace("\n", "<br>");
@@ -162,8 +211,6 @@ public class CodeExport extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        previewPane = new javax.swing.JTextPane();
         jPanel1 = new javax.swing.JPanel();
         titleBox = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -174,23 +221,26 @@ public class CodeExport extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         headerBox = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        previewBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         exHtml = new javax.swing.JButton();
-        exPdf = new javax.swing.JButton();
+        webPanel = new javax.swing.JPanel();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Export Code");
+        setTitle("Export Task List");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/export.png"))); // NOI18N
+        setMinimumSize(new java.awt.Dimension(599, 300));
+        setPreferredSize(new java.awt.Dimension(599, 418));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+        });
 
-        previewPane.setEditable(false);
-        previewPane.setContentType("text/html"); // NOI18N
-        jScrollPane1.setViewportView(previewPane);
-
-        titleBox.setText("SyMAT Project");
+        titleBox.setText("Untitled");
 
         jLabel1.setText("Title:");
 
@@ -209,10 +259,10 @@ public class CodeExport extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Header:");
 
-        jButton1.setText("Update Preview");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        previewBtn.setText("Update Preview");
+        previewBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                previewBtnActionPerformed(evt);
             }
         });
 
@@ -225,31 +275,21 @@ public class CodeExport extends javax.swing.JInternalFrame {
             }
         });
 
-        exPdf.setText("PDF");
-        exPdf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exPdfActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(exHtml, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(exPdf, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                .addComponent(exHtml, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(19, 19, 19)
                 .addComponent(exHtml)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(exPdf))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -276,7 +316,7 @@ public class CodeExport extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1))
+                        .addComponent(previewBtn))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -293,7 +333,7 @@ public class CodeExport extends javax.swing.JInternalFrame {
                             .addComponent(titleBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1)
                             .addComponent(jLabel4)
-                            .addComponent(jButton1))
+                            .addComponent(previewBtn))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -308,18 +348,20 @@ public class CodeExport extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        webPanel.setLayout(new java.awt.BorderLayout());
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(webPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
-                .addGap(4, 4, 4)
+                .addComponent(webPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10))
         );
@@ -327,19 +369,18 @@ public class CodeExport extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        html = genHtml(origCode);
-        previewPane.setText(html);
-        previewPane.setCaretPosition(0);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void previewBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previewBtnActionPerformed
+        html = genHtml(tl);
+        loadString(html);
+    }//GEN-LAST:event_previewBtnActionPerformed
 
     private void exHtmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exHtmlActionPerformed
         doSave("html");
     }//GEN-LAST:event_exHtmlActionPerformed
 
-    private void exPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exPdfActionPerformed
-        doSave("pdf");
-    }//GEN-LAST:event_exPdfActionPerformed
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        resizeAll();
+    }//GEN-LAST:event_formComponentResized
 
     private void doSave(String format) {
         JFileChooser fc = new JFileChooser();
@@ -367,29 +408,39 @@ public class CodeExport extends javax.swing.JInternalFrame {
         }
     }
 
+    private String percentBar(int p) {
+        int by5 = 5 * (Math.round(p / 5));
+        String result = "<p>" + by5 + "% <span class=\"progress progress-" + by5 + "\""
+                + "style=\"width: " + by5 + "%\"></span></p>";
+        return result;
+    }
+
     private void savePdfFile(String html, String path) {
-        try {
-            String k = html;
-            try (OutputStream file = new FileOutputStream(new File(path))) {
-                Document document = new Document();
-                PdfWriter.getInstance(document, file);
-                document.open();
-                HTMLWorker htmlWorker = new HTMLWorker(document);
-                StyleSheet styles = new StyleSheet();
-                styles.loadStyle("com", "color", "green");
-                styles.loadStyle("kwd", "color", "blue");
-                styles.loadStyle("pln", "color", "black");
-                styles.loadStyle("lit", "color", "#0099cc");
-                styles.loadStyle("pun", "color", "black");
-                styles.loadStyle("pun", "font-weight", "bold");
-                htmlWorker.setStyleSheet(styles);
-                htmlWorker.parse(new StringReader(k));
-                document.close();
-                savedMsg();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String k = html;
+                    OutputStream file = new FileOutputStream(new File(path));
+                    Document document = new Document();
+                    PdfWriter writer = PdfWriter.getInstance(document, file);
+                    document.open();
+                    PdfContentByte pdfCB = new PdfContentByte(writer);
+                    WritableImage image = browser.snapshot(null, null);
+                    BufferedImage buffered = SwingFXUtils.fromFXImage(image, null);
+                    Image img = Image.getInstance(pdfCB, buffered, 1);
+                    document.open();
+                    document.add(img);
+                    document.close();
+                    savedMsg();
+                } catch (Exception ex) {
+                    Debug.stacktrace(ex);
+                    java.awt.EventQueue.invokeLater(() -> {
+                        JOptionPane.showInternalMessageDialog(Main.mainPane, "Error saving: " + ex.getMessage());
+                    });
+                }
             }
-        } catch (IOException | DocumentException e) {
-            JOptionPane.showInternalMessageDialog(this, "Error saving: " + e.getMessage());
-        }
+        });
     }
 
     private void saveFile(String content, String path) {
@@ -406,29 +457,20 @@ public class CodeExport extends javax.swing.JInternalFrame {
         JOptionPane.showInternalMessageDialog(this, "Export complete!");
     }
 
-    private String addSaveExt(String path, String format) {
-        if (!path.matches(".*\\.(" + format + ")")) {
-            path += "." + format;
-        }
-        return path;
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField authBox;
     private javax.swing.JTextField dateBox;
     private javax.swing.JButton exHtml;
-    private javax.swing.JButton exPdf;
     private javax.swing.JTextArea headerBox;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane previewPane;
+    private javax.swing.JButton previewBtn;
     private javax.swing.JTextField titleBox;
+    private javax.swing.JPanel webPanel;
     // End of variables declaration//GEN-END:variables
 }

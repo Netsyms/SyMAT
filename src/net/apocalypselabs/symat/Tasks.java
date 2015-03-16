@@ -141,6 +141,7 @@ public class Tasks extends javax.swing.JInternalFrame {
         appendBtn = new javax.swing.JMenuItem();
         saveBtn = new javax.swing.JMenuItem();
         saveAsBtn = new javax.swing.JMenuItem();
+        exportBtn = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         insertItemBtn = new javax.swing.JMenuItem();
         setTitleBtn = new javax.swing.JMenuItem();
@@ -192,6 +193,14 @@ public class Tasks extends javax.swing.JInternalFrame {
             }
         });
         jMenu1.add(saveAsBtn);
+
+        exportBtn.setText("Export...");
+        exportBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportBtnActionPerformed(evt);
+            }
+        });
+        jMenu1.add(exportBtn);
 
         jMenuBar1.add(jMenu1);
 
@@ -324,6 +333,15 @@ public class Tasks extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_appendBtnActionPerformed
 
+    private void exportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportBtnActionPerformed
+        TaskList tl = new TaskList();
+        tl.setTitle(tltitle);
+        for (Component c : listPanel.getComponents()) {
+            tl.addTask((Task) c);
+        }
+        Main.loadFrame(new TasksExport(tl));
+    }//GEN-LAST:event_exportBtnActionPerformed
+
     private void redraw() {
         setSize(getWidth() + 1, getHeight());
         setSize(getWidth() - 1, getHeight());
@@ -331,6 +349,7 @@ public class Tasks extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem appendBtn;
+    private javax.swing.JMenuItem exportBtn;
     private javax.swing.JMenuItem insertItemBtn;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

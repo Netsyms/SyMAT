@@ -1,0 +1,16 @@
+.task {
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.taskheading {
+    font-size: 150%;
+}
+
+.progress {
+    background-color: green;
+    height: 10px;
+    display: block;
+}
