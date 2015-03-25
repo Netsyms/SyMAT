@@ -51,6 +51,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import static java.lang.Math.*;
 import java.lang.reflect.Array;
+import java.math.BigInteger;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -84,7 +85,7 @@ public class Functions {
 
     private String lang = "py";
 
-    private SecureRandom rng = new SecureRandom();
+    private final SecureRandom rng = new SecureRandom();
 
     /*
      Useful interactions
@@ -108,9 +109,38 @@ public class Functions {
         return JOptionPane.showInternalInputDialog(Main.mainPane, question);
     }
 
+    /**
+     * Quit SyMAT.
+     */
+    public void quitApplication() {
+        System.exit(0);
+    }
+
     /*
      Math commands
      */
+    /**
+     * Find the factorial (n!) of a number.
+     *
+     * @param n positive integer
+     * @return n! as String
+     * @throws net.apocalypselabs.symat.BadInputException
+     */
+    public String factorial(long n) throws BadInputException {
+        if (n <= 0) {
+            throw new BadInputException("Input must be greater than zero!");
+        }
+
+        BigInteger inc = new BigInteger("1");
+        BigInteger fact = new BigInteger("1");
+
+        for (long c = 1; c <= n; c++) {
+            fact = fact.multiply(inc);
+            inc = inc.add(BigInteger.ONE);
+        }
+        return fact.toString();
+    }
+
     /**
      * Differentiate the function with respect to idv.
      *
@@ -272,6 +302,89 @@ public class Functions {
         return ans;
     }
 
+    public double[][] $minvert(double a[][]) {
+        int n = a.length;
+        double x[][] = new double[n][n];
+        double b[][] = new double[n][n];
+        int index[] = new int[n];
+        for (int i = 0; i < n; ++i) {
+            b[i][i] = 1;
+        }
+        // Transform the matrix into an upper triangle
+        gaussian(a, index);
+        // Update the matrix b[i][j] with the ratios stored
+        for (int i = 0; i < n - 1; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                for (int k = 0; k < n; ++k) {
+                    b[index[j]][k]
+                            -= a[index[j]][i] * b[index[i]][k];
+                }
+            }
+        }
+        // Perform backward substitutions
+        for (int i = 0; i < n; ++i) {
+            x[n - 1][i] = b[index[n - 1]][i] / a[index[n - 1]][n - 1];
+            for (int j = n - 2; j >= 0; --j) {
+                x[j][i] = b[index[j]][i];
+                for (int k = j + 1; k < n; ++k) {
+                    x[j][i] -= a[index[j]][k] * x[k][i];
+                }
+                x[j][i] /= a[index[j]][j];
+            }
+        }
+        return x;
+    }
+
+    // Method to carry out the partial-pivoting Gaussian
+    // elimination.  Here index[] stores pivoting order.
+    private void gaussian(double a[][], int index[]) {
+        int n = index.length;
+        double c[] = new double[n];
+        // Initialize the index
+        for (int i = 0; i < n; ++i) {
+            index[i] = i;
+        }
+        // Find the rescaling factors, one from each row
+        for (int i = 0; i < n; ++i) {
+            double c1 = 0;
+            for (int j = 0; j < n; ++j) {
+                double c0 = Math.abs(a[i][j]);
+                if (c0 > c1) {
+                    c1 = c0;
+                }
+            }
+            c[i] = c1;
+        }
+
+        // Search the pivoting element from each column
+        int k = 0;
+        for (int j = 0; j < n - 1; ++j) {
+            double pi1 = 0;
+            for (int i = j; i < n; ++i) {
+                double pi0 = Math.abs(a[index[i]][j]);
+                pi0 /= c[index[i]];
+                if (pi0 > pi1) {
+                    pi1 = pi0;
+                    k = i;
+                }
+            }
+
+            // Interchange rows according to the pivoting order
+            int itmp = index[j];
+            index[j] = index[k];
+            index[k] = itmp;
+            for (int i = j + 1; i < n; ++i) {
+                double pj = a[index[i]][j] / a[index[j]][j];
+                // Record pivoting ratios below the diagonal
+                a[index[i]][j] = pj;
+                // Modify other elements accordingly
+                for (int l = j + 1; l < n; ++l) {
+                    a[index[i]][l] -= pj * a[index[j]][l];
+                }
+            }
+        }
+    }
+
     /**
      * Get all prime factors of input number.
      *
@@ -333,6 +446,7 @@ public class Functions {
 
     /**
      * Get a random boolean value.
+     *
      * @return true or false
      */
     public boolean randb() {
@@ -359,11 +473,7 @@ public class Functions {
      * @throws net.apocalypselabs.symat.BadInputException When the matrices are
      * wrong.
      */
-    public Object mtimes(double[][] a, double[][] b) throws BadInputException {
-        return tonativearray(mTimes(a, b));
-    }
-
-    private double[][] mTimes(double[][] a, double[][] b) throws BadInputException {
+    public double[][] $mtimes(double[][] a, double[][] b) throws BadInputException {
         double[][] ans = new double[a.length][b[0].length];
         double sum = 0;
         int c, d, k, m = a.length, q = b[0].length, p = b.length;
@@ -394,7 +504,7 @@ public class Functions {
      * @throws BadInputException if the matrix is not square or power is less
      * than 0
      */
-    public Object mpower(double[][] a, int b) throws BadInputException {
+    public double[][] $mpower(double[][] a, int b) throws BadInputException {
         if (a.length != a[0].length) {
             throw new BadInputException("Matrix needs to be square.");
         }
@@ -408,13 +518,9 @@ public class Functions {
             if (i == 0) {
                 ans = a;
             } else {
-                ans = mTimes(a, ans);
+                ans = $mtimes(a, ans);
             }
         }
-        return tonativearray(ans);
-    }
-
-    private double[][] tonativearray(double[][] ans) {
         return ans;
     }
 
@@ -630,7 +736,7 @@ public class Functions {
         info += "Java version: " + System.getProperty("java.version");
         info += "\nJava vendor: " + System.getProperty("java.vendor");
         info += "\nJava home: " + System.getProperty("java.home");
-        
+
         return info;
     }
 
@@ -705,6 +811,7 @@ public class Functions {
 
     public void setLang(String l) {
         lang = l;
+
     }
 
     /**
@@ -718,8 +825,8 @@ public class Functions {
      */
     class Permutations<E> implements Iterator<E[]> {
 
-        private E[] arr;
-        private int[] ind;
+        private final E[] arr;
+        private final int[] ind;
         private boolean has_next;
 
         public E[] output;//next() returns this array, make it public
@@ -728,14 +835,14 @@ public class Functions {
             this.arr = arr.clone();
             ind = new int[arr.length];
             //convert an array of any elements into array of integers - first occurrence is used to enumerate
-            Map<E, Integer> hm = new HashMap<E, Integer>();
+            Map<E, Integer> hm = new HashMap<>();
             for (int i = 0; i < arr.length; i++) {
                 Integer n = hm.get(arr[i]);
                 if (n == null) {
                     hm.put(arr[i], i);
                     n = i;
                 }
-                ind[i] = n.intValue();
+                ind[i] = n;
             }
             Arrays.sort(ind);//start with ascending sequence of integers
 

@@ -78,6 +78,12 @@ public class CodeRunner {
             case "js":
             case "rhino":
                 se = new ScriptEngineManager().getEngineByName("rhino");
+//                Context ctx = Context.getCurrentContext();
+//                if (ctx == null) {
+//                    ctx = Context.enter();
+//                }
+                //ctx.setWrapFactory(new JsWrapFactory());
+                //ctx.getWrapFactory().setJavaPrimitiveWrap(false);
                 wrapRequired = true;
                 try {
                     // Add custom functions.
@@ -116,9 +122,10 @@ public class CodeRunner {
     public CodeRunner(String lang, boolean shell) {
         this(lang);
     }
-    
+
     /**
      * Inits the Python engine on application start.
+     *
      * @param fakeInit Set it to true.
      */
     public CodeRunner(boolean fakeInit) {
@@ -193,10 +200,10 @@ public class CodeRunner {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(
                             CodeRunner.class
-                            .getResourceAsStream("functions."+lang)));
+                            .getResourceAsStream("functions." + lang)));
             String line;
             while ((line = reader.readLine()) != null) {
-                text += line+"\n";
+                text += line + "\n";
             }
         } catch (Exception e) {
         }

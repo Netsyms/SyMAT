@@ -2,6 +2,8 @@ def notify(msg):
     _.notify(msg)
 def ask(msg):
     return _.ask(msg)
+def factorial(n):
+    return _.factorial(n)
 def diff(fun,var):
     return _.diff(fun,var)
 def integrate(fun,var):
