@@ -71,6 +71,10 @@ public class CodeRunner {
         this("javascript");
     }
 
+    public CodeRunner(int lang) {
+        this(lang == 0 ? "js" : "py");
+    }
+    
     public CodeRunner(String lang) {
         scriptLang = lang;
         switch (lang) {

@@ -98,7 +98,7 @@ public class Main extends JRibbonFrame {
     /**
      * Version name, as it should be displayed.
      */
-    public static final String VERSION_NAME = "1.6";
+    public static final String VERSION_NAME = "1.7";
 
     /**
      * The word "SyMAT".
@@ -111,7 +111,7 @@ public class Main extends JRibbonFrame {
     /**
      * Version number, for updates and //needs in scripts
      */
-    public static final double APP_CODE = 18;
+    public static final double APP_CODE = 19;
     /**
      * Base URL for building API calls
      */

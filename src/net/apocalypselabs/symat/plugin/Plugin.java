@@ -4,8 +4,8 @@
  */
 package net.apocalypselabs.symat.plugin;
 
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import javax.swing.ImageIcon;
 
 /**
  * Plugin container class.
@@ -15,7 +15,7 @@ public class Plugin implements Serializable {
     public final int LANG_JS = 0;
     public final int LANG_PY = 1;
     
-    private BufferedImage icon;
+    private ImageIcon icon;
     private String packageName = "";
     private String script = "";
     private String title = "";
@@ -24,10 +24,27 @@ public class Plugin implements Serializable {
     private String author = "";
     private String website = "";
     private String other = "";
+    private String version = "";
     private int lang = LANG_JS;
     
     public Plugin() {
         
+    }
+    
+    /**
+     * Get plugin version.
+     * @return 
+     */
+    public String getVersion() {
+        return version;
+    }
+    
+    /**
+     * Set plugin version.
+     * @param v 
+     */
+    public void setVersion(String v) {
+        version = v;
     }
     
     /**
@@ -98,7 +115,7 @@ public class Plugin implements Serializable {
      * Get the plugin icon.
      * @return 
      */
-    public BufferedImage getIcon() {
+    public ImageIcon getIcon() {
         return icon;
     }
 
@@ -106,7 +123,7 @@ public class Plugin implements Serializable {
      * Set the plugin icon.
      * @param i 
      */
-    public void setIcon(BufferedImage i) {
+    public void setIcon(ImageIcon i) {
         icon = i;
     }
 
