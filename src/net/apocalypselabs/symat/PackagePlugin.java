@@ -45,9 +45,11 @@
  */
 package net.apocalypselabs.symat;
 
-import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -61,17 +63,35 @@ import net.apocalypselabs.symat.plugin.Plugin;
  */
 public class PackagePlugin extends javax.swing.JInternalFrame {
 
-    private JFileChooser fc = new JFileChooser();
+    private final JFileChooser fcimg = new JFileChooser();
+    private final JFileChooser fcexp = new JFileChooser();
     private ImageIcon icon;
+
+    public PackagePlugin(String code, int lang) {
+        this();
+        try {
+            icon = new ImageIcon(
+                    ImageIO.read(PackagePlugin.class.getResource("images/plugin.png")));
+        } catch (IOException ex) {
+            Debug.stacktrace(ex);
+        }
+        langSelect.setSelectedIndex(lang);
+        codeBox.setText(code);
+        iconPreview.setIcon(icon);
+    }
 
     /**
      * Creates new form PackagePlugin
      */
     public PackagePlugin() {
-        fc.setFileFilter(new FileNameExtensionFilter(
+        fcimg.setFileFilter(new FileNameExtensionFilter(
                 "Image (jpeg,jpg,gif,png,bmp)",
                 "jpeg", "jpg", "gif", "png", "bmp"));
+        fcexp.setFileFilter(new FileNameExtensionFilter(
+                "Plugin (sypl)",
+                "sypl"));
         initComponents();
+        author.setText(PrefStorage.getSetting("author"));
     }
 
     /**
@@ -105,6 +125,7 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
         iconPreview = new javax.swing.JLabel();
         openIconBtn = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
+        defaultIconBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         langSelect = new javax.swing.JComboBox();
@@ -115,8 +136,6 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
-        setMaximizable(true);
-        setResizable(true);
         setTitle("Package Plugin");
 
         jLabel1.setText("Plugin Name:");
@@ -145,7 +164,7 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel7)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -154,18 +173,18 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(website)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(website, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel5)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(version, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(version, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(pluginName, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(pluginName)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel4)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(author, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(author))
                             .addComponent(packageID)
                             .addComponent(shortDesc))))
                 .addContainerGap())
@@ -204,9 +223,10 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Icon:");
 
+        iconPreview.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         iconPreview.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        openIconBtn.setText("Open Icon...");
+        openIconBtn.setText("Open icon...");
         openIconBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openIconBtnActionPerformed(evt);
@@ -215,6 +235,13 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
 
         jLabel10.setText("Recommended icon size is 100x76.");
         jLabel10.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        defaultIconBtn.setText("Use default");
+        defaultIconBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                defaultIconBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -227,11 +254,13 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(iconPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(iconPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(openIconBtn))
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(openIconBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(defaultIconBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(jLabel9))
-                        .addGap(0, 194, Short.MAX_VALUE)))
+                        .addGap(0, 181, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -241,9 +270,12 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(openIconBtn)
-                    .addComponent(iconPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(openIconBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(defaultIconBtn))
+                    .addComponent(iconPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -340,23 +372,32 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
             p.setLang(langSelect.getSelectedIndex());
             p.setScript(codeBox.getText());
             p.setIcon(icon);
+            if (p.getTitle().equals("")
+                    || p.getAuthor().equals("")
+                    || p.getLongTitle().equals("")
+                    || p.getDesc().equals("")
+                    || p.getPackage().equals("")
+                    || p.getVersion().equals("")
+                    || p.getScript().equals("")
+                    || p.getIcon() == null) {
+                throw new Exception("One or more required fields are empty.");
+            }
         } catch (Exception ex) {
             Debug.stacktrace(ex);
             JOptionPane.showInternalMessageDialog(this,
                     "Error.  Please check your data.\n\n" + ex.getMessage());
             return;
         }
-        fc.setFileFilter(new FileNameExtensionFilter(
-                "Plugin (sypl)",
-                "sypl"));
-        int result = fc.showDialog(this, "Publish");
+        int result = fcexp.showDialog(this, "Publish");
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
-                FileOutputStream fout = new FileOutputStream(fc.getSelectedFile());
+                FileOutputStream fout = new FileOutputStream(FileUtils.getFileWithExtension(fcexp));
                 try (ObjectOutputStream oos = new ObjectOutputStream(fout)) {
                     oos.writeObject(p);
                     oos.close();
                 }
+                JOptionPane.showInternalMessageDialog(this,
+                        "Publish complete!");
             } catch (Exception ex) {
                 Debug.stacktrace(ex);
                 JOptionPane.showInternalMessageDialog(this,
@@ -366,13 +407,10 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_savePluginActionPerformed
 
     private void openIconBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openIconBtnActionPerformed
-        fc.setFileFilter(new FileNameExtensionFilter(
-                "Image (jpeg,jpg,gif,png,bmp)",
-                "jpeg", "jpg", "gif", "png", "bmp"));
-        int result = fc.showDialog(this, "Select Icon");
+        int result = fcimg.showDialog(this, "Select Icon");
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
-                icon = new ImageIcon(ImageIO.read(fc.getSelectedFile()));
+                icon = new ImageIcon(ImageIO.read(fcimg.getSelectedFile()));
                 iconPreview.setIcon(icon);
             } catch (Exception ex) {
                 Debug.stacktrace(ex);
@@ -382,10 +420,23 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_openIconBtnActionPerformed
 
+    private void defaultIconBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defaultIconBtnActionPerformed
+        try {
+            icon = new ImageIcon(
+                    ImageIO.read(PackagePlugin.class.getResource("images/plugin.png")));
+            iconPreview.setIcon(icon);
+        } catch (IOException ex) {
+            Debug.stacktrace(ex);
+            JOptionPane.showInternalMessageDialog(this,
+                    "Error opening default icon.\n\n" + ex.getMessage());
+        }
+    }//GEN-LAST:event_defaultIconBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField author;
     private javax.swing.JTextArea codeBox;
+    private javax.swing.JButton defaultIconBtn;
     private javax.swing.JLabel iconPreview;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

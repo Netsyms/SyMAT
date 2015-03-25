@@ -12,6 +12,9 @@ import java.util.ArrayList;
  * @author Skylar
  */
 public class TaskList implements Serializable {
+    
+    private static final long serialVersionUID = 13370L;
+    
     private final ArrayList<SingleTask> tasks = new ArrayList<>();
     private String title = "Untitled";
     

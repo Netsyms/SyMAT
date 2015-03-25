@@ -58,6 +58,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -77,6 +78,7 @@ import javax.swing.ListModel;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import net.apocalypselabs.symat.plugin.LoadPlugin;
 import org.pushingpixels.flamingo.api.ribbon.*;
 import org.pushingpixels.flamingo.api.ribbon.resize.*;
 import org.pushingpixels.flamingo.api.common.*;
@@ -144,6 +146,8 @@ public class Main extends JRibbonFrame {
     public static SingleInstanceServer sisrv;
 
     public static Main maingui;
+
+    JRibbonBand pluginband = new JRibbonBand("Plugins", null);
 
     /**
      * Creates the main app window and does some quick things that aren't
@@ -266,6 +270,26 @@ public class Main extends JRibbonFrame {
     }
 
     /**
+     * Load plugins from disk.
+     */
+    public void loadPlugins() {
+        File dir = new File(System.getProperty("user.home") + "\\.symat\\plugins");
+        dir.mkdirs();
+        File[] files = dir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".sypl");
+            }
+        });
+
+        for (File pl : files) {
+            pluginband.addCommandButton(
+                    (new LoadPlugin(pl)).getRibbonBtn(),
+                    RibbonElementPriority.MEDIUM);
+        }
+    }
+
+    /**
      * Load the ribbon in all its glory.
      */
     private void loadRibbon() {
@@ -277,6 +301,7 @@ public class Main extends JRibbonFrame {
         JRibbonBand appsband = new JRibbonBand("Apps", null);
         JRibbonBand webband = new JRibbonBand("Community", null);
         JRibbonBand collabband = new JRibbonBand("Team", null);
+        loadPlugins();
 
         shellbtn.addActionListener(new ActionListener() {
             @Override
@@ -372,14 +397,19 @@ public class Main extends JRibbonFrame {
         collabband.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
                 new IconRibbonBandResizePolicy(appsband.getControlPanel())));
+        pluginband.setResizePolicies((List) Arrays.asList(
+                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
+                new IconRibbonBandResizePolicy(appsband.getControlPanel())));
 
         RibbonTask hometask = new RibbonTask("Home", coreband, appsband);
         RibbonTask webtask = new RibbonTask("Tools", webband, collabband);
+        RibbonTask plugintask = new RibbonTask("Plugins", pluginband);
 
         loadRibbonMenu(null);
 
         ribbon.addTask(hometask);
         ribbon.addTask(webtask);
+        ribbon.addTask(plugintask);
     }
 
     public static ResizableIcon getRibbonIcon(String name) {
@@ -505,8 +535,8 @@ public class Main extends JRibbonFrame {
                         = new FileNameExtensionFilter("SyMAT File"
                                 + "(syjs, sypy, js, py, sytt)",
                                 "syjs", "sypy", "js", "py", "sytt");
-                        FileFilter tasklist =
-                                new FileNameExtensionFilter("Task List (sytt)",
+                        FileFilter tasklist
+                        = new FileNameExtensionFilter("Task List (sytt)",
                                 "sytt");
                         fc.setFileFilter(all);
                         fc.addChoosableFileFilter(script);

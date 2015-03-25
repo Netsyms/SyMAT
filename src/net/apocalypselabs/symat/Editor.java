@@ -90,14 +90,10 @@ public class Editor extends javax.swing.JInternalFrame {
     public Editor(boolean python) {
         initComponents();
 
-        FileFilter filter = new FileNameExtensionFilter("SyMAT JavaScript (.syjs)", "syjs");
+        FileFilter filter = new FileNameExtensionFilter("JavaScript (syjs, js)", "syjs", "js");
         fc.setFileFilter(filter);
         fc.addChoosableFileFilter(filter);
-        filter = new FileNameExtensionFilter("SyMAT Python (.sypy)", "sypy");
-        fc.addChoosableFileFilter(filter);
-        filter = new FileNameExtensionFilter("JavaScript file (.js)", "js");
-        fc.addChoosableFileFilter(filter);
-        filter = new FileNameExtensionFilter("Python script (.py)", "py");
+        filter = new FileNameExtensionFilter("Python (sypy, py)", "sypy", "py");
         fc.addChoosableFileFilter(filter);
 
         int font_size = 12;
@@ -180,9 +176,10 @@ public class Editor extends javax.swing.JInternalFrame {
     public Editor() {
         this(false);
     }
-    
+
     /**
      * Show open dialog.
+     *
      * @param openfile Nothing to see here, move along.
      */
     public Editor(int openfile) {
@@ -236,7 +233,9 @@ public class Editor extends javax.swing.JInternalFrame {
         sampleGraph = new javax.swing.JMenuItem();
         saveMenu = new javax.swing.JMenuItem();
         saveAsMenu = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
         exportMenu = new javax.swing.JMenuItem();
+        packPluginMenu = new javax.swing.JMenuItem();
         shareMenu = new javax.swing.JMenuItem();
         shareAsMenu = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
@@ -385,14 +384,27 @@ public class Editor extends javax.swing.JInternalFrame {
         });
         fileMenu.add(saveAsMenu);
 
+        jMenu1.setText("Publish");
+        jMenu1.setToolTipText("");
+
         exportMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        exportMenu.setText("Export...");
+        exportMenu.setText("Export Code");
         exportMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportMenuActionPerformed(evt);
             }
         });
-        fileMenu.add(exportMenu);
+        jMenu1.add(exportMenu);
+
+        packPluginMenu.setText("Package Plugin...");
+        packPluginMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                packPluginMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(packPluginMenu);
+
+        fileMenu.add(jMenu1);
 
         shareMenu.setText("Share...");
         shareMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -759,10 +771,7 @@ public class Editor extends javax.swing.JInternalFrame {
     }
 
     private void exportMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuActionPerformed
-        String lang = "js";
-        if (pythonOption.isSelected()) {
-            lang = "python";
-        }
+        String lang = pythonOption.isSelected() ? "python" : "js";
         Main.loadFrame(new CodeExport(codeBox.getText(), lang));
     }//GEN-LAST:event_exportMenuActionPerformed
 
@@ -832,6 +841,12 @@ public class Editor extends javax.swing.JInternalFrame {
             createShared(id);
         }
     }//GEN-LAST:event_shareAsMenuActionPerformed
+
+    private void packPluginMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_packPluginMenuActionPerformed
+        Main.loadFrame(new PackagePlugin(codeBox.getText(),
+                javascriptOption.isSelected() ? 0 : 1
+        ));
+    }//GEN-LAST:event_packPluginMenuActionPerformed
 
     private void createShared(String id) {
         try {
@@ -912,6 +927,7 @@ public class Editor extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem exportMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
@@ -927,6 +943,7 @@ public class Editor extends javax.swing.JInternalFrame {
     private javax.swing.JMenu openSampleBtn;
     private javax.swing.JTextArea outputBox;
     private javax.swing.JPanel outputPanel;
+    private javax.swing.JMenuItem packPluginMenu;
     private javax.swing.JMenuItem pasteBtn;
     private javax.swing.JRadioButtonMenuItem pythonOption;
     private javax.swing.JMenuItem redoBtn;
