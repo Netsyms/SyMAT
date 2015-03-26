@@ -65,15 +65,24 @@ public class SingleInstanceServer extends NanoHTTPD {
         String msg = "OK";
         Map<String, String> parms = session.getParms();
         if (parms.get("arg") != null) {
-            if (parms.get("arg").endsWith(".sytt")) {
-                Tasks tt = new Tasks(new File(parms.get("arg")));
+            (new LaunchThread(parms.get("arg"))).start();
+        }
+        return new NanoHTTPD.Response(msg);
+    }
+    
+    private class LaunchThread extends Thread {
+        String arg;
+        @Override
+        public void run() {
+            if (arg.endsWith(".sytt")) {
+                Tasks tt = new Tasks(new File(arg));
                 Main.loadFrame(tt);
-            } else if (parms.get("arg").endsWith(".sypl")) {
-                Main.loadFrame(new InstallPlugin(new File(parms.get("arg"))));
+            } else if (arg.endsWith(".sypl")) {
+                Main.loadFrame(new InstallPlugin(new File(arg)));
             } else {
                 Editor ed = new Editor();
                 Main.loadFrame(ed);
-                ed.openFileFromName(parms.get("arg"));
+                ed.openFileFromName(arg);
             }
             java.awt.EventQueue.invokeLater(new Runnable() {
                 @Override
@@ -83,7 +92,10 @@ public class SingleInstanceServer extends NanoHTTPD {
                 }
             });
         }
-        return new NanoHTTPD.Response(msg);
+        
+        public LaunchThread(String a) {
+            arg = a;
+        }
     }
 
 }
