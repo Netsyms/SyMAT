@@ -104,5 +104,9 @@ public class LoadPlugin {
         CodeRunner cr = new CodeRunner(p.getLang());
         cr.evalString(p.getScript());
     }
+    
+    public Plugin getPlugin() {
+        return p;
+    }
 
 }

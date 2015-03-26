@@ -68,6 +68,8 @@ public class SingleInstanceServer extends NanoHTTPD {
             if (parms.get("arg").endsWith(".sytt")) {
                 Tasks tt = new Tasks(new File(parms.get("arg")));
                 Main.loadFrame(tt);
+            } else if (parms.get("arg").endsWith(".sypl")) {
+                Main.loadFrame(new InstallPlugin(new File(parms.get("arg"))));
             } else {
                 Editor ed = new Editor();
                 Main.loadFrame(ed);

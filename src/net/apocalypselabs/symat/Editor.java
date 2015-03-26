@@ -348,6 +348,7 @@ public class Editor extends javax.swing.JInternalFrame {
 
         openSampleBtn.setText("Open Code Sample");
 
+        sampleHelloWorld.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         sampleHelloWorld.setText("helloworld");
         sampleHelloWorld.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -356,6 +357,7 @@ public class Editor extends javax.swing.JInternalFrame {
         });
         openSampleBtn.add(sampleHelloWorld);
 
+        sampleGraph.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         sampleGraph.setText("graph");
         sampleGraph.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -388,7 +390,7 @@ public class Editor extends javax.swing.JInternalFrame {
         jMenu1.setToolTipText("");
 
         exportMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        exportMenu.setText("Export Code");
+        exportMenu.setText("Export code");
         exportMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportMenuActionPerformed(evt);
@@ -396,7 +398,8 @@ public class Editor extends javax.swing.JInternalFrame {
         });
         jMenu1.add(exportMenu);
 
-        packPluginMenu.setText("Package Plugin...");
+        packPluginMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        packPluginMenu.setText("Package as plugin");
         packPluginMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 packPluginMenuActionPerformed(evt);
@@ -406,6 +409,7 @@ public class Editor extends javax.swing.JInternalFrame {
 
         fileMenu.add(jMenu1);
 
+        shareMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
         shareMenu.setText("Share...");
         shareMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -414,6 +418,7 @@ public class Editor extends javax.swing.JInternalFrame {
         });
         fileMenu.add(shareMenu);
 
+        shareAsMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         shareAsMenu.setText("Share as...");
         shareAsMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -488,6 +493,7 @@ public class Editor extends javax.swing.JInternalFrame {
 
         codeLangMenu.setText("Language");
 
+        javascriptOption.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
         langBtnGroup.add(javascriptOption);
         javascriptOption.setSelected(true);
         javascriptOption.setText("Javascript");
@@ -498,6 +504,7 @@ public class Editor extends javax.swing.JInternalFrame {
         });
         codeLangMenu.add(javascriptOption);
 
+        pythonOption.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         langBtnGroup.add(pythonOption);
         pythonOption.setText("Python");
         pythonOption.addActionListener(new java.awt.event.ActionListener() {

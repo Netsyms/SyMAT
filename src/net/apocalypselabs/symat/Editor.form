@@ -52,6 +52,9 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="sampleHelloWorld">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Shift+Ctrl+1"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="helloworld"/>
                   </Properties>
                   <Events>
@@ -60,6 +63,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="sampleGraph">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Shift+Ctrl+2"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="graph"/>
                   </Properties>
                   <Events>
@@ -101,7 +107,7 @@
                     <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                       <KeyStroke key="Ctrl+E"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Export Code"/>
+                    <Property name="text" type="java.lang.String" value="Export code"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportMenuActionPerformed"/>
@@ -109,7 +115,10 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="packPluginMenu">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Package Plugin..."/>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Shift+Ctrl+P"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Package as plugin"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="packPluginMenuActionPerformed"/>
@@ -119,6 +128,9 @@
             </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="shareMenu">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+B"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Share..."/>
               </Properties>
               <Events>
@@ -127,6 +139,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="shareAsMenu">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Shift+Ctrl+B"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Share as..."/>
               </Properties>
               <Events>
@@ -223,6 +238,9 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JRadioButtonMenuItem" name="javascriptOption">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Ctrl+J"/>
+                    </Property>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                       <ComponentRef name="langBtnGroup"/>
                     </Property>
@@ -235,6 +253,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JRadioButtonMenuItem" name="pythonOption">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Ctrl+P"/>
+                    </Property>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                       <ComponentRef name="langBtnGroup"/>
                     </Property>

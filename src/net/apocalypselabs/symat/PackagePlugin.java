@@ -137,6 +137,7 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Package Plugin");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/plugins.png"))); // NOI18N
 
         jLabel1.setText("Plugin Name:");
 

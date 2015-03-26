@@ -147,7 +147,7 @@ public class Main extends JRibbonFrame {
 
     public static Main maingui;
 
-    JRibbonBand pluginband = new JRibbonBand("Plugins", null);
+    public JRibbonBand pluginband;
 
     /**
      * Creates the main app window and does some quick things that aren't
@@ -190,6 +190,8 @@ public class Main extends JRibbonFrame {
                 Tasks tt = new Tasks(new File(argfile));
                 loadFrame(tt);
                 argfile = "";
+            } else if (argfile.endsWith(".sypl")) {
+                loadFrame(new InstallPlugin(new File(argfile)));
             } else {
                 Editor ed = new Editor();
                 loadFrame(ed);
@@ -273,6 +275,9 @@ public class Main extends JRibbonFrame {
      * Load plugins from disk.
      */
     public void loadPlugins() {
+        pluginband = new JRibbonBand("Plugins", null);
+        pluginband.setResizePolicies((List) Arrays.asList(
+                new IconRibbonBandResizePolicy(pluginband.getControlPanel())));
         File dir = new File(System.getProperty("user.home") + "\\.symat\\plugins");
         dir.mkdirs();
         File[] files = dir.listFiles(new FilenameFilter() {
@@ -285,13 +290,23 @@ public class Main extends JRibbonFrame {
         for (File pl : files) {
             try {
                 LoadPlugin lp = new LoadPlugin(pl);
+                JCommandButton b = lp.getRibbonBtn();
                 pluginband.addCommandButton(
-                        lp.getRibbonBtn(),
+                        b,
                         RibbonElementPriority.MEDIUM);
+                b.setVisible(true);
             } catch (Exception ex) {
 
             }
         }
+    }
+    
+    /**
+     * Reload the Ribbon tabs and all sub-components.
+     */
+    public void reloadRibbon() {
+        getRibbon().removeAllTasks();
+        loadRibbon();
     }
 
     /**
@@ -306,6 +321,7 @@ public class Main extends JRibbonFrame {
         JRibbonBand appsband = new JRibbonBand("Apps", null);
         JRibbonBand webband = new JRibbonBand("Community", null);
         JRibbonBand collabband = new JRibbonBand("Team", null);
+        JRibbonBand getpluginband = new JRibbonBand("Install", null);
         loadPlugins();
 
         shellbtn.addActionListener(new ActionListener() {
@@ -360,6 +376,12 @@ public class Main extends JRibbonFrame {
                 loadFrame(new Tasks());
             }
         });
+        installpluginbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                loadFrame(new InstallPlugin());
+            }
+        });
 
         shellbtn.setActionRichTooltip(new RichTooltip("Command Shell",
                 "Open a window for running interactive commands."));
@@ -377,6 +399,8 @@ public class Main extends JRibbonFrame {
                 "Collaborate over the Internet on projects."));
         tasksbtn.setActionRichTooltip(new RichTooltip("Task List",
                 "Manage tasks and to-do lists for projects."));
+        installpluginbtn.setActionRichTooltip(new RichTooltip("Install Plugin",
+                "Install a plugin from a file and view plugin info."));
 
         coreband.addCommandButton(shellbtn, RibbonElementPriority.TOP);
         coreband.addCommandButton(editorbtn, RibbonElementPriority.TOP);
@@ -389,6 +413,8 @@ public class Main extends JRibbonFrame {
 
         collabband.addCommandButton(padsbtn, RibbonElementPriority.MEDIUM);
         collabband.addCommandButton(tasksbtn, RibbonElementPriority.MEDIUM);
+        
+        getpluginband.addCommandButton(installpluginbtn, RibbonElementPriority.MEDIUM);
 
         coreband.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.None(coreband.getControlPanel()),
@@ -397,18 +423,21 @@ public class Main extends JRibbonFrame {
                 new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
                 new IconRibbonBandResizePolicy(appsband.getControlPanel())));
         webband.setResizePolicies((List) Arrays.asList(
-                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
-                new IconRibbonBandResizePolicy(appsband.getControlPanel())));
+                new CoreRibbonResizePolicies.None(webband.getControlPanel()),
+                new IconRibbonBandResizePolicy(webband.getControlPanel())));
         collabband.setResizePolicies((List) Arrays.asList(
+                new CoreRibbonResizePolicies.None(collabband.getControlPanel()),
+                new IconRibbonBandResizePolicy(collabband.getControlPanel())));
+        getpluginband.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
-                new IconRibbonBandResizePolicy(appsband.getControlPanel())));
+                new IconRibbonBandResizePolicy(pluginband.getControlPanel())));
         pluginband.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
-                new IconRibbonBandResizePolicy(appsband.getControlPanel())));
+                new IconRibbonBandResizePolicy(pluginband.getControlPanel())));
 
         RibbonTask hometask = new RibbonTask("Home", coreband, appsband);
         RibbonTask webtask = new RibbonTask("Tools", webband, collabband);
-        RibbonTask plugintask = new RibbonTask("Plugins", pluginband);
+        RibbonTask plugintask = new RibbonTask("Plugins", getpluginband, pluginband);
 
         loadRibbonMenu(null);
 
@@ -1059,6 +1088,8 @@ public class Main extends JRibbonFrame {
             = new JCommandButton("Pads", getRibbonIcon("pads"));
     public static JCommandButton tasksbtn
             = new JCommandButton("Tasks", getRibbonIcon("tasks"));
+    public static JCommandButton installpluginbtn
+            = new JCommandButton("Install", getRibbonIcon("installplugin"));
     public static RibbonApplicationMenuEntryPrimary openbtn;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
