@@ -283,9 +283,14 @@ public class Main extends JRibbonFrame {
         });
 
         for (File pl : files) {
-            pluginband.addCommandButton(
-                    (new LoadPlugin(pl)).getRibbonBtn(),
-                    RibbonElementPriority.MEDIUM);
+            try {
+                LoadPlugin lp = new LoadPlugin(pl);
+                pluginband.addCommandButton(
+                        lp.getRibbonBtn(),
+                        RibbonElementPriority.MEDIUM);
+            } catch (Exception ex) {
+
+            }
         }
     }
 

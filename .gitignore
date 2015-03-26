@@ -1,5 +1,6 @@
 bin/
 dist/
-nbproject/
 *.exe
 /src/padkey
+/nbproject/private/
+/build/
