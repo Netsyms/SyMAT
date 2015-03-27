@@ -178,6 +178,9 @@ public class Task extends javax.swing.JPanel {
         setComplete(percent);
         taskName.setText(tm.toString());
         taskDesc.setText(tm.getDesc());
+        if (tm.deleteMe()) {
+            getParent().remove(this);
+        }
     }//GEN-LAST:event_menuBtnActionPerformed
 
 

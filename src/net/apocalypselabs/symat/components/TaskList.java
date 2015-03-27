@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class TaskList implements Serializable {
     
-    private static final long serialVersionUID = 13370L;
+    private static final long serialVersionUID = 6754527404697894562L;
     
     private final ArrayList<SingleTask> tasks = new ArrayList<>();
     private String title = "Untitled";
