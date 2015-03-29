@@ -243,7 +243,10 @@ public class Graph extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void plotBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotBtnActionPerformed
-        new GraphThread(inBox.getText()).start();
+        String[] frmlas = inBox.getText().split(";");
+        for (String f : frmlas) {
+            new GraphThread(f).start();
+        }
     }//GEN-LAST:event_plotBtnActionPerformed
 
     /**
@@ -393,7 +396,7 @@ public class Graph extends javax.swing.JInternalFrame {
 
     private void inBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inBoxKeyTyped
         if (evt.getKeyChar() == '\n') {
-            plotBtnActionPerformed(null);
+            plotBtn.doClick();
         }
     }//GEN-LAST:event_inBoxKeyTyped
 
