@@ -98,6 +98,16 @@ public class Functions {
     public void notify(Object message) {
         JOptionPane.showInternalMessageDialog(Main.mainPane, message.toString());
     }
+    
+    /**
+     * Display message dialog.
+     * 
+     * This is an alias to help JavaScript programmers.
+     * @param message The message
+     */
+    public void alert(Object message) {
+        notify(message);
+    }
 
     /**
      * Display an input dialog box with a text field.
@@ -107,6 +117,26 @@ public class Functions {
      */
     public String ask(String question) {
         return JOptionPane.showInternalInputDialog(Main.mainPane, question);
+    }
+    
+    /**
+     * Pause execution for the specified number of milliseconds.
+     * @param millis 
+     */
+    public void pause(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            // Nothing to do.
+        }
+    }
+    
+    /**
+     * @see pause()
+     * @param millis 
+     */
+    public void sleep(long millis) {
+        pause(millis);
     }
 
     /**

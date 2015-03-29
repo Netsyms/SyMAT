@@ -56,3 +56,7 @@ def rand(min,max):
     return _.rand(min,max)
 def randb():
     return _.randb()
+def sleep(x):
+    _.sleep(x)
+def pause(x):
+    _.pause(x)
