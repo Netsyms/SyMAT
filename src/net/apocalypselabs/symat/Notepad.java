@@ -78,8 +78,8 @@ public class Notepad extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane4 = new javax.swing.JScrollPane();
-        textBox = new javax.swing.JEditorPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        textBox = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         eraseBtn = new javax.swing.JMenuItem();
@@ -91,15 +91,18 @@ public class Notepad extends javax.swing.JInternalFrame {
         setTitle("Notepad");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/notepad.png"))); // NOI18N
 
-        jScrollPane4.setFont(Font.getFont(Font.MONOSPACED));
-
         textBox.setBackground(new java.awt.Color(255, 255, 204));
+        textBox.setColumns(1);
+        textBox.setLineWrap(true);
+        textBox.setRows(1);
+        textBox.setTabSize(4);
+        textBox.setWrapStyleWord(true);
         textBox.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 textBoxKeyTyped(evt);
             }
         });
-        jScrollPane4.setViewportView(textBox);
+        jScrollPane1.setViewportView(textBox);
 
         jMenu1.setText("File");
 
@@ -120,11 +123,11 @@ public class Notepad extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
         );
 
         pack();
@@ -150,7 +153,7 @@ public class Notepad extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem eraseBtn;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JEditorPane textBox;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea textBox;
     // End of variables declaration//GEN-END:variables
 }
