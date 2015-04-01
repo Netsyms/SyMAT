@@ -61,6 +61,8 @@ import javax.swing.JOptionPane;
 public class CodeRunner {
 
     private ScriptEngine se;
+    private StringWriter sw = new StringWriter();
+    private PrintWriter pw = new PrintWriter(sw);
 
     // If we need to wrap code around input to make everything nice.
     private boolean wrapRequired = false;
@@ -82,12 +84,6 @@ public class CodeRunner {
             case "js":
             case "rhino":
                 se = new ScriptEngineManager().getEngineByName("rhino");
-//                Context ctx = Context.getCurrentContext();
-//                if (ctx == null) {
-//                    ctx = Context.enter();
-//                }
-                //ctx.setWrapFactory(new JsWrapFactory());
-                //ctx.getWrapFactory().setJavaPrimitiveWrap(false);
                 wrapRequired = true;
                 try {
                     // Add custom functions.
@@ -97,6 +93,7 @@ public class CodeRunner {
                             + getFunctions("js"));
                     // Allow engine access from scripts.
                     se.put("engine", se);
+                    attachWriters();
                 } catch (Exception ex) {
                     initError(ex);
                 }
@@ -113,6 +110,7 @@ public class CodeRunner {
                             + getFunctions("py"));
                     // Allow engine access from scripts.
                     se.put("engine", se);
+                    attachWriters();
                 } catch (Exception ex) {
                     initError(ex);
                 }
@@ -126,6 +124,12 @@ public class CodeRunner {
     public CodeRunner(String lang, boolean shell) {
         this(lang);
     }
+    
+    public void attachWriters() {
+        se.getContext().setWriter(pw);
+        se.getContext().setErrorWriter(pw);
+        Debug.println("Attached writers.");
+    }
 
     /**
      * Inits the Python engine on application start.
@@ -137,6 +141,20 @@ public class CodeRunner {
             se = new ScriptEngineManager().getEngineByName("python");
         }
     }
+    
+    public StringWriter getStringWriter() {
+        return sw;
+    }
+    
+    public PrintWriter getPrintWriter() {
+        return pw;
+    }
+    
+    public String getBufferDump() {
+        String dump = sw.toString();
+        sw.getBuffer().setLength(0);
+        return dump;
+    }
 
     private void initError(Exception ex) {
         JOptionPane.showMessageDialog(null, "Error: "
@@ -146,16 +164,13 @@ public class CodeRunner {
     }
 
     /**
-     * Parse a String of JavaScript.
+     * Parse a String of code.
      *
-     * @param eval A String of JavaScript to evaluate.
+     * @param eval A String of code to evaluate.
      * @return the result.
      */
     public Object evalString(String eval) {
         try {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            se.getContext().setWriter(pw);
             Object res = se.eval(wrapMath(eval));
             if (res == null) {
                 res = "";
@@ -164,6 +179,22 @@ public class CodeRunner {
             return result;
         } catch (ScriptException ex) {
             return formatEx(ex);
+        }
+    }
+    
+    /**
+     * Parse code and use the default output writers.
+     *
+     * @param eval A String of code to evaluate.
+     */
+    public void evalCode(String eval) {
+        try {
+            Object res = se.eval(wrapMath(eval));
+            if (res == null) {
+                res = "";
+            }
+        } catch (ScriptException ex) {
+            sw.append(formatEx(ex));
         }
     }
 

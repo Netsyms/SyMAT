@@ -71,6 +71,10 @@ import org.fife.ui.rtextarea.RTextScrollPane;
  */
 public class Editor extends javax.swing.JInternalFrame {
 
+    private CodeRunner cr;
+    private RunThread rt;
+    private UpdateOutput uo;
+
     private final JFileChooser fc = new JFileChooser();
     private boolean isSaved = false;
     private RSyntaxTextArea codeBox = new RSyntaxTextArea();
@@ -93,13 +97,16 @@ public class Editor extends javax.swing.JInternalFrame {
         FileFilter filter = new FileNameExtensionFilter("JavaScript (syjs, js)", "syjs", "js");
         fc.setFileFilter(filter);
         fc.addChoosableFileFilter(filter);
-        filter = new FileNameExtensionFilter("Python (sypy, py)", "sypy", "py");
-        fc.addChoosableFileFilter(filter);
+        fc.addChoosableFileFilter(new FileNameExtensionFilter(
+                "Python (sypy, py)", "sypy", "py"));
+        fc.addChoosableFileFilter(new FileNameExtensionFilter(
+                "Plain Text (txt, text)", "txt", "text"));
 
         int font_size = 12;
         try {
             font_size = Integer.valueOf(PrefStorage.getSetting("editfont"));
         } catch (Exception ex) {
+            Debug.printerr("Font size error!");
         }
         codeBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
         outputBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
@@ -247,6 +254,7 @@ public class Editor extends javax.swing.JInternalFrame {
         pasteBtn = new javax.swing.JMenuItem();
         runMenu = new javax.swing.JMenu();
         runCodeBtn = new javax.swing.JMenuItem();
+        killButton = new javax.swing.JMenuItem();
         codeLangMenu = new javax.swing.JMenu();
         javascriptOption = new javax.swing.JRadioButtonMenuItem();
         pythonOption = new javax.swing.JRadioButtonMenuItem();
@@ -491,6 +499,15 @@ public class Editor extends javax.swing.JInternalFrame {
         });
         runMenu.add(runCodeBtn);
 
+        killButton.setText("Kill script");
+        killButton.setEnabled(false);
+        killButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                killButtonActionPerformed(evt);
+            }
+        });
+        runMenu.add(killButton);
+
         codeLangMenu.setText("Language");
 
         javascriptOption.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
@@ -636,9 +653,11 @@ public class Editor extends javax.swing.JInternalFrame {
 
     private void runCodeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runCodeBtnActionPerformed
         if (javascriptOption.isSelected()) {
-            new RunThread("javascript").start();
+            rt = new RunThread("javascript");
+            rt.start();
         } else if (pythonOption.isSelected()) {
-            new RunThread("python").start();
+            rt = new RunThread("python");
+            rt.start();
         }
     }//GEN-LAST:event_runCodeBtnActionPerformed
 
@@ -666,45 +685,88 @@ public class Editor extends javax.swing.JInternalFrame {
             execCode(lang);
             setRunning(false);
         }
+    }
 
-        public void setRunning(boolean isRunning) {
-            final boolean running = isRunning;
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    if (running) {
-                        runMenu.setText("Running...");
-                        codeBox.setEnabled(false);
-                        for (Component mu : jMenuBar1.getComponents()) {
-                            mu.setEnabled(false);
-                        }
-                        jMenuBar1.setEnabled(false);
-                    } else {
-                        runMenu.setText("Run");
-                        codeBox.setEnabled(true);
-                        for (Component mu : jMenuBar1.getComponents()) {
-                            mu.setEnabled(true);
-                        }
-                        jMenuBar1.setEnabled(true);
+    private void setRunning(boolean isRunning) {
+        final boolean running = isRunning;
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                if (running) {
+                    runMenu.setText("Running...");
+                    codeBox.setEditable(false);
+                    for (Component mu : jMenuBar1.getComponents()) {
+                        mu.setEnabled(false);
                     }
+                    runMenu.setEnabled(true);
+                    runCodeBtn.setEnabled(false);
+                    codeLangMenu.setEnabled(false);
+                    killButton.setEnabled(true);
+                } else {
+                    runMenu.setText("Run");
+                    codeBox.setEditable(true);
+                    for (Component mu : jMenuBar1.getComponents()) {
+                        mu.setEnabled(true);
+                    }
+                    runCodeBtn.setEnabled(true);
+                    codeLangMenu.setEnabled(true);
+                    killButton.setEnabled(false);
                 }
-            });
-        }
+            }
+        });
     }
 
     private void execCode(String lang) {
         if (!checkRequiredVersion(codeBox.getText(), lang)) {
             return;
         }
-        CodeRunner cr = new CodeRunner(lang);
+        cr = new CodeRunner(lang);
+        uo = new UpdateOutput(cr);
         String script = loadExternalScripts(codeBox.getText(), lang);
         Debug.println(lang);
         Debug.println(script);
-        Object result = cr.evalString(script);
-        try {
-            outputBox.append(result.toString() + "\n");
-        } catch (NullPointerException ex) {
+        uo.start();
+        cr.evalCode(script);
+        uo.kill();
+    }
 
+    private class UpdateOutput extends Thread {
+
+        private final CodeRunner cr;
+        private boolean keepGoing = true;
+
+        public void kill() {
+            keepGoing = false;
+            flush();
+        }
+
+        @Override
+        public void run() {
+            while (keepGoing) {
+                try {
+                    flush();
+                    Thread.sleep(100);
+                } catch (Exception ex) {
+
+                }
+            }
+        }
+
+        private void flush() {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    String d = cr.getBufferDump();
+                    if (!d.equals("")) {
+                        outputBox.append(d);
+                        Debug.println(d);
+                    }
+                }
+            });
+        }
+
+        public UpdateOutput(CodeRunner c) {
+            cr = c;
         }
     }
 
@@ -855,6 +917,16 @@ public class Editor extends javax.swing.JInternalFrame {
         ));
     }//GEN-LAST:event_packPluginMenuActionPerformed
 
+    private void killButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_killButtonActionPerformed
+        uo.kill();
+        rt.stop();
+        setRunning(false);
+        outputBox.append(""
+                + "\n============="
+                + "\nScript killed"
+                + "\n=============\n");
+    }//GEN-LAST:event_killButtonActionPerformed
+
     private void createShared(String id) {
         try {
             String padid = Pads.genPad(id, codeBox.getText());
@@ -945,6 +1017,7 @@ public class Editor extends javax.swing.JInternalFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JRadioButtonMenuItem javascriptOption;
+    private javax.swing.JMenuItem killButton;
     private javax.swing.ButtonGroup langBtnGroup;
     private javax.swing.JMenuItem openMenu;
     private javax.swing.JMenu openSampleBtn;
