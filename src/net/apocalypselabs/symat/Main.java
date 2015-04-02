@@ -68,7 +68,9 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.application.Platform;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -276,8 +278,17 @@ public class Main extends JRibbonFrame {
      */
     public void loadPlugins() {
         pluginband = new JRibbonBand("Plugins", null);
+        installpluginbtn.setActionRichTooltip(new RichTooltip("Install Plugin",
+                "Install a plugin from a file and view plugin info."));
+        installpluginbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                loadFrame(new InstallPlugin());
+            }
+        });
         pluginband.setResizePolicies((List) Arrays.asList(
-                new IconRibbonBandResizePolicy(pluginband.getControlPanel())));
+                new CoreRibbonResizePolicies.Mirror(pluginband.getControlPanel())));
+        pluginband.addCommandButton(installpluginbtn, RibbonElementPriority.TOP);
         File dir = new File(System.getProperty("user.home") + "\\.symat\\plugins");
         dir.mkdirs();
         File[] files = dir.listFiles(new FilenameFilter() {
@@ -287,20 +298,29 @@ public class Main extends JRibbonFrame {
             }
         });
 
+        Map<RibbonElementPriority, Integer> galleryVisibleButtonCounts = new HashMap<>();
+        galleryVisibleButtonCounts.put(RibbonElementPriority.LOW, 1);
+        galleryVisibleButtonCounts.put(RibbonElementPriority.MEDIUM, 2);
+        galleryVisibleButtonCounts.put(RibbonElementPriority.TOP, 2);
+        List<StringValuePair<List<JCommandToggleButton>>> appGalleryButtons = new ArrayList<>();
+        List<JCommandToggleButton> appGalleryButtonsList = new ArrayList<>();
         for (File pl : files) {
             try {
                 LoadPlugin lp = new LoadPlugin(pl);
-                JCommandButton b = lp.getRibbonBtn();
-                pluginband.addCommandButton(
-                        b,
-                        RibbonElementPriority.MEDIUM);
-                b.setVisible(true);
+                appGalleryButtonsList.add(lp.getGalleryBtn());
             } catch (Exception ex) {
-
+                Debug.stacktrace(ex);
+                System.err.println("Error loading plugin: "+ex.getMessage());
             }
         }
+
+        appGalleryButtons.add(new StringValuePair<List<JCommandToggleButton>>("Plugins",
+            appGalleryButtonsList));
+        pluginband.addRibbonGallery("Plugins", appGalleryButtons,
+                galleryVisibleButtonCounts, 5, 3,
+                RibbonElementPriority.TOP);
     }
-    
+
     /**
      * Reload the Ribbon tabs and all sub-components.
      */
@@ -321,7 +341,8 @@ public class Main extends JRibbonFrame {
         JRibbonBand appsband = new JRibbonBand("Apps", null);
         JRibbonBand webband = new JRibbonBand("Community", null);
         JRibbonBand collabband = new JRibbonBand("Team", null);
-        JRibbonBand getpluginband = new JRibbonBand("Install", null);
+        //JRibbonBand getpluginband = new JRibbonBand("Install", null);
+
         loadPlugins();
 
         shellbtn.addActionListener(new ActionListener() {
@@ -376,12 +397,6 @@ public class Main extends JRibbonFrame {
                 loadFrame(new Tasks());
             }
         });
-        installpluginbtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                loadFrame(new InstallPlugin());
-            }
-        });
 
         shellbtn.setActionRichTooltip(new RichTooltip("Command Shell",
                 "Open a window for running interactive commands."));
@@ -399,8 +414,6 @@ public class Main extends JRibbonFrame {
                 "Collaborate over the Internet on projects."));
         tasksbtn.setActionRichTooltip(new RichTooltip("Task List",
                 "Manage tasks and to-do lists for projects."));
-        installpluginbtn.setActionRichTooltip(new RichTooltip("Install Plugin",
-                "Install a plugin from a file and view plugin info."));
 
         coreband.addCommandButton(shellbtn, RibbonElementPriority.TOP);
         coreband.addCommandButton(editorbtn, RibbonElementPriority.TOP);
@@ -413,8 +426,6 @@ public class Main extends JRibbonFrame {
 
         collabband.addCommandButton(padsbtn, RibbonElementPriority.MEDIUM);
         collabband.addCommandButton(tasksbtn, RibbonElementPriority.MEDIUM);
-        
-        getpluginband.addCommandButton(installpluginbtn, RibbonElementPriority.MEDIUM);
 
         coreband.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.None(coreband.getControlPanel()),
@@ -428,16 +439,16 @@ public class Main extends JRibbonFrame {
         collabband.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.None(collabband.getControlPanel()),
                 new IconRibbonBandResizePolicy(collabband.getControlPanel())));
-        getpluginband.setResizePolicies((List) Arrays.asList(
-                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
-                new IconRibbonBandResizePolicy(pluginband.getControlPanel())));
-        pluginband.setResizePolicies((List) Arrays.asList(
-                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
-                new IconRibbonBandResizePolicy(pluginband.getControlPanel())));
+//        getpluginband.setResizePolicies((List) Arrays.asList(
+//                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
+//                new IconRibbonBandResizePolicy(pluginband.getControlPanel())));
+//        pluginband.setResizePolicies((List) Arrays.asList(
+//                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
+//                new IconRibbonBandResizePolicy(pluginband.getControlPanel())));
 
         RibbonTask hometask = new RibbonTask("Home", coreband, appsband);
         RibbonTask webtask = new RibbonTask("Tools", webband, collabband);
-        RibbonTask plugintask = new RibbonTask("Plugins", getpluginband, pluginband);
+        RibbonTask plugintask = new RibbonTask("Plugins", pluginband);
 
         loadRibbonMenu(null);
 

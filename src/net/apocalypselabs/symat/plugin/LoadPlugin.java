@@ -50,43 +50,43 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import net.apocalypselabs.symat.CodeRunner;
 import net.apocalypselabs.symat.Debug;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
+import org.pushingpixels.flamingo.api.common.JCommandToggleButton;
 import org.pushingpixels.flamingo.api.common.RichTooltip;
 import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
 import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
 
 /**
  * Plugin loader class.
+ *
  * @author Skylar
  */
 public class LoadPlugin {
 
     private Plugin p = new Plugin();
-    
-    public LoadPlugin(File f) {
-        try {
-            FileInputStream fin = new FileInputStream(f);
-            ObjectInputStream ois = new ObjectInputStream(fin);
-            p = (Plugin) ois.readObject();
-            ois.close();
-        } catch (Exception ex) {
-            Debug.stacktrace(ex);
-        }
+
+    public LoadPlugin(File f) throws FileNotFoundException, IOException, ClassNotFoundException {
+        FileInputStream fin = new FileInputStream(f);
+        ObjectInputStream ois = new ObjectInputStream(fin);
+        p = (Plugin) ois.readObject();
+        ois.close();
     }
 
-    public LoadPlugin(String path) {
+    public LoadPlugin(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
         this(new File(path));
     }
-    
+
     private ResizableIcon getRibbonIcon() {
         return ImageWrapperResizableIcon.getIcon(
                 p.getIcon().getImage(),
                 new Dimension(100, 76));
     }
-    
+
     public JCommandButton getRibbonBtn() {
         JCommandButton b = new JCommandButton(p.getTitle(), getRibbonIcon());
         b.setActionRichTooltip(new RichTooltip(p.getLongTitle(),
@@ -97,14 +97,28 @@ public class LoadPlugin {
                 exec();
             }
         });
+        b.setCommandButtonKind(JCommandButton.CommandButtonKind.ACTION_ONLY);
         return b;
     }
-    
+
+    public JCommandToggleButton getGalleryBtn() {
+        JCommandToggleButton b = new JCommandToggleButton(p.getTitle(), getRibbonIcon());
+        b.setActionRichTooltip(new RichTooltip(p.getLongTitle(),
+                p.getDesc()));
+        b.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                exec();
+            }
+        });
+        return b;
+    }
+
     public void exec() {
         CodeRunner cr = new CodeRunner(p.getLang());
         cr.evalString(p.getScript());
     }
-    
+
     public Plugin getPlugin() {
         return p;
     }
