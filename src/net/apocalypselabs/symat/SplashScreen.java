@@ -69,7 +69,6 @@ public class SplashScreen extends javax.swing.JFrame {
         setBackground(new Color(255, 255, 255, 0));
         setIconImages(Main.symatlogo);
         setLocationRelativeTo(null);
-        logoOverlay.setSize(0, 140);
     }
 
     /**
@@ -87,14 +86,13 @@ public class SplashScreen extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        logoOverlay = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SyMAT Starting");
-        setMaximumSize(new java.awt.Dimension(702, 471));
-        setMinimumSize(new java.awt.Dimension(702, 471));
+        setMaximumSize(new java.awt.Dimension(300, 300));
+        setMinimumSize(new java.awt.Dimension(300, 300));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(702, 471));
+        setPreferredSize(new java.awt.Dimension(300, 300));
         setResizable(false);
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -104,43 +102,39 @@ public class SplashScreen extends javax.swing.JFrame {
 
         jLayeredPane1.setBackground(new java.awt.Color(255, 255, 255));
 
-        dispLabel.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(22.0F));
-        dispLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        dispLabel.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(14.0F));
+        dispLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         dispLabel.setText("Loading...");
         dispLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         dispLabel.setMaximumSize(new java.awt.Dimension(400, 320));
         jLayeredPane1.add(dispLabel);
-        dispLabel.setBounds(250, 250, 350, 80);
+        dispLabel.setBounds(40, 110, 220, 100);
 
         jLabel1.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(20.0F));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("v. "+net.apocalypselabs.symat.Main.VERSION_NAME);
+        jLabel1.setText(net.apocalypselabs.symat.Main.VERSION_NAME);
         jLayeredPane1.add(jLabel1);
-        jLabel1.setBounds(520, 70, 80, 30);
+        jLabel1.setBounds(210, 20, 70, 30);
         jLayeredPane1.setLayer(jLabel1, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/symat-hex-logo.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/splash2.0.png"))); // NOI18N
+        jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLayeredPane1.add(jLabel2);
-        jLabel2.setBounds(0, 0, 700, 470);
+        jLabel2.setBounds(0, 0, 300, 300);
 
         jLabel3.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("<html><div style=\"text-align: center;\">Apocalypse<br>Laboratories</div>");
         jLayeredPane1.add(jLabel3);
-        jLabel3.setBounds(50, 420, 120, 40);
+        jLabel3.setBounds(10, 250, 100, 40);
         jLayeredPane1.setLayer(jLabel3, javax.swing.JLayeredPane.POPUP_LAYER);
 
         jLabel4.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("symatapp.com");
         jLayeredPane1.add(jLabel4);
-        jLabel4.setBounds(370, 430, 110, 14);
+        jLabel4.setBounds(180, 260, 110, 30);
         jLayeredPane1.setLayer(jLabel4, javax.swing.JLayeredPane.POPUP_LAYER);
-
-        logoOverlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/logo-overlay.png"))); // NOI18N
-        jLayeredPane1.add(logoOverlay);
-        logoOverlay.setBounds(184, 85, 380, 140);
-        jLayeredPane1.setLayer(logoOverlay, javax.swing.JLayeredPane.POPUP_LAYER);
 
         getContentPane().add(jLayeredPane1, java.awt.BorderLayout.CENTER);
 
@@ -163,7 +157,6 @@ public class SplashScreen extends javax.swing.JFrame {
                 Main.skipPython = true;
                 Main.skipEditor = true;
             }
-            logoOverlay.setSize(100, 140);
             if (!Main.skipPython) {
                 // Python laggggsss when used for first time, this fixes the wait later.
                 System.out.println("Warming up Python engine, to skip run with argument 'skippython'");
@@ -173,26 +166,21 @@ public class SplashScreen extends javax.swing.JFrame {
                 } catch (Exception ex) {
                     // Ignore
                 }
-                logoOverlay.setSize(130, 140);
             }
 
             if (!Main.skipEditor) {
                 System.out.println("Preparing editor, to skip run with argument 'skipeditor'");
                 setProgress("Preparing editor...");
-                logoOverlay.setSize(152, 140);
                 // Get editor going too
                 Editor edit = new Editor();
-                logoOverlay.setSize(205, 140);
             }
             
-            logoOverlay.setSize(235, 140);
             if (!PrefStorage.getSetting("skipupdates").equals("yes")) {
                 setProgress("Checking for updates...");
                 checkUpdates();
             }
-            logoOverlay.setSize(300, 140);
-
-            logoOverlay.setSize(380, 140);
+            
+            
             setProgress("Loading main interface...");
             Main main = new Main();
             setProgress("Done!");
@@ -210,7 +198,6 @@ public class SplashScreen extends javax.swing.JFrame {
                 String line = br.readLine();
                 br.close();
                 is.close();
-                logoOverlay.setSize(280, 140);
                 double version = Double.parseDouble(line.split("\\|")[0]);
                 if (version > APP_CODE) {
                     if (PrefStorage.getSetting("update-ignore")
@@ -253,6 +240,5 @@ public class SplashScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JLabel logoOverlay;
     // End of variables declaration//GEN-END:variables
 }
