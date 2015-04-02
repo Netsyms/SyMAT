@@ -24,6 +24,9 @@ times(n1,n2,...)|Multiply the given numbers.
 divide(n1,n2,...)|Divide the given numbers.
 mod(n1,n2,...)|Divide the numbers and return the remainder.
 vpa('')|Computes numerical value or simplifies.
+factorial(n)|Get the factorial (n!) of n as a string.
+factor(n)|Get an array of all the factors of n.
+perms(items)|Array of all possible combinations.
 fabs(0)|Absolute value of number.
 asin(0)|
 acos(0)|

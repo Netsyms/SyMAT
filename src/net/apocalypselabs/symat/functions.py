@@ -60,3 +60,7 @@ def sleep(x):
     _.sleep(x)
 def pause(x):
     _.pause(x)
+def perms(*a):
+    return _.perms(a)
+def md5sum(a):
+    return _.md5sum(a)

@@ -19,11 +19,14 @@ savefile(data,"")|Save the text data to a file.
 rand()|Random fraction from 0 (inclusive) to 1 (exclusive)
 rand(min,max)|Random number between min and max, inclusive
 randb()|Random boolean (true or false)
+perms(items)|Array of all possible combinations.
 add(n1,n2,...)|Add the given numbers.
 subtract(n1,n2,...)|Subtract the given numbers.
 times(n1,n2,...)|Multiply the given numbers.
 divide(n1,n2,...)|Divide the given numbers.
 mod(n1,n2,...)|Divide the numbers and return the remainder.
+factorial(n)|Get the factorial (n!) of n as a string.
+factor(n)|Get an array of all the factors of n.
 abs(0)|Absolute value of number.
 asin(0)|
 acos(0)|

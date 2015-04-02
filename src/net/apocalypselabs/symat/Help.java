@@ -241,17 +241,9 @@ public class Help extends javax.swing.JInternalFrame {
                         + "</p>"
                         + "<p>SyMAT is copyright &copy; "
                         + Calendar.getInstance().get(Calendar.YEAR)
-                        + " Apocalypse Laboratories.  Some rights reserved."
-                        + "</p>"
-                        + "<p>Internal help documentation is "
-                        + "licensed under the Creative Commons "
-                        + "Attribution-NonCommercial 4.0 International"
-                        + " license (CC-BY-NC).  "
-                        + "You can use it in part or in whole "
-                        + "for any purpose, excepting commercial, as long as "
-                        + "you attribute Apocalypse Laboratories.  See "
-                        + "http://creativecommons.org/licenses/by-nc/4.0/"
-                        + " for more information.</p>";
+                        + " Apocalypse Laboratories."
+                        + "<br />"
+                        + "This built-in documentation falls under the SyMAT Media License.</p>";
                 setText(text, "Manual");
             } else {
                 try {
