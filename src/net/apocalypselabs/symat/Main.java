@@ -115,7 +115,7 @@ public class Main extends JRibbonFrame {
     /**
      * Version number, for updates and //needs in scripts
      */
-    public static final double APP_CODE = 19;
+    public static final double APP_CODE = 20;
     /**
      * Base URL for building API calls
      */
@@ -289,7 +289,8 @@ public class Main extends JRibbonFrame {
         pluginband.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.Mirror(pluginband.getControlPanel())));
         pluginband.addCommandButton(installpluginbtn, RibbonElementPriority.TOP);
-        File dir = new File(System.getProperty("user.home") + "\\.symat\\plugins");
+        String fsep = System.getProperty("file.separator");
+        File dir = new File(System.getProperty("user.home") + fsep + ".symat" + fsep + "plugins");
         dir.mkdirs();
         File[] files = dir.listFiles(new FilenameFilter() {
             @Override
@@ -304,18 +305,21 @@ public class Main extends JRibbonFrame {
         galleryVisibleButtonCounts.put(RibbonElementPriority.TOP, 2);
         List<StringValuePair<List<JCommandToggleButton>>> appGalleryButtons = new ArrayList<>();
         List<JCommandToggleButton> appGalleryButtonsList = new ArrayList<>();
-        for (File pl : files) {
-            try {
-                LoadPlugin lp = new LoadPlugin(pl);
-                appGalleryButtonsList.add(lp.getGalleryBtn());
-            } catch (Exception ex) {
-                Debug.stacktrace(ex);
-                System.err.println("Error loading plugin: "+ex.getMessage());
+        if (files != null) {
+            for (File pl : files) {
+                LoadPlugin lp;
+                try {
+                    lp = new LoadPlugin(pl);
+                    appGalleryButtonsList.add(lp.getGalleryBtn());
+                } catch (Exception ex) {
+                    Debug.stacktrace(ex);
+                    System.err.println("Error loading plugin " + pl.getName() + ": " + ex.getMessage());
+                }
             }
         }
 
-        appGalleryButtons.add(new StringValuePair<List<JCommandToggleButton>>("Plugins",
-            appGalleryButtonsList));
+        appGalleryButtons.add(new StringValuePair<>("Plugins",
+                appGalleryButtonsList));
         pluginband.addRibbonGallery("Plugins", appGalleryButtons,
                 galleryVisibleButtonCounts, 5, 3,
                 RibbonElementPriority.TOP);
@@ -343,7 +347,13 @@ public class Main extends JRibbonFrame {
         JRibbonBand collabband = new JRibbonBand("Team", null);
         //JRibbonBand getpluginband = new JRibbonBand("Install", null);
 
-        loadPlugins();
+        try {
+            loadPlugins();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                    "An error occurred while loading plugins: "
+                    + ex.getMessage());
+        }
 
         shellbtn.addActionListener(new ActionListener() {
             @Override

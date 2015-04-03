@@ -55,6 +55,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import net.apocalypselabs.symat.CodeRunner;
 import net.apocalypselabs.symat.Debug;
+import net.apocalypselabs.symat.Main;
 import org.pushingpixels.flamingo.api.common.JCommandButton;
 import org.pushingpixels.flamingo.api.common.JCommandToggleButton;
 import org.pushingpixels.flamingo.api.common.RichTooltip;
@@ -82,15 +83,22 @@ public class LoadPlugin {
     }
 
     private ResizableIcon getRibbonIcon() {
-        return ImageWrapperResizableIcon.getIcon(
-                p.getIcon().getImage(),
-                new Dimension(100, 76));
+        try {
+            ResizableIcon ico = ImageWrapperResizableIcon.getIcon(
+                    p.getIcon().getImage(),
+                    new Dimension(100, 76));
+            return ico;
+        } catch (Exception ex) {
+            return Main.getRibbonIcon("plugin");
+        }
     }
 
     public JCommandButton getRibbonBtn() {
-        JCommandButton b = new JCommandButton(p.getTitle(), getRibbonIcon());
-        b.setActionRichTooltip(new RichTooltip(p.getLongTitle(),
-                p.getDesc()));
+        JCommandButton b = new JCommandButton((p.getTitle().equals("") ? "Untitled" : p.getTitle()), getRibbonIcon());
+        if (!p.getLongTitle().equals("")) {
+            b.setActionRichTooltip(new RichTooltip(p.getLongTitle(),
+                    (p.getDesc().equals("") ? "   " : p.getDesc())));
+        }
         b.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -102,9 +110,11 @@ public class LoadPlugin {
     }
 
     public JCommandToggleButton getGalleryBtn() {
-        JCommandToggleButton b = new JCommandToggleButton(p.getTitle(), getRibbonIcon());
-        b.setActionRichTooltip(new RichTooltip(p.getLongTitle(),
-                p.getDesc()));
+        JCommandToggleButton b = new JCommandToggleButton((p.getTitle().equals("") ? "Untitled" : p.getTitle()), getRibbonIcon());
+        if (!p.getLongTitle().equals("")) {
+            b.setActionRichTooltip(new RichTooltip(p.getLongTitle(),
+                    (p.getDesc().equals("") ? "   " : p.getDesc())));
+        }
         b.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {

@@ -250,10 +250,11 @@ public class InstallPlugin extends javax.swing.JInternalFrame {
             return;
         }
         try {
+            String fsep = System.getProperty("file.separator");
             Files.copy(f,
                     new File(
                             System.getProperty("user.home")
-                            + "\\.symat\\plugins\\"
+                            + fsep + ".symat" + fsep + "plugins" + fsep
                             + f.getName()));
             Main.maingui.reloadRibbon();
             JOptionPane.showInternalMessageDialog(this,
@@ -263,7 +264,15 @@ public class InstallPlugin extends javax.swing.JInternalFrame {
         } catch (IOException ex) {
             Debug.stacktrace(ex);
             JOptionPane.showInternalMessageDialog(this,
-                    "Error: could not copy plugin file: " + ex.getMessage(),
+                    "Error: could not install plugin file: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException ex) {
+            Debug.stacktrace(ex);
+            JOptionPane.showInternalMessageDialog(this,
+                    "Error: could not install plugin file."
+                    + "\nIs a plugin with the same name already "
+                    + "installed?\n(" + ex.getMessage() + ")",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {

@@ -48,8 +48,6 @@ package net.apocalypselabs.symat;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -375,8 +373,6 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
             p.setIcon(icon);
             if (p.getTitle().equals("")
                     || p.getAuthor().equals("")
-                    || p.getLongTitle().equals("")
-                    || p.getDesc().equals("")
                     || p.getPackage().equals("")
                     || p.getVersion().equals("")
                     || p.getScript().equals("")
