@@ -47,9 +47,13 @@ package net.apocalypselabs.symat;
 
 import java.awt.Color;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLClassLoader;
 import javax.swing.SwingUtilities;
 import static net.apocalypselabs.symat.Main.API_URL;
 import static net.apocalypselabs.symat.Main.APP_CODE;
@@ -174,17 +178,42 @@ public class SplashScreen extends javax.swing.JFrame {
                 // Get editor going too
                 Editor edit = new Editor();
             }
-            
+
+            setProgress("Loading toolkits...");
+            try {
+                String fsep = System.getProperty("file.separator");
+                File dir = new File(System.getProperty("user.home") + fsep + ".symat" + fsep + "toolkits");
+                dir.mkdirs();
+                File[] files = dir.listFiles(new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        return name.endsWith(".jar");
+                    }
+                });
+                for (File f : files) {
+                    addSoftwareLibrary(f);
+                }
+            } catch (Exception ex) {
+                Debug.stacktrace(ex);
+            }
+
             if (!PrefStorage.getSetting("skipupdates").equals("yes")) {
                 setProgress("Checking for updates...");
                 checkUpdates();
             }
-            
-            
+
             setProgress("Loading main interface...");
             Main main = new Main();
             setProgress("Done!");
             dispose();
+        }
+
+        // Thanks to http://stackoverflow.com/a/9460999/2534036
+        private void addSoftwareLibrary(File file) throws Exception {
+            Method method = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
+            method.setAccessible(true);
+            method.invoke(ClassLoader.getSystemClassLoader(), new Object[]{file.toURI().toURL()});
+            Debug.println("Loaded toolkit " + file.getName());
         }
 
         private void checkUpdates() {
@@ -221,6 +250,7 @@ public class SplashScreen extends javax.swing.JFrame {
 
         /**
          * Set the progress text.
+         *
          * @param label The String to put on the label.
          */
         private void setProgress(String label) {

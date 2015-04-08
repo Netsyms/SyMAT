@@ -46,9 +46,15 @@
 package net.apocalypselabs.symat;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -63,6 +69,8 @@ public class CodeRunner {
     private ScriptEngine se;
     private StringWriter sw = new StringWriter();
     private PrintWriter pw = new PrintWriter(sw);
+    private String modules = "";
+    private String moduleterm = "";
 
     // If we need to wrap code around input to make everything nice.
     private boolean wrapRequired = false;
@@ -76,13 +84,14 @@ public class CodeRunner {
     public CodeRunner(int lang) {
         this(lang == 0 ? "js" : "py");
     }
-    
+
     public CodeRunner(String lang) {
         scriptLang = lang;
         switch (lang) {
             case "javascript":
             case "js":
             case "rhino":
+                scriptLang = "javascript";
                 se = new ScriptEngineManager().getEngineByName("rhino");
                 wrapRequired = true;
                 try {
@@ -90,7 +99,8 @@ public class CodeRunner {
                     se.eval("importClass(net.apocalypselabs.symat.Functions);"
                             + "SyMAT_Functions = new net.apocalypselabs.symat.Functions();"
                             + "SyMAT_Functions.setLang('js');\n"
-                            + getFunctions("js"));
+                            + getFunctions("js")
+                            + loadToolkits());
                     // Allow engine access from scripts.
                     se.put("engine", se);
                     attachWriters();
@@ -101,13 +111,15 @@ public class CodeRunner {
             case "python":
             case "jython":
             case "py":
+                scriptLang = "python";
                 se = new ScriptEngineManager().getEngineByName("python");
                 try {
                     se.eval("from math import *\n"
                             + "from net.apocalypselabs.symat import Functions\n"
                             + "_=Functions()\n"
                             + "_.setLang('py')\n\n"
-                            + getFunctions("py"));
+                            + getFunctions("py")
+                            + loadToolkits());
                     // Allow engine access from scripts.
                     se.put("engine", se);
                     attachWriters();
@@ -120,17 +132,113 @@ public class CodeRunner {
         }
     }
 
+    public static List<InputStream> loadResources(final String name,
+            final ClassLoader classLoader) throws IOException {
+        final List<InputStream> list = new ArrayList<InputStream>();
+        final Enumeration<URL> systemResources
+                = (classLoader == null ? ClassLoader.getSystemClassLoader() : classLoader)
+                .getResources(name);
+        while (systemResources.hasMoreElements()) {
+            list.add(systemResources.nextElement().openStream());
+        }
+        return list;
+    }
+
+    private String loadToolkits() {
+        String out = "";
+        try {
+            List<InputStream> il = loadResources("meta.txt", null);
+            InputStream[] ii = new InputStream[il.size()];
+            for (InputStream i : il.toArray(ii)) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(i));
+                while (br.ready()) {
+                    String l = br.readLine();
+                    if (l.contains("=")) {
+                        String classname = l.split("=")[0];
+                        String varname = l.split("=")[1];
+                        if (scriptLang.equals("javascript")) {
+                            out += "importClass(" + classname + ");"
+                                    + varname + " = new " + classname + "();";
+                            modules += "with(" + varname + "){";
+                            moduleterm += "}";
+                        } else {
+                            out += "from "
+                                    + classname.substring(0, classname.lastIndexOf("."))
+                                    + " import " + classname.substring(classname.lastIndexOf(".") + 1) + "\n"
+                                    + varname + " = " + classname.substring(classname.lastIndexOf(".") + 1) + "()\n";
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+
+        }
+        Debug.println(out);
+        return out;
+    }
+
     @Deprecated
     public CodeRunner(String lang, boolean shell) {
         this(lang);
     }
-    
-    public void attachWriters() {
+
+    private void attachWriters() {
         se.getContext().setWriter(pw);
         se.getContext().setErrorWriter(pw);
         Debug.println("Attached writers.");
     }
 
+//    private String loadModules() {
+//        String out = "";
+//        try {
+//            String fsep = System.getProperty("file.separator");
+//            File file = new File(System.getProperty("user.home") + fsep + ".symat" + fsep + "modules" + fsep);
+//            file.mkdirs();
+//            File f = new File(System.getProperty("user.home") + fsep + ".symat" + fsep);
+//            try {
+//                URL url = f.toURI().toURL();
+//                URL[] urls = new URL[]{url};
+//
+//                String cname = f.getName().replace(".class", "");
+//                ClassLoader cl = new URLClassLoader(urls);
+//                Class cls = cl.loadClass("modules." + cname);
+//                if (scriptLang.equals("python")) {
+//                    char[] argletters
+//                            = {'a', 'b', 'c', 'd', 'e', 'f',
+//                                'g', 'h', 'i', 'j', 'k', 'l',
+//                                'm', 'n', 'o', 'p', 'q', 'r',
+//                                's', 't', 'u', 'v', 'w', 'x',
+//                                'y', 'z'};
+//                    out = "from modules import " + cname + "\n";
+//                    Method[] meth = cls.getMethods();
+//
+//                    for (Method m : meth) {
+//                        out += "def " + m.getName() + "(";
+//                        String args = "";
+//                        for (int i = 0; i < m.getParameterCount(); i++) {
+//                            args += argletters[i] + ",";
+//                        }
+//                        if (args.endsWith(",")) {
+//                            args = args.substring(0, args.length() - 1);
+//                        }
+//                        out += args + "):\n\treturn " + cname + "()." + m.getName() + "(" + args + ")\n";
+//                    }
+//                } else {
+//                    out = "importClass(modules." + cname + ");"
+//                            + "SyMAT_" + cname
+//                            + " = new modules." + cname + "();";
+//                    modules += "with(SyMAT_" + cname + "){";
+//                    moduleterm += "}";
+//                }
+//            } catch (Exception e) {
+//                Debug.stacktrace(e);
+//            }
+//        } catch (Exception e) {
+//            Debug.stacktrace(e);
+//            return "";
+//        }
+//        return out;
+//    }
     /**
      * Inits the Python engine on application start.
      *
@@ -141,15 +249,15 @@ public class CodeRunner {
             se = new ScriptEngineManager().getEngineByName("python");
         }
     }
-    
+
     public StringWriter getStringWriter() {
         return sw;
     }
-    
+
     public PrintWriter getPrintWriter() {
         return pw;
     }
-    
+
     public String getBufferDump() {
         String dump = sw.toString();
         sw.getBuffer().setLength(0);
@@ -181,7 +289,7 @@ public class CodeRunner {
             return formatEx(ex);
         }
     }
-    
+
     /**
      * Parse code and use the default output writers.
      *
@@ -215,7 +323,7 @@ public class CodeRunner {
      */
     private String wrapMath(String eval) {
         if (wrapRequired) {
-            String with = "with(SyMAT_Functions){with(Math){" + eval + "}}";
+            String with = "with(SyMAT_Functions){" + modules + "with(Math){" + eval + "}}" + moduleterm;
             return with;
         }
         return eval;
