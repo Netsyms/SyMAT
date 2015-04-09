@@ -119,7 +119,7 @@ public class Main extends JRibbonFrame {
     /**
      * Base URL for building API calls
      */
-    public static final String API_URL = "https://apis.symatapp.com/";
+    public static final String API_URL = "http://apis.symatapp.com/";
     /**
      * Contains the filename argument passed to SyMAT, if any.
      */

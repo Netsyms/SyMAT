@@ -60,7 +60,7 @@ import org.etherpad_lite_client.EPLiteException;
  */
 public class Pads extends javax.swing.JInternalFrame {
 
-    public static final String PADS_URL = "https://pad.symatapp.com";
+    public static final String PADS_URL = "http://pad.symatapp.com";
 
     /**
      * Creates new form Pads
