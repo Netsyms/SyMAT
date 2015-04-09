@@ -102,7 +102,7 @@ public class Main extends JRibbonFrame {
     /**
      * Version name, as it should be displayed.
      */
-    public static final String VERSION_NAME = "1.8";
+    public static final String VERSION_NAME = "1.7.2";
 
     /**
      * The word "SyMAT".
@@ -1048,10 +1048,10 @@ public class Main extends JRibbonFrame {
         }
 
         // Set icon
-        String[] sizes = {"16", "32", "48", "64", "128", "256"};
+        String[] sizes = {"16", "24", "32", "48", "64", "96", "128", "256", "512"};
         for (String s : sizes) {
             symatlogo.add(new ImageIcon(
-                    Main.class.getResource("logo-filled" + s + ".png")).getImage());
+                    Main.class.getResource(s + "x" + s + ".png")).getImage());
         }
 
         // Command line args
