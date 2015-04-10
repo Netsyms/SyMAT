@@ -45,7 +45,6 @@
  */
 package net.apocalypselabs.symat;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -437,6 +436,8 @@ public class Interpreter extends javax.swing.JInternalFrame {
         String code = inputBox.getText();
         commandsForExport += code + "\n";
         mainBox.append(" " + code + "\n");
+        runBtn.setEnabled(false);
+        inputBox.setEnabled(false);
         new EvalThread(code).start();
     }
 
@@ -492,6 +493,14 @@ public class Interpreter extends javax.swing.JInternalFrame {
             history[0] = code;
             clrInput();
             historyIndex = -1;
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    inputBox.setEnabled(true);
+                    runBtn.setEnabled(true);
+                    inputBox.requestFocusInWindow();
+                }
+            });
         }
 
         private void clrInput() {

@@ -98,11 +98,12 @@ public class Functions {
     public void notify(Object message) {
         JOptionPane.showInternalMessageDialog(Main.mainPane, message.toString());
     }
-    
+
     /**
      * Display message dialog.
-     * 
+     *
      * This is an alias to help JavaScript programmers.
+     *
      * @param message The message
      */
     public void alert(Object message) {
@@ -118,10 +119,11 @@ public class Functions {
     public String ask(String question) {
         return JOptionPane.showInternalInputDialog(Main.mainPane, question);
     }
-    
+
     /**
      * Pause execution for the specified number of milliseconds.
-     * @param millis 
+     *
+     * @param millis
      */
     public void pause(long millis) {
         try {
@@ -130,10 +132,10 @@ public class Functions {
             // Nothing to do.
         }
     }
-    
+
     /**
      * @see pause()
-     * @param millis 
+     * @param millis
      */
     public void sleep(long millis) {
         pause(millis);
@@ -444,6 +446,59 @@ public class Functions {
         }
         return a;
     }
+
+    public boolean isprime(long n) {
+        int i = 2;
+        while (i <= sqrt(n)) {
+            if (n % i == 0) {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+
+    public boolean isprime(String nn) {
+        BigInteger n = new BigInteger(nn);
+        BigInteger i = new BigInteger("2");
+        BigInteger ns = bigIntSqRootCeil(n);
+        while (i.compareTo(ns) <= 0) {
+            if (n.mod(i).toString().equals("0")) {
+                return false;
+            }
+            i = i.add(BigInteger.ONE);
+        }
+        return true;
+    }
+
+    /**
+     * Thanks to http://stackoverflow.com/a/11962756/2534036
+     *
+     * @param x
+     * @return
+     * @throws IllegalArgumentException
+     */
+    private BigInteger bigIntSqRootCeil(BigInteger x) throws IllegalArgumentException {
+        if (x.compareTo(BigInteger.ZERO) < 0) {
+            throw new IllegalArgumentException("Negative argument.");
+        }
+        // square roots of 0 and 1 are trivial and
+        // y == 0 will cause a divide-by-zero exception
+        if (x == BigInteger.ZERO || x == BigInteger.ONE) {
+            return x;
+        } // end if
+        BigInteger two = BigInteger.valueOf(2L);
+        BigInteger y;
+        // starting with y = x / 2 avoids magnitude issues with x squared
+        for (y = x.divide(two); y.compareTo(x.divide(y)) > 0; y = ((x.divide(y)).add(y)).divide(two)) {
+        }
+        if (x.compareTo(y.multiply(y)) == 0) {
+            return y;
+        } else {
+            return y.add(BigInteger.ONE);
+        }
+
+    } // end bigIntSqRootCeil
 
     /**
      * Get all unique permutations of the given array.
