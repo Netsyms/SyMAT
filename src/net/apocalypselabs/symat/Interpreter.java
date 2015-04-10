@@ -160,6 +160,11 @@ public class Interpreter extends javax.swing.JInternalFrame {
                 formMouseClicked(evt);
             }
         });
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+        });
 
         mainBox.setEditable(false);
         mainBox.setColumns(20);
@@ -431,6 +436,10 @@ public class Interpreter extends javax.swing.JInternalFrame {
         mainBox.setText(">>");
         commandsForExport = "";
     }//GEN-LAST:event_clearBtnActionPerformed
+
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+        inputBox.requestFocusInWindow();
+    }//GEN-LAST:event_formFocusGained
 
     private void doRunCode() {
         String code = inputBox.getText();

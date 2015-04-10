@@ -360,6 +360,7 @@ public class Graph extends javax.swing.JInternalFrame {
                 for (Component mu : jMenuBar1.getComponents()) {
                     mu.setEnabled(true);
                 }
+                inBox.requestFocusInWindow();
             }
 
         }
