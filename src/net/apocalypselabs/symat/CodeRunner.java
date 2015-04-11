@@ -159,8 +159,6 @@ public class CodeRunner {
                         if (scriptLang.equals("javascript")) {
                             out += "importClass(" + classname + ");"
                                     + varname + " = new " + classname + "();";
-                            modules += "with(" + varname + "){";
-                            moduleterm += "}";
                         } else {
                             out += "from "
                                     + classname.substring(0, classname.lastIndexOf("."))
@@ -188,57 +186,6 @@ public class CodeRunner {
         Debug.println("Attached writers.");
     }
 
-//    private String loadModules() {
-//        String out = "";
-//        try {
-//            String fsep = System.getProperty("file.separator");
-//            File file = new File(System.getProperty("user.home") + fsep + ".symat" + fsep + "modules" + fsep);
-//            file.mkdirs();
-//            File f = new File(System.getProperty("user.home") + fsep + ".symat" + fsep);
-//            try {
-//                URL url = f.toURI().toURL();
-//                URL[] urls = new URL[]{url};
-//
-//                String cname = f.getName().replace(".class", "");
-//                ClassLoader cl = new URLClassLoader(urls);
-//                Class cls = cl.loadClass("modules." + cname);
-//                if (scriptLang.equals("python")) {
-//                    char[] argletters
-//                            = {'a', 'b', 'c', 'd', 'e', 'f',
-//                                'g', 'h', 'i', 'j', 'k', 'l',
-//                                'm', 'n', 'o', 'p', 'q', 'r',
-//                                's', 't', 'u', 'v', 'w', 'x',
-//                                'y', 'z'};
-//                    out = "from modules import " + cname + "\n";
-//                    Method[] meth = cls.getMethods();
-//
-//                    for (Method m : meth) {
-//                        out += "def " + m.getName() + "(";
-//                        String args = "";
-//                        for (int i = 0; i < m.getParameterCount(); i++) {
-//                            args += argletters[i] + ",";
-//                        }
-//                        if (args.endsWith(",")) {
-//                            args = args.substring(0, args.length() - 1);
-//                        }
-//                        out += args + "):\n\treturn " + cname + "()." + m.getName() + "(" + args + ")\n";
-//                    }
-//                } else {
-//                    out = "importClass(modules." + cname + ");"
-//                            + "SyMAT_" + cname
-//                            + " = new modules." + cname + "();";
-//                    modules += "with(SyMAT_" + cname + "){";
-//                    moduleterm += "}";
-//                }
-//            } catch (Exception e) {
-//                Debug.stacktrace(e);
-//            }
-//        } catch (Exception e) {
-//            Debug.stacktrace(e);
-//            return "";
-//        }
-//        return out;
-//    }
     /**
      * Inits the Python engine on application start.
      *
@@ -323,7 +270,8 @@ public class CodeRunner {
      */
     private String wrapMath(String eval) {
         if (wrapRequired) {
-            String with = "with(SyMAT_Functions){" + modules + "with(Math){" + eval + "}}" + moduleterm;
+            String with = "with(SyMAT_Functions){with(Math){" + eval + "}}";
+            Debug.println(with);
             return with;
         }
         return eval;

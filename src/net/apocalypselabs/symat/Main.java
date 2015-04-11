@@ -102,7 +102,7 @@ public class Main extends JRibbonFrame {
     /**
      * Version name, as it should be displayed.
      */
-    public static final String VERSION_NAME = "1.7.2";
+    public static final String VERSION_NAME = "1.8";
 
     /**
      * The word "SyMAT".
@@ -127,6 +127,7 @@ public class Main extends JRibbonFrame {
 
     /**
      * Ubuntu font. Loaded from Ubuntu-R.ttf in the default package at runtime.
+     * May become default sans-serif if something bad happens.
      */
     public static Font ubuntuRegular;
     public static boolean skipPython = false; // Skip python init on start?
