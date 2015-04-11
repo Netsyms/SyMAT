@@ -64,3 +64,7 @@ def perms(*a):
     return _.perms(a)
 def md5sum(a):
     return _.md5sum(a)
+def save(a,b):
+    return _.save(a,b)
+def load(a):
+    return _.load(a)

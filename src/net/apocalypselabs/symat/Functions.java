@@ -861,9 +861,8 @@ public class Functions {
 
     public void setLang(String l) {
         lang = l;
-
     }
-
+    
     /**
      * This class finds permutations of an array.
      *
