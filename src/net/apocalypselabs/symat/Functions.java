@@ -175,6 +175,24 @@ public class Functions {
     }
 
     /**
+     * Take (a^b) mod m.
+     * @param a Number
+     * @param b Exponent
+     * @param m Modulus
+     * @return pow(a,b)%m.
+     */
+    public double powermod(double a, double b, double m) {
+        return (pow(a, b) % m + m) % m;
+    }
+
+    public int gcd(int a, int b) {
+        if (b == 0) {
+            return a;
+        }
+        return gcd(b, a % b);
+    }
+
+    /**
      * Differentiate the function with respect to idv.
      *
      * @param function Function
@@ -862,7 +880,7 @@ public class Functions {
     public void setLang(String l) {
         lang = l;
     }
-    
+
     /**
      * This class finds permutations of an array.
      *
