@@ -35,6 +35,7 @@ acos(0)|Arccosine of number.
 atan(0)|Arctangent of number.
 ceil(0)|Round the number up to the next integer.
 exp(0)|e^x.
+gcd(a,b)|Find greatest common divisor of a and b.
 floor(0)|Round the number down to the next integer.
 log(0)|Natural log of number.
 max(0,1,...)|Returns the highest number given.
