@@ -68,3 +68,7 @@ def save(a,b):
     return _.save(a,b)
 def load(a):
     return _.load(a)
+def powermod(a,b,m):
+    return _.powermod(a,b,m)
+def gcd(a,b):
+    return _.gcd(a,b)

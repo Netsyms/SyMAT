@@ -82,7 +82,7 @@ public class CodeCompleter {
             for (String fileid : files) {
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(
-                                CodeCompleter.class.getResourceAsStream("resources/" + lang + fileid + ".txt")));
+                                CodeCompleter.class.getResourceAsStream("resources/" + (fileid.equals(files[0]) ? "" : lang) + fileid + ".txt")));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     switch (fileid) {
