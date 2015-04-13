@@ -175,13 +175,17 @@ public class Functions {
     }
 
     /**
-     * Take (a^b) mod m.
+     * Take (a^b) mod m.  If b is -1, finds the modular inverse of a mod m.
      * @param a Number
      * @param b Exponent
      * @param m Modulus
      * @return pow(a,b)%m.
      */
     public double powermod(double a, double b, double m) {
+        if (b == -1) {
+            BigInteger in = new BigInteger(String.valueOf((int)a));
+            return in.modInverse(new BigInteger(String.valueOf((int)m))).doubleValue();
+        }
         return (pow(a, b) % m + m) % m;
     }
 
