@@ -175,7 +175,8 @@ public class Functions {
     }
 
     /**
-     * Take (a^b) mod m.  If b is -1, finds the modular inverse of a mod m.
+     * Take (a^b) mod m. If b is -1, finds the modular inverse of a mod m.
+     *
      * @param a Number
      * @param b Exponent
      * @param m Modulus
@@ -183,17 +184,37 @@ public class Functions {
      */
     public double powermod(double a, double b, double m) {
         if (b == -1) {
-            BigInteger in = new BigInteger(String.valueOf((int)a));
-            return in.modInverse(new BigInteger(String.valueOf((int)m))).doubleValue();
+            BigInteger in = new BigInteger(String.valueOf((int) a));
+            return in.modInverse(new BigInteger(String.valueOf((int) m))).doubleValue();
         }
         return (pow(a, b) % m + m) % m;
     }
 
-    public int gcd(int a, int b) {
+    /**
+     * Take (a^b) mod m. If b is -1, finds the modular inverse of a mod m.
+     *
+     * @param a Number
+     * @param b Exponent
+     * @param m Modulus
+     * @return pow(a,b)%m.
+     */
+    public String powermod(String a, String b, String m) {
+        BigInteger in = new BigInteger(a);
+        if (b.equals("-1")) {
+            return in.modInverse(new BigInteger(m)).toString();
+        }
+        return in.modPow(new BigInteger(b), new BigInteger(m)).toString();
+    }
+
+    public long gcd(long a, long b) {
         if (b == 0) {
             return a;
         }
         return gcd(b, a % b);
+    }
+
+    public String gcd(String a, String b) {
+        return (new BigInteger(a).gcd(new BigInteger(b)).toString());
     }
 
     /**
@@ -286,6 +307,17 @@ public class Functions {
     }
 
     /**
+     * Multiplies the given numbers together.
+     *
+     * @param a numbers. Calculates first * second * third, etc.
+     * @return The product of the numbers or the value of input if there is only
+     * one input.
+     */
+    public String times(String a, String b) {
+        return (new BigInteger(a).multiply(new BigInteger(b))).toString();
+    }
+
+    /**
      * Divide the given numbers.
      *
      * @param a numbers. Calculates (first / second) / third, etc.
@@ -302,6 +334,17 @@ public class Functions {
             }
         }
         return ans;
+    }
+
+    /**
+     * Divide the given numbers.
+     *
+     * @param a numbers. Calculates (first / second) / third, etc.
+     * @return The quotient of the numbers or the value of input if there is
+     * only one input.
+     */
+    public String divide(String a, String b) {
+        return (new BigInteger(a).divide(new BigInteger(b))).toString();
     }
 
     /**
@@ -324,6 +367,17 @@ public class Functions {
     }
 
     /**
+     * Divide the first number by the second and return the remainder.
+     *
+     * @param a numbers. Calculates (first mod second) mod third, etc.
+     * @return The modulus of the numbers or the value of input if there is only
+     * one input.
+     */
+    public String mod(String a, String b) {
+        return (new BigInteger(a).mod(new BigInteger(b))).toString();
+    }
+
+    /**
      * Add the given numbers together.
      *
      * @param a numbers. Calculates first + second + third, etc.
@@ -336,6 +390,17 @@ public class Functions {
             ans += d;
         }
         return ans;
+    }
+
+    /**
+     * Add the given numbers together.
+     *
+     * @param a numbers. Calculates first + second + third, etc.
+     * @return The sum of the numbers or the value of input if there is only one
+     * input.
+     */
+    public String add(String a, String b) {
+        return (new BigInteger(a).subtract(new BigInteger(b))).toString();
     }
 
     /**
@@ -355,6 +420,19 @@ public class Functions {
             }
         }
         return ans;
+    }
+
+    /**
+     * Subtract the given numbers.
+     *
+     * @param a numbers. Calculates (first - second) - third, etc.
+     * @return The difference of the numbers or the value of input if there is
+     * only one input.
+     */
+    public String subtract(String a, String b) {
+        BigInteger ans = new BigInteger(a);
+        ans = ans.subtract(new BigInteger(b));
+        return ans.toString();
     }
 
     public double[][] $minvert(double a[][]) {

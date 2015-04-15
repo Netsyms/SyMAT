@@ -841,7 +841,7 @@ public class Editor extends javax.swing.JInternalFrame {
 
     private void exportMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuActionPerformed
         String lang = pythonOption.isSelected() ? "python" : "js";
-        Main.loadFrame(new CodeExport(codeBox.getText(), lang));
+        Main.loadFrame(new CodeExport(codeBox.getText(), lang, outputBox.getText()));
     }//GEN-LAST:event_exportMenuActionPerformed
 
     private void javascriptOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javascriptOptionActionPerformed
