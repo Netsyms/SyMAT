@@ -103,7 +103,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
         // Set font
         int font_size = 12;
         try {
-            font_size = Integer.valueOf(PrefStorage.getSetting("shellfontsize", "12"));
+            font_size = Integer.valueOf(PrefStorage.getSetting("editfont", "12"));
         } catch (Exception ex) {
         }
         mainBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, font_size));
@@ -146,8 +146,6 @@ public class Interpreter extends javax.swing.JInternalFrame {
         javascriptMenu = new javax.swing.JRadioButtonMenuItem();
         pythonMenu = new javax.swing.JRadioButtonMenuItem();
         setDefaultLang = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        fontBtn = new javax.swing.JMenuItem();
 
         setClosable(true);
         setIconifiable(true);
@@ -271,18 +269,6 @@ public class Interpreter extends javax.swing.JInternalFrame {
 
         jMenuBar1.add(langMenu);
 
-        jMenu2.setText("Options");
-
-        fontBtn.setText("Font size...");
-        fontBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fontBtnActionPerformed(evt);
-            }
-        });
-        jMenu2.add(fontBtn);
-
-        jMenuBar1.add(jMenu2);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -393,19 +379,6 @@ public class Interpreter extends javax.swing.JInternalFrame {
     private void runBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_runBtnMouseClicked
         formMouseClicked(evt);
     }//GEN-LAST:event_runBtnMouseClicked
-
-    private void fontBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontBtnActionPerformed
-        FontOptions fo = new FontOptions(mainBox.getFont().getSize());
-        JOptionPane.showInternalMessageDialog(this,
-                fo,
-                "Font Size",
-                JOptionPane.PLAIN_MESSAGE);
-        if (fo.isModified()) {
-            mainBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fo.getResult()));
-            inputBox.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fo.getResult()));
-            PrefStorage.saveSetting("shellfontsize", String.valueOf(fo.getResult()));
-        }
-    }//GEN-LAST:event_fontBtnActionPerformed
 
     private void exportHistoryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportHistoryBtnActionPerformed
         JFileChooser fc = new JFileChooser();
@@ -546,11 +519,9 @@ public class Interpreter extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem clearBtn;
     private javax.swing.JMenuItem exportHistoryBtn;
-    private javax.swing.JMenuItem fontBtn;
     private javax.swing.JTextField inputBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;

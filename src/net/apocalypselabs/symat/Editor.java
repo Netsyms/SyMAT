@@ -88,6 +88,8 @@ public class Editor extends javax.swing.JInternalFrame {
 
     private File filedata;
 
+    private int font_size = 12;
+
     /**
      * @param python If true sets to Python
      */
@@ -102,7 +104,6 @@ public class Editor extends javax.swing.JInternalFrame {
         fc.addChoosableFileFilter(new FileNameExtensionFilter(
                 "Plain Text (txt, text)", "txt", "text"));
 
-        int font_size = 12;
         try {
             font_size = Integer.valueOf(PrefStorage.getSetting("editfont"));
         } catch (Exception ex) {
@@ -196,8 +197,12 @@ public class Editor extends javax.swing.JInternalFrame {
 
     private void setEditorTheme(String themeName) {
         try {
-            Theme theme = Theme.load(Editor.class
-                    .getResourceAsStream("resources/" + themeName + ".xml"));
+            Theme theme
+                    = Theme.load(
+                            Editor.class.
+                            getResourceAsStream(
+                                    "resources/" + themeName + ".xml"),
+                            new Font(Font.MONOSPACED, Font.PLAIN, font_size));
             theme.apply(codeBox);
         } catch (Exception e) {
         }
