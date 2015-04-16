@@ -45,8 +45,18 @@ pow(x,y)|Raise x to y and calculate.
 sin(0)|Find the sine.
 cos(0)|Find the cosine.
 tan(0)|Find the tangent.
+sinh(0)|Find the hyperbolic sine.
+cosh(0)|Find the hyperbolic cosine.
+tanh(0)|Find the hyperbolic tangent.
+sec(0)|Find the secant.
+csc(0)|Find the cosecant.
+cot(0)|Find the cotangent.
+sech(0)|Find the hyperbolic secant.
+csch(0)|Find the hyperbolic cosecant.
+coth(0)|Find the hyperbolic cotangent.
 print("")|Prints the supplied text or formula to the output.
 solve(f,'x',0)|Solve function f for 'x' when it equals 0.
 solve(f,'x')|Solve function f for 'x', assuming equal to 0.
 solve(f)|Solve function f, assuming 'x' and 0.
 printa(array)|Get array contents as text.
+primes(n)|Find all prime numbers up to n.

@@ -88,3 +88,9 @@ def acsc(a):
     return _.acsc(a)
 def acot(a):
     return _.acot(a)
+def sech(a):
+    return _.sech(a)
+def csch(a):
+    return _.csch(a)
+def coth(a):
+    return _.coth(a)
