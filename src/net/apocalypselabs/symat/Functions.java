@@ -246,7 +246,7 @@ public class Functions {
         return diff(function, idv);
     }
 
-    public double[] solve(String function, String idv, String eq) {
+    public double[] solve(String function, String idv, int eq) {
         String res = $("Solve[" + function + "==" + eq + ", " + idv + "]");
         res = res.substring(1, res.length() - 1);
         String[] cmp = res.split(",");
@@ -257,16 +257,24 @@ public class Functions {
         double[] out = new double[cmp.length];
         for (int i = 0; i < cmp.length; i++) {
             try {
-                out[i] = Double.parseDouble(cmp[i]);
+                if (cmp[i].contains("I")) {
+                    if (cmp[i].contains("-I")) {
+                        out[i] = Double.NEGATIVE_INFINITY;
+                    } else {
+                        out[i] = Double.POSITIVE_INFINITY;
+                    }
+                } else {
+                    out[i] = Double.parseDouble(cmp[i]);
+                }
             } catch (Exception ex) {
-                Debug.stacktrace(ex);
+                return new double[]{Double.NaN};
             }
         }
         return out;
     }
 
     public double[] solve(String function, String idv) {
-        return solve(function, idv, "0");
+        return solve(function, idv, 0);
     }
 
     public double[] solve(String function) {

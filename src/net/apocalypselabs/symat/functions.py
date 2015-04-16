@@ -72,11 +72,7 @@ def powermod(a,b,m):
     return _.powermod(a,b,m)
 def gcd(a,b):
     return _.gcd(a,b)
-def solve(a,b,c):
+def solve(a,b='x',c=0):
     return _.solve(a,b,c)
-def solve(a,b):
-    return _.solve(a,b)
-def solve(a):
-    return _.solve(a)
 def printa(a):
     return _.printa(a)
