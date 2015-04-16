@@ -102,7 +102,7 @@ public class Main extends JRibbonFrame {
     /**
      * Version name, as it should be displayed.
      */
-    public static final String VERSION_NAME = "1.8";
+    public static final String VERSION_NAME = "2.0";
 
     /**
      * The word "SyMAT".

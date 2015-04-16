@@ -92,12 +92,14 @@ public class SplashScreen extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SyMAT Starting");
-        setMaximumSize(new java.awt.Dimension(300, 300));
-        setMinimumSize(new java.awt.Dimension(300, 300));
+        setTitle("SyMAT");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setMaximumSize(new java.awt.Dimension(600, 400));
+        setMinimumSize(new java.awt.Dimension(600, 400));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(300, 300));
+        setPreferredSize(new java.awt.Dimension(600, 400));
         setResizable(false);
+        setType(java.awt.Window.Type.POPUP);
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -112,32 +114,35 @@ public class SplashScreen extends javax.swing.JFrame {
         dispLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         dispLabel.setMaximumSize(new java.awt.Dimension(400, 320));
         jLayeredPane1.add(dispLabel);
-        dispLabel.setBounds(40, 110, 220, 100);
+        dispLabel.setBounds(190, 280, 220, 70);
 
-        jLabel1.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(20.0F));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText(net.apocalypselabs.symat.Main.VERSION_NAME);
+        jLabel1.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(36.0F));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("<html>"+net.apocalypselabs.symat.Main.SYMAT+" <span style=\"color: #666666;\">"+net.apocalypselabs.symat.Main.VERSION_NAME+"</span>");
         jLayeredPane1.add(jLabel1);
-        jLabel1.setBounds(210, 20, 70, 30);
+        jLabel1.setBounds(150, 220, 300, 50);
         jLayeredPane1.setLayer(jLabel1, javax.swing.JLayeredPane.POPUP_LAYER);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/splash2.0.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/splashscreen.png"))); // NOI18N
         jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLayeredPane1.add(jLabel2);
-        jLabel2.setBounds(0, 0, 300, 300);
+        jLabel2.setBounds(0, 0, 600, 400);
 
         jLabel3.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("<html><div style=\"text-align: center;\">Apocalypse<br>Laboratories</div>");
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel3.setText("Apocalypse Laboratories");
         jLayeredPane1.add(jLabel3);
-        jLabel3.setBounds(10, 250, 100, 40);
+        jLabel3.setBounds(10, 370, 250, 30);
         jLayeredPane1.setLayer(jLabel3, javax.swing.JLayeredPane.POPUP_LAYER);
 
         jLabel4.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel4.setText("symatapp.com");
+        jLabel4.setMaximumSize(new java.awt.Dimension(118, 14));
+        jLabel4.setMinimumSize(new java.awt.Dimension(118, 14));
+        jLabel4.setPreferredSize(new java.awt.Dimension(118, 14));
         jLayeredPane1.add(jLabel4);
-        jLabel4.setBounds(180, 260, 110, 30);
+        jLabel4.setBounds(480, 370, 110, 30);
         jLayeredPane1.setLayer(jLabel4, javax.swing.JLayeredPane.POPUP_LAYER);
 
         getContentPane().add(jLayeredPane1, java.awt.BorderLayout.CENTER);
