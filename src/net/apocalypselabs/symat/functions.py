@@ -76,3 +76,15 @@ def solve(a,b='x',c=0):
     return _.solve(a,b,c)
 def printa(a):
     return _.printa(a)
+def sec(a):
+    return _.sec(a)
+def csc(a):
+    return _.csc(a)
+def cot(a):
+    return _.cot(a)
+def asec(a):
+    return _.asec(a)
+def acsc(a):
+    return _.acsc(a)
+def acot(a):
+    return _.acot(a)

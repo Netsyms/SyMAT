@@ -54,12 +54,14 @@ import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -407,6 +409,81 @@ public class Functions {
             return Double.parseDouble(ans.toString());
         }
         return ans.toString();
+    }
+
+    public int[] primes(int in) {
+        boolean[] prime = new boolean[in];
+        for (int i = 0; i < prime.length; i++) {
+            prime[i] = true;
+        }
+        for (int i = 2; i < sqrt(in); i++) {
+            if (prime[i]) {
+                int x = 0;
+                for (int j = i * i; j < in; j = i * i + x * i) {
+                    prime[j] = false;
+                    x++;
+                }
+            }
+        }
+        List<Integer> arr = new ArrayList<>();
+        for (int i = 2; i < prime.length; i++) {
+            if (prime[i]) {
+                arr.add(i);
+            }
+        }
+        int[] out = new int[arr.size()];
+        for (int i = 0; i < arr.size(); i++) {
+            out[i] = arr.get(i);
+        }
+        return out;
+    }
+
+    public double sec(double d) {
+        return 1.0 / Math.cos(d);
+    }
+
+    public double csc(double d) {
+        return 1.0 / Math.sin(d);
+    }
+
+    public double cot(double d) {
+        return 1.0 / Math.tan(d);
+    }
+
+    public double asec(double d) {
+        return Math.acos(1.0 / d);
+    }
+
+    public double acsc(double d) {
+        return Math.asin(1.0 / d);
+    }
+
+    public double acot(double d) {
+        return Math.atan(1.0 / d);
+    }
+
+    public double sinh(double d) {
+        return Math.sinh(d);
+    }
+
+    public double cosh(double d) {
+        return Math.cosh(d);
+    }
+
+    public double tanh(double d) {
+        return Math.tanh(d);
+    }
+
+    public double sech(double d) {
+        return pow(Math.cosh(d), -1);
+    }
+
+    public double csch(double d) {
+        return pow(Math.sinh(d), -1);
+    }
+
+    public double coth(double d) {
+        return Math.cosh(d) / Math.sinh(d);
     }
 
     /**
