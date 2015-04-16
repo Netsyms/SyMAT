@@ -69,6 +69,8 @@ import static net.apocalypselabs.symat.Main.API_URL;
 import org.matheclipse.core.eval.EvalUtilities;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.parser.client.math.MathException;
+import org.mozilla.javascript.NativeArray;
+import org.python.core.PyList;
 
 /**
  * These functions are accessible from JavaScript.
@@ -244,6 +246,118 @@ public class Functions {
         return diff(function, idv);
     }
 
+    public double[] solve(String function, String idv, String eq) {
+        String res = $("Solve[" + function + "==" + eq + ", " + idv + "]");
+        res = res.substring(1, res.length() - 1);
+        String[] cmp = res.split(",");
+        for (int i = 0; i < cmp.length; i++) {
+            cmp[i] = cmp[i].replace("{" + idv + "->", "");
+            cmp[i] = cmp[i].replace("}", "");
+        }
+        double[] out = new double[cmp.length];
+        for (int i = 0; i < cmp.length; i++) {
+            try {
+                out[i] = Double.parseDouble(cmp[i]);
+            } catch (Exception ex) {
+                Debug.stacktrace(ex);
+            }
+        }
+        return out;
+    }
+
+    public double[] solve(String function, String idv) {
+        return solve(function, idv, "0");
+    }
+
+    public double[] solve(String function) {
+        return solve(function, "x");
+    }
+
+    private String printa(double[] o) {
+        String out = "[";
+        for (int i = 0; i < o.length; i++) {
+            out += o[i] + (i == o.length - 1 ? "" : ", ");
+        }
+        out += "]";
+        return out;
+    }
+
+    private String printa(int[] o) {
+        String out = "[";
+        for (int i = 0; i < o.length; i++) {
+            out += o[i] + (i == o.length - 1 ? "" : ", ");
+        }
+        out += "]";
+        return out;
+    }
+
+    private String printa(boolean[] o) {
+        String out = "[";
+        for (int i = 0; i < o.length; i++) {
+            out += (o[i] ? "true" : "false") + (i == o.length - 1 ? "" : ", ");
+        }
+        out += "]";
+        return out;
+    }
+
+    public String printa(Object o) {
+        String out = "[";
+        if (o instanceof int[]) {
+            int[] arr = (int[]) o;
+            for (int i = 0; i < arr.length; i++) {
+                out += arr[i] + (i == arr.length - 1 ? "" : ", ");
+            }
+        } else if (o instanceof double[]) {
+            double[] arr = (double[]) o;
+            for (int i = 0; i < arr.length; i++) {
+                out += arr[i] + (i == arr.length - 1 ? "" : ", ");
+            }
+        } else if (o instanceof boolean[]) {
+            double[] arr = (double[]) o;
+            for (int i = 0; i < arr.length; i++) {
+                out += arr[i] + (i == arr.length - 1 ? "" : ", ");
+            }
+        } else if (o instanceof int[][]) {
+            int[][] arr = (int[][]) o;
+            for (int i = 0; i < arr.length; i++) {
+                out += printa(arr[i]) + (i == arr.length - 1 ? "" : ", ");
+            }
+        } else if (o instanceof double[][]) {
+            double[][] arr = (double[][]) o;
+            for (int i = 0; i < arr.length; i++) {
+                out += printa(arr[i]) + (i == arr.length - 1 ? "" : ", ");
+            }
+        } else if (o instanceof boolean[][]) {
+            boolean[][] arr = (boolean[][]) o;
+            for (int i = 0; i < arr.length; i++) {
+                out += printa(arr[i]) + (i == arr.length - 1 ? "" : ", ");
+            }
+        } else if (o instanceof NativeArray) {
+            NativeArray arr = (NativeArray) o;
+            for (long i = 0; i < arr.getLength(); i++) {
+
+                out += (arr.get(i) instanceof NativeArray ? printa(arr.get(i))
+                        : arr.get(i).toString())
+                        + (i == arr.getLength() - 1 ? "" : ", ");
+            }
+        } else if (o instanceof PyList) {
+            PyList arr = (PyList) o;
+            Object[] oo = arr.toArray();
+            for (int i = 0; i < oo.length; i++) {
+                out += (oo[i] instanceof Object[] ? printa(oo[i]) : oo[i].toString())
+                        + (i == oo.length - 1 ? "" : ", ");
+            }
+        } else {
+            Object[] arr = (Object[]) o;
+            for (int i = 0; i < arr.length; i++) {
+                out += (arr[i] instanceof Object[] ? printa(arr[i]) : arr[i].toString())
+                        + (i == arr.length - 1 ? "" : ", ");
+            }
+        }
+        out += "]";
+        return out;
+    }
+
     /**
      * Integrate the function with respect to idv.
      *
@@ -309,7 +423,8 @@ public class Functions {
     /**
      * Multiplies the given numbers together.
      *
-     * @param a numbers. Calculates first * second * third, etc.
+     * @param a
+     * @param b
      * @return The product of the numbers or the value of input if there is only
      * one input.
      */
@@ -339,7 +454,8 @@ public class Functions {
     /**
      * Divide the given numbers.
      *
-     * @param a numbers. Calculates (first / second) / third, etc.
+     * @param a
+     * @param b
      * @return The quotient of the numbers or the value of input if there is
      * only one input.
      */
@@ -369,7 +485,8 @@ public class Functions {
     /**
      * Divide the first number by the second and return the remainder.
      *
-     * @param a numbers. Calculates (first mod second) mod third, etc.
+     * @param a
+     * @param b
      * @return The modulus of the numbers or the value of input if there is only
      * one input.
      */
@@ -435,7 +552,7 @@ public class Functions {
         return ans.toString();
     }
 
-    public double[][] $minvert(double a[][]) {
+    public double[][] minvert(double a[][]) {
         int n = a.length;
         double x[][] = new double[n][n];
         double b[][] = new double[n][n];
@@ -659,7 +776,7 @@ public class Functions {
      * @throws net.apocalypselabs.symat.BadInputException When the matrices are
      * wrong.
      */
-    public double[][] $mtimes(double[][] a, double[][] b) throws BadInputException {
+    public double[][] mtimes(double[][] a, double[][] b) throws BadInputException {
         double[][] ans = new double[a.length][b[0].length];
         double sum = 0;
         int c, d, k, m = a.length, q = b[0].length, p = b.length;
@@ -690,7 +807,7 @@ public class Functions {
      * @throws BadInputException if the matrix is not square or power is less
      * than 0
      */
-    public double[][] $mpower(double[][] a, int b) throws BadInputException {
+    public double[][] mpower(double[][] a, int b) throws BadInputException {
         if (a.length != a[0].length) {
             throw new BadInputException("Matrix needs to be square.");
         }
@@ -704,7 +821,7 @@ public class Functions {
             if (i == 0) {
                 ans = a;
             } else {
-                ans = $mtimes(a, ans);
+                ans = mtimes(a, ans);
             }
         }
         return ans;

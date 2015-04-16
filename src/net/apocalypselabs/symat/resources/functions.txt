@@ -46,3 +46,7 @@ sin(0)|Find the sine.
 cos(0)|Find the cosine.
 tan(0)|Find the tangent.
 print("")|Prints the supplied text or formula to the output.
+solve(f,'x',0)|Solve function f for 'x' when it equals 0.
+solve(f,'x')|Solve function f for 'x', assuming equal to 0.
+solve(f)|Solve function f, assuming 'x' and 0.
+printa(array)|Get array contents as text.
