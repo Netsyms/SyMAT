@@ -169,7 +169,7 @@ public class Pads extends javax.swing.JInternalFrame {
     }
 
     /**
-     * Generate a random pad ID with length 15.  
+     * Generate a random pad ID with length 15.
      * <br />There are about 1.217 x 10^26 possibilities (121 septillion).
      * <br />If this starts giving out used IDs, I'll be too rich to care.
      *
@@ -197,14 +197,18 @@ public class Pads extends javax.swing.JInternalFrame {
      * @throws IOException if things break.
      */
     public static EPLiteClient getClient() throws Exception {
-        // Load the API key from a file, so it's not included with Git.
         String apikey;
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        Pads.class
-                        .getResourceAsStream("/padkey")));
-        apikey = reader.readLine();
-
+        // Enable key change without full SyMAT update
+        if (!PrefStorage.getSetting("padkey-override", "").equals("")) {
+            apikey = PrefStorage.getSetting("padkey-override", "");
+        } else {
+            // Load the API key from a file, so it's not included with Git.
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            Pads.class
+                            .getResourceAsStream("/padkey")));
+            apikey = reader.readLine();
+        }
         // New client
         return new EPLiteClient(PADS_URL, apikey);
     }
@@ -220,7 +224,7 @@ public class Pads extends javax.swing.JInternalFrame {
         try {
             text = getClient().getText(id).getOrDefault("text", "").toString();
         } catch (Exception ex) {
-            text = "Error: Could not get pad contents: " + ex.getMessage();
+            text = "Error: " + ex.getMessage();
         }
         return text;
     }

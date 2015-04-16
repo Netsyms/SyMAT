@@ -49,9 +49,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -131,5 +134,13 @@ public class FileUtils {
         } catch (java.security.NoSuchAlgorithmException e) {
         }
         return null;
+    }
+
+    public static String getUrl(String url) throws MalformedURLException, IOException {
+        String out;
+        try (Scanner sc = new Scanner(new URL("http://www.google.com").openStream(), "UTF-8")) {
+            out = sc.useDelimiter("\\A").next();
+        }
+        return out;
     }
 }

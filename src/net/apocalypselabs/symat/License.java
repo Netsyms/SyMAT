@@ -295,14 +295,18 @@ public class License extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_exitBtnActionPerformed
 
     private boolean checkRegex() {
-        String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]+$";
-        if (emailBox.getText().matches(regex)) {
+        if (checkEmail(emailBox.getText())) {
             contBtn.setEnabled(true);
             return true;
         } else {
             contBtn.setEnabled(false);
             return false;
         }
+    }
+    
+    public static boolean checkEmail(String email) {
+        String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]+$";
+        return (email.matches(regex));
     }
 
     public void exit() {
@@ -323,7 +327,7 @@ public class License extends javax.swing.JInternalFrame {
         @Override
         public void run() {
             try {
-                Debug.println("Checking license...");
+                System.out.println("Checking license...");
                 URL url = new URL(API_URL + "liccheck.php?email=" + email);
                 String line;
                 try (InputStream is = url.openStream();
