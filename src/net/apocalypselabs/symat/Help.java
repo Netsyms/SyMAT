@@ -66,6 +66,7 @@ public class Help extends javax.swing.JInternalFrame {
     private final StyleSheet styleSheet;
     private final StyleSheet dark = new StyleSheet();
     private final StyleSheet light = new StyleSheet();
+    private int styleloaded = -1;
 
     /**
      * Creates new form Help
@@ -96,20 +97,28 @@ public class Help extends javax.swing.JInternalFrame {
      * (Re)load the theme for this window.
      */
     private void loadTheme() {
-        if (PrefStorage.getSetting("theme").equals("dark")) {
-            topicList.setBackground(new Color(41, 49, 52));
-            topicList.setForeground(Color.WHITE);
-            styleSheet.addStyleSheet(dark);
-            styleSheet.removeStyleSheet(light);
-            setBackground(Color.DARK_GRAY);
-        } else {
-            topicList.setBackground(Color.WHITE);
-            topicList.setForeground(Color.BLACK);
-            styleSheet.addStyleSheet(light);
-            styleSheet.removeStyleSheet(dark);
-            setBackground(Color.LIGHT_GRAY);
+        if ((PrefStorage.getSetting("theme").equals("dark") && styleloaded == 0)
+                || (!PrefStorage.getSetting("theme").equals("dark") && styleloaded == 1)) {
+            styleloaded = -1;
         }
-        loadTopic(topicList.getSelectedValue().toString().toLowerCase());
+        if (styleloaded == -1) {
+            if (PrefStorage.getSetting("theme").equals("dark")) {
+                topicList.setBackground(new Color(41, 49, 52));
+                topicList.setForeground(Color.WHITE);
+                styleSheet.addStyleSheet(dark);
+                styleSheet.removeStyleSheet(light);
+                setBackground(Color.DARK_GRAY);
+                styleloaded = 1;
+            } else {
+                topicList.setBackground(Color.WHITE);
+                topicList.setForeground(Color.BLACK);
+                styleSheet.addStyleSheet(light);
+                styleSheet.removeStyleSheet(dark);
+                setBackground(Color.LIGHT_GRAY);
+                styleloaded = 0;
+            }
+            loadTopic(topicList.getSelectedValue().toString().toLowerCase());
+        }
     }
 
     /**
@@ -153,12 +162,13 @@ public class Help extends javax.swing.JInternalFrame {
         jSplitPane1.setResizeWeight(0.1);
 
         topicList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Welcome", "Basics", "Editor", "Graphing", "Commands", "Licenses" };
+            String[] strings = { "Welcome", "Basics", "Editor", "Pads", "Graphing", "Plugins", "Tasks", "Commands", "Licenses" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
         topicList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         topicList.setSelectedIndex(0);
+        topicList.setVisibleRowCount(9);
         topicList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 topicListMouseClicked(evt);
