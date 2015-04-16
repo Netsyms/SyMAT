@@ -173,12 +173,12 @@ public class CodeExport extends javax.swing.JInternalFrame {
     }
 
     private String getOutput() {
-        return "<pre>"
+        return "<p><b>Output:</b></p><pre class=\"plaintxt\">"
                 + outputTxt.replace("<", "&lt;").
                 replace("&", "&amp;").
                 replace(">", "&gt;").
                 replace("\"", "''")
-                + "</pre>";
+                + "\n\n</pre>";
     }
 
     /**
@@ -390,6 +390,7 @@ public class CodeExport extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_exPdfActionPerformed
 
     private void doSave(String format) {
+        html = genHtml(origCode);
         JFileChooser fc = new JFileChooser();
         FileFilter filter;
         switch (format) {
@@ -452,13 +453,6 @@ public class CodeExport extends javax.swing.JInternalFrame {
 
     private void savedMsg() {
         JOptionPane.showInternalMessageDialog(this, "Export complete!");
-    }
-
-    private String addSaveExt(String path, String format) {
-        if (!path.matches(".*\\.(" + format + ")")) {
-            path += "." + format;
-        }
-        return path;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
