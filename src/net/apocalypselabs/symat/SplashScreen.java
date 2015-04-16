@@ -94,10 +94,10 @@ public class SplashScreen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SyMAT");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMaximumSize(new java.awt.Dimension(600, 400));
-        setMinimumSize(new java.awt.Dimension(600, 400));
+        setMaximumSize(new java.awt.Dimension(500, 400));
+        setMinimumSize(new java.awt.Dimension(500, 400));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(600, 400));
+        setPreferredSize(new java.awt.Dimension(500, 400));
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -114,19 +114,19 @@ public class SplashScreen extends javax.swing.JFrame {
         dispLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         dispLabel.setMaximumSize(new java.awt.Dimension(400, 320));
         jLayeredPane1.add(dispLabel);
-        dispLabel.setBounds(190, 280, 220, 70);
+        dispLabel.setBounds(140, 280, 220, 70);
 
         jLabel1.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(36.0F));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("<html>"+net.apocalypselabs.symat.Main.SYMAT+" <span style=\"color: #666666;\">"+net.apocalypselabs.symat.Main.VERSION_NAME+"</span>");
         jLayeredPane1.add(jLabel1);
-        jLabel1.setBounds(150, 220, 300, 50);
+        jLabel1.setBounds(100, 220, 300, 50);
         jLayeredPane1.setLayer(jLabel1, javax.swing.JLayeredPane.POPUP_LAYER);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/images/splashscreen.png"))); // NOI18N
         jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLayeredPane1.add(jLabel2);
-        jLabel2.setBounds(0, 0, 600, 400);
+        jLabel2.setBounds(0, 0, 500, 400);
 
         jLabel3.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -142,7 +142,7 @@ public class SplashScreen extends javax.swing.JFrame {
         jLabel4.setMinimumSize(new java.awt.Dimension(118, 14));
         jLabel4.setPreferredSize(new java.awt.Dimension(118, 14));
         jLayeredPane1.add(jLabel4);
-        jLabel4.setBounds(480, 370, 110, 30);
+        jLabel4.setBounds(380, 370, 110, 30);
         jLayeredPane1.setLayer(jLabel4, javax.swing.JLayeredPane.POPUP_LAYER);
 
         getContentPane().add(jLayeredPane1, java.awt.BorderLayout.CENTER);
