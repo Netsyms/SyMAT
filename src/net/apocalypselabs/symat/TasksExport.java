@@ -375,6 +375,7 @@ public class TasksExport extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_previewBtnActionPerformed
 
     private void exHtmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exHtmlActionPerformed
+        html = genHtml(tl);
         doSave("html");
     }//GEN-LAST:event_exHtmlActionPerformed
 
