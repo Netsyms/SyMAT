@@ -1184,6 +1184,10 @@ public class Functions {
     public TextBox textbox() {
         return new TextBox();
     }
+    
+    public WebBrowser browser() {
+        return new WebBrowser();
+    }
     /*
      Constructor.
      */

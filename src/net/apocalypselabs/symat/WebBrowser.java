@@ -47,7 +47,11 @@ package net.apocalypselabs.symat;
 
 import java.awt.BorderLayout;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
+import javafx.concurrent.Worker.State;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -90,7 +94,16 @@ public class WebBrowser extends javax.swing.JInternalFrame {
                 children.add(browser);
                 jfxPanel.setScene(scene);
                 webEngine = browser.getEngine();
-                webEngine.setUserAgent("SyMAT " + Main.VERSION_NAME);
+                webEngine.getLoadWorker().stateProperty().addListener(
+                        new ChangeListener<State>() {
+                            @Override
+                            public void changed(ObservableValue ov, State oldState, State newState) {
+                                if (newState == Worker.State.SUCCEEDED) {
+                                    urlBox.setText(webEngine.getLocation());
+                                }
+                            }
+                        });
+                webEngine.setUserAgent("SyMAT/" + Main.VERSION_NAME);
                 webEngine.loadContent("<html><head><title></title></head><body><h3 style=\"font-family: sans-serif; text-align: center;\">Loading...</h3></body></html>");
             }
         });
@@ -100,7 +113,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
     public WebBrowser(String title) {
         this();
         setTitle(title);
-        loadURL("https://wiki.symatapp.com/");
+        loadURL("http://wiki.symatapp.com/");
     }
 
     public WebBrowser(String title, String url) {
@@ -119,6 +132,9 @@ public class WebBrowser extends javax.swing.JInternalFrame {
                 setFrameIcon(new ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/forum.png")));
                 break;
             case PAD_LOGO:
+                navBar.setVisible(false);
+                goBtn.setEnabled(false);
+                backBtn.setEnabled(false);
                 setFrameIcon(new ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/editor.png")));
                 break;
             default:
@@ -140,6 +156,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
                 resizeAll();
             }
         });
+        urlBox.setText(url);
     }
 
     public void loadString(final String content) {
@@ -150,6 +167,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
                 resizeAll();
             }
         });
+        urlBox.setText("");
     }
 
     /**
@@ -160,6 +178,11 @@ public class WebBrowser extends javax.swing.JInternalFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        navBar = new javax.swing.JToolBar();
+        backBtn = new javax.swing.JButton();
+        urlBox = new javax.swing.JTextField();
+        goBtn = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -195,6 +218,57 @@ public class WebBrowser extends javax.swing.JInternalFrame {
             }
         });
 
+        navBar.setFloatable(false);
+        navBar.setRollover(true);
+        navBar.setLayout(new java.awt.BorderLayout());
+
+        backBtn.setFont(Main.ubuntuRegular.deriveFont(16.0f));
+        backBtn.setText("<");
+        backBtn.setFocusable(false);
+        backBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        backBtn.setMaximumSize(new java.awt.Dimension(30, 21));
+        backBtn.setMinimumSize(new java.awt.Dimension(30, 21));
+        backBtn.setPreferredSize(new java.awt.Dimension(30, 21));
+        backBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        navBar.add(backBtn, java.awt.BorderLayout.WEST);
+        backBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backBtnActionPerformed(evt);
+            }
+        });
+        /*
+        navBar.add(backBtn);
+        */
+
+        urlBox.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                urlBoxKeyTyped(evt);
+            }
+        });
+        navBar.add(urlBox, java.awt.BorderLayout.CENTER);
+        /*
+        navBar.add(urlBox);
+        */
+
+        goBtn.setText("Go");
+        goBtn.setFocusable(false);
+        goBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        goBtn.setMaximumSize(new java.awt.Dimension(30, 21));
+        goBtn.setMinimumSize(new java.awt.Dimension(30, 21));
+        goBtn.setPreferredSize(new java.awt.Dimension(30, 21));
+        goBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        navBar.add(goBtn, java.awt.BorderLayout.EAST);
+        goBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                goBtnActionPerformed(evt);
+            }
+        });
+        /*
+        navBar.add(goBtn);
+        */
+
+        getContentPane().add(navBar, java.awt.BorderLayout.PAGE_START);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -213,6 +287,31 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         resizeAll();
     }//GEN-LAST:event_formComponentShown
 
+    private void urlBoxKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_urlBoxKeyTyped
+        if (evt.getKeyChar() == '\n') {
+            goBtn.doClick();
+        }
+    }//GEN-LAST:event_urlBoxKeyTyped
+
+    private void goBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBtnActionPerformed
+        if (!urlBox.getText().startsWith("http")) {
+            urlBox.setText("http://" + urlBox.getText());
+        }
+        loadURL(urlBox.getText());
+    }//GEN-LAST:event_goBtnActionPerformed
+
+    private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    browser.getEngine().getHistory().go(-1);
+                } catch (Exception ex) {
+                }
+            }
+        });
+    }//GEN-LAST:event_backBtnActionPerformed
+
     private void resizeAll() {
         Platform.runLater(new Runnable() {
             @Override
@@ -225,5 +324,9 @@ public class WebBrowser extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backBtn;
+    private javax.swing.JButton goBtn;
+    private javax.swing.JToolBar navBar;
+    private javax.swing.JTextField urlBox;
     // End of variables declaration//GEN-END:variables
 }
