@@ -66,6 +66,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.prefs.Preferences;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static net.apocalypselabs.symat.Main.API_URL;
 import org.matheclipse.core.eval.EvalUtilities;
@@ -848,7 +849,10 @@ public class Functions {
      * @param max Maximum value, inclusive
      * @return random integer
      */
-    public int rand(int min, int max) {
+    public double rand(int min, int max) {
+        if (min == 0 && max == 0) {
+            return rand();
+        }
         return rng.nextInt((max - min) + 1) + min;
     }
 
@@ -995,7 +999,9 @@ public class Functions {
 
     public void plot(String function) {
         showGraph();
-        graphwin.graphFunction(function);
+        if (!function.equals("")) {
+            graphwin.graphFunction(function);
+        }
     }
 
     public void plot(double[] x, double[] y) {
@@ -1023,13 +1029,18 @@ public class Functions {
         plot(f);
     }
 
-    public void plotname(String t) {
-        graphwin.setWindowTitle(t);
-        graphwin.setLabel(t);
-    }
-
     public String plotname() {
         return graphwin.getTitle();
+    }
+
+    public String plotname(String t) {
+        if (t.equals("symatpythonnullplotname")) {
+            return graphwin.getTitle();
+        } else {
+            graphwin.setWindowTitle(t);
+            graphwin.setLabel(t);
+            return "";
+        }
     }
 
     public void plot() {
@@ -1059,6 +1070,21 @@ public class Functions {
 
     public void savefile(String content, String path) throws IOException {
         FileUtils.saveFile(content, path, false);
+    }
+
+    /**
+     * Show a file dialog and return the path of the chosen file (or "" if
+     * canceled).
+     *
+     * @return
+     */
+    public String filedialog() {
+        JFileChooser fc = new JFileChooser();
+        int result = fc.showDialog(Main.maingui, "Choose");
+        if (result == JFileChooser.APPROVE_OPTION) {
+            return fc.getSelectedFile().getPath();
+        }
+        return "";
     }
 
     public String md5sum(String data) {

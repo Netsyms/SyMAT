@@ -14,14 +14,10 @@ def deg(num):
     return _.deg(num)
 def subs(fun,var):
     return _.subs(fun,var)
-def plot():
-    _.plot()
-def plot(fun):
+def plot(fun=""):
     _.plot(fun)
-def plotname(fun):
-    _.plotname(fun)
-def plotname():
-    return _.plotname()
+def plotname(fun='symatpythonnullplotname'):
+    return _.plotname(fun)
 def xlim(min,max):
     _.xlim(min,max)
 def plotclr():
@@ -50,9 +46,7 @@ def divide(*a):
     return _.divide(a)
 def mod(*a):
     return _.mod(a)
-def rand():
-    return _.rand()
-def rand(min,max):
+def rand(min=0,max=0):
     return _.rand(min,max)
 def randb():
     return _.randb()
@@ -94,3 +88,5 @@ def csch(a):
     return _.csch(a)
 def coth(a):
     return _.coth(a)
+def filedialog():
+    return _.filedialog()

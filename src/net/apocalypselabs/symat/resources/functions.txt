@@ -60,3 +60,4 @@ solve(f,'x')|Solve function f for 'x', assuming equal to 0.
 solve(f)|Solve function f, assuming 'x' and 0.
 printa(array)|Get array contents as text.
 primes(n)|Find all prime numbers up to n.
+filedialog()|Open a file chooser and return the chosen file path.
