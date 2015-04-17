@@ -138,7 +138,7 @@ public class FileUtils {
 
     public static String getUrl(String url) throws MalformedURLException, IOException {
         String out;
-        try (Scanner sc = new Scanner(new URL("http://www.google.com").openStream(), "UTF-8")) {
+        try (Scanner sc = new Scanner(new URL(url).openStream(), "UTF-8")) {
             out = sc.useDelimiter("\\A").next();
         }
         return out;

@@ -210,11 +210,13 @@ public class SharePad extends javax.swing.JPanel {
                 String f = FileUtils.getUrl(
                         Main.API_URL + "sendpad.php?email="
                         + email + "&padid=" + pad);
+                Debug.println(f);
                 if (f.contains("OK")) {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
                             emailBtn.setText("Link Sent!");
+                            emailBox.setText("");
                         }
                     });
                 } else {
@@ -226,6 +228,7 @@ public class SharePad extends javax.swing.JPanel {
                     });
                 }
             } catch (Exception ex) {
+                Debug.stacktrace(ex);
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
@@ -241,7 +244,7 @@ public class SharePad extends javax.swing.JPanel {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    emailBtn.setEnabled(true);
+                    emailBtn.setEnabled(License.checkEmail(emailBox.getText()));
                     emailBtn.setText("Send Email");
                 }
             });
