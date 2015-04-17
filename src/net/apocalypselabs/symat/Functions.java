@@ -69,6 +69,7 @@ import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import static net.apocalypselabs.symat.Main.API_URL;
+import net.apocalypselabs.symat.components.TextBox;
 import org.matheclipse.core.eval.EvalUtilities;
 import org.matheclipse.core.interfaces.IExpr;
 import org.matheclipse.parser.client.math.MathException;
@@ -1178,6 +1179,10 @@ public class Functions {
     private void showGraph() {
         graphwin.setVisible(true);
         graphwin.toFront();
+    }
+
+    public TextBox textbox() {
+        return new TextBox();
     }
     /*
      Constructor.

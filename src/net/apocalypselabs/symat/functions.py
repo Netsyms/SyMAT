@@ -90,3 +90,5 @@ def coth(a):
     return _.coth(a)
 def filedialog():
     return _.filedialog()
+def textbox():
+    return _.textbox()
