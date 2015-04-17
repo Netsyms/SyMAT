@@ -106,7 +106,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
                                 }
                             }
                         });
-                webEngine.setUserAgent("SyMAT/" + Main.VERSION_NAME);
+                webEngine.setUserAgent("Mozilla/5.0 SyMAT/" + Main.VERSION_NAME);
                 webEngine.loadContent(homepage());
             }
         });
