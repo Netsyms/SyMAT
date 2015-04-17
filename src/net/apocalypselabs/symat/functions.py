@@ -92,3 +92,5 @@ def filedialog():
     return _.filedialog()
 def textbox():
     return _.textbox()
+def browser():
+    return _.browser()

@@ -46,6 +46,9 @@
 package net.apocalypselabs.symat;
 
 import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -104,7 +107,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
                             }
                         });
                 webEngine.setUserAgent("SyMAT/" + Main.VERSION_NAME);
-                webEngine.loadContent("<html><head><title></title></head><body><h3 style=\"font-family: sans-serif; text-align: center;\">Loading...</h3></body></html>");
+                webEngine.loadContent(homepage());
             }
         });
         getContentPane().add(jfxPanel, BorderLayout.CENTER);
@@ -114,6 +117,23 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         this();
         setTitle(title);
         loadURL("http://wiki.symatapp.com/");
+    }
+
+    public String homepage() {
+        try {
+            String text = "";
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            WebBrowser.class
+                            .getResourceAsStream("resources/homepage.html")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                text += line;
+            }
+            return text;
+        } catch (IOException ex) {
+            return "Error: " + ex.getMessage();
+        }
     }
 
     public WebBrowser(String title, String url) {
@@ -157,6 +177,10 @@ public class WebBrowser extends javax.swing.JInternalFrame {
             }
         });
         urlBox.setText(url);
+    }
+
+    public void open() {
+        Main.loadFrame(this, true);
     }
 
     public void loadString(final String content) {
@@ -294,10 +318,14 @@ public class WebBrowser extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_urlBoxKeyTyped
 
     private void goBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goBtnActionPerformed
-        if (!urlBox.getText().startsWith("http")) {
-            urlBox.setText("http://" + urlBox.getText());
+        if (urlBox.getText().equals("about:home")) {
+            loadString(homepage());
+        } else {
+            if (!urlBox.getText().startsWith("http")) {
+                urlBox.setText("http://" + urlBox.getText());
+            }
+            loadURL(urlBox.getText());
         }
-        loadURL(urlBox.getText());
     }//GEN-LAST:event_goBtnActionPerformed
 
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
