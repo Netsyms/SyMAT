@@ -118,7 +118,7 @@ public class SplashScreen extends javax.swing.JFrame {
 
         jLabel1.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(36.0F));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("<html>"+net.apocalypselabs.symat.Main.SYMAT+" <span style=\"color: #666666;\">"+net.apocalypselabs.symat.Main.VERSION_NAME+"</span>");
+        jLabel1.setText("<html>"+net.apocalypselabs.symat.Main.SYMAT+" <span style=\"color: #555555;\">"+net.apocalypselabs.symat.Main.VERSION_NAME+"</span>");
         jLayeredPane1.add(jLabel1);
         jLabel1.setBounds(100, 220, 300, 50);
         jLayeredPane1.setLayer(jLabel1, javax.swing.JLayeredPane.POPUP_LAYER);

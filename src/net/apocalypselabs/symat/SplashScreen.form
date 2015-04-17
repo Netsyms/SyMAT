@@ -85,7 +85,7 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;&lt;html&gt;&quot;+net.apocalypselabs.symat.Main.SYMAT+&quot; &lt;span style=\&quot;color: #666666;\&quot;&gt;&quot;+net.apocalypselabs.symat.Main.VERSION_NAME+&quot;&lt;/span&gt;&quot;" type="code"/>
+              <Connection code="&quot;&lt;html&gt;&quot;+net.apocalypselabs.symat.Main.SYMAT+&quot; &lt;span style=\&quot;color: #555555;\&quot;&gt;&quot;+net.apocalypselabs.symat.Main.VERSION_NAME+&quot;&lt;/span&gt;&quot;" type="code"/>
             </Property>
           </Properties>
           <AuxValues>

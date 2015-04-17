@@ -72,11 +72,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -1086,7 +1088,19 @@ public class Main extends JRibbonFrame {
             Debug.stacktrace(ex);
         }
 
-        Platform.setImplicitExit(false);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new JFXPanel(); // this will prepare JavaFX toolkit and environment
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Platform.setImplicitExit(false);
+                    }
+                });
+            }
+        });
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
