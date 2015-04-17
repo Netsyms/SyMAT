@@ -45,8 +45,11 @@
  */
 package net.apocalypselabs.symat;
 
-import java.awt.Font;
+import java.io.IOException;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -61,14 +64,16 @@ public class Notepad extends javax.swing.JInternalFrame {
      */
     public Notepad() {
         initComponents();
-        updateTheme();
+        // Set font
+        int font_size = 12;
+        try {
+            font_size = Integer.valueOf(PrefStorage.getSetting("editfont", "12"));
+        } catch (Exception ex) {
+        }
+        textBox.setFont(Main.ubuntuRegular.deriveFont((float) font_size));
         textBox.setText(PrefStorage.getSetting("notepad"));
     }
 
-    private void updateTheme() {
-        
-    }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -82,6 +87,7 @@ public class Notepad extends javax.swing.JInternalFrame {
         textBox = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        exportBtn = new javax.swing.JMenuItem();
         eraseBtn = new javax.swing.JMenuItem();
 
         setClosable(true);
@@ -90,6 +96,23 @@ public class Notepad extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Notepad");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/notepad.png"))); // NOI18N
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         textBox.setBackground(new java.awt.Color(255, 255, 204));
         textBox.setColumns(1);
@@ -105,6 +128,14 @@ public class Notepad extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(textBox);
 
         jMenu1.setText("File");
+
+        exportBtn.setText("Export text");
+        exportBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportBtnActionPerformed(evt);
+            }
+        });
+        jMenu1.add(exportBtn);
 
         eraseBtn.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         eraseBtn.setText("Erase");
@@ -145,12 +176,38 @@ public class Notepad extends javax.swing.JInternalFrame {
         save();
     }//GEN-LAST:event_textBoxKeyTyped
 
+    private void exportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportBtnActionPerformed
+        JFileChooser fc = new JFileChooser();
+        FileFilter filter;
+        filter = new FileNameExtensionFilter("Plain Text (.txt)", "txt");
+        fc.setFileFilter(filter);
+        fc.addChoosableFileFilter(filter);
+        int result = fc.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            try {
+                FileUtils.saveFile(textBox.getText(),
+                        FileUtils.getFileWithExtension(fc).toString(),
+                        false);
+            } catch (IOException ex) {
+                JOptionPane.showInternalMessageDialog(this,
+                        "Error saving: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_exportBtnActionPerformed
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        save();
+    }//GEN-LAST:event_formInternalFrameClosing
+
     private void save() {
         PrefStorage.saveSetting("notepad", textBox.getText());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem eraseBtn;
+    private javax.swing.JMenuItem exportBtn;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
