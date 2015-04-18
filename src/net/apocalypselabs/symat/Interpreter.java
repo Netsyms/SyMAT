@@ -395,7 +395,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
             try {
                 FileUtils.saveFile(commandsForExport,
                         FileUtils.getFileWithExtension(fc).toString(),
-                        false);
+                        true);
             } catch (IOException ex) {
                 JOptionPane.showInternalMessageDialog(this,
                         "Error saving: " + ex.getMessage(),
