@@ -303,7 +303,7 @@ public class License extends javax.swing.JInternalFrame {
             return false;
         }
     }
-    
+
     public static boolean checkEmail(String email) {
         String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]+$";
         return (email.matches(regex));

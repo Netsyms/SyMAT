@@ -429,7 +429,6 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_defaultIconBtnActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField author;
     private javax.swing.JTextArea codeBox;

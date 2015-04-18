@@ -286,7 +286,6 @@ public class InstallPlugin extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_installBtnActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField author;
     private javax.swing.JLabel iconBox;

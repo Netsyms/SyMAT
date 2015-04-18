@@ -66,15 +66,15 @@ public class TextBox extends javax.swing.JInternalFrame {
         }
         textBox.setFont(Main.ubuntuRegular.deriveFont((float) font_size));
     }
-    
+
     public void set(String txt) {
         textBox.setText(txt);
     }
-    
+
     public String get() {
         return textBox.getText();
     }
-    
+
     public void edit(boolean is) {
         textBox.setEditable(is);
     }
@@ -82,7 +82,7 @@ public class TextBox extends javax.swing.JInternalFrame {
     public void open() {
         Main.loadFrame(this, true);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -121,7 +121,6 @@ public class TextBox extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

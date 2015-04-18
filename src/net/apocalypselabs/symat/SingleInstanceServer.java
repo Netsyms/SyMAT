@@ -69,9 +69,11 @@ public class SingleInstanceServer extends NanoHTTPD {
         }
         return new NanoHTTPD.Response(msg);
     }
-    
+
     private class LaunchThread extends Thread {
+
         String arg;
+
         @Override
         public void run() {
             if (arg.endsWith(".sytt")) {
@@ -92,7 +94,7 @@ public class SingleInstanceServer extends NanoHTTPD {
                 }
             });
         }
-        
+
         public LaunchThread(String a) {
             arg = a;
         }

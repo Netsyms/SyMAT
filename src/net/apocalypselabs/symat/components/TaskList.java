@@ -9,15 +9,16 @@ import java.util.ArrayList;
 
 /**
  * Container to save tasks.
+ *
  * @author Skylar
  */
 public class TaskList implements Serializable {
-    
+
     private static final long serialVersionUID = 6754527404697894562L;
-    
+
     private final ArrayList<SingleTask> tasks = new ArrayList<>();
     private String title = "Untitled";
-    
+
     public void addTask(Task t) {
         SingleTask st = new SingleTask();
         st.name = t.toString();
@@ -25,7 +26,7 @@ public class TaskList implements Serializable {
         st.percent = t.getComplete();
         tasks.add(st);
     }
-    
+
     public Task[] getTasks() {
         Task[] a = new Task[tasks.size()];
         for (int i = 0; i < tasks.size(); i++) {
@@ -36,20 +37,21 @@ public class TaskList implements Serializable {
         }
         return a;
     }
-    
+
     public void setTitle(String t) {
         title = t;
     }
-    
+
     public String getTitle() {
         return title;
     }
-    
+
     public TaskList() {
-        
+
     }
-    
+
     class SingleTask implements Serializable {
+
         public String name = "";
         public String desc = "";
         public int percent = 0;

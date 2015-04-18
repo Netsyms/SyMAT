@@ -47,16 +47,16 @@ package net.apocalypselabs.symat;
 
 /**
  *
- * Bad input exception.  Useful for throwing errors in user code.
- * 
+ * Bad input exception. Useful for throwing errors in user code.
+ *
  * @author Skylar
  */
 public class BadInputException extends Exception {
-    
+
     public BadInputException() {
         super();
     }
-    
+
     public BadInputException(String msg) {
         super(msg);
     }

@@ -1000,7 +1000,6 @@ public class Editor extends javax.swing.JInternalFrame {
         }
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearBtn;
     private javax.swing.JMenu codeLangMenu;

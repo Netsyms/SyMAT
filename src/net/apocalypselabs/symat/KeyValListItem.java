@@ -47,63 +47,70 @@ package net.apocalypselabs.symat;
 
 /**
  * A simple key/value pair for lists and stuff.
+ *
  * @author Skylar
  */
 public class KeyValListItem {
+
     // I know, not Java code standards.
     // But it's easier and cleaner this way.
     private String VAL = "";
     private String KEY = "";
-    
+
     public KeyValListItem() {
-        
+
     }
-    
+
     public KeyValListItem(String key) {
         KEY = key;
     }
-    
+
     public KeyValListItem(String key, String val) {
         KEY = key;
         VAL = val;
     }
-    
+
     /**
      * Get the key.
+     *
      * @return the key.
      */
     @Override
     public String toString() {
         return KEY;
     }
-    
+
     /**
      * Get the value of this pair.
+     *
      * @return duh.
      */
     public String getValue() {
         return VAL;
     }
-    
+
     /**
      * Set the key.
      * <br>To get it back use toString().
+     *
      * @param key the key.
      */
     public void setKey(String key) {
         KEY = key;
     }
-    
+
     /**
      * Set the value for this pair.
-     * @param value 
+     *
+     * @param value
      */
     public void setValue(String value) {
         VAL = value;
     }
-    
+
     /**
      * Is this pair populated?
+     *
      * @return True if key and value are empty.
      */
     public boolean isEmpty() {

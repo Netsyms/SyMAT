@@ -52,6 +52,7 @@ package net.apocalypselabs.symat;
 public class FontOptions extends javax.swing.JPanel {
 
     private boolean modified = false;
+
     /**
      * Creates new form FontOptions
      */
@@ -111,9 +112,9 @@ public class FontOptions extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
-        if ((int)jSpinner1.getValue() <= 0) {
+        if ((int) jSpinner1.getValue() <= 0) {
             jSpinner1.setValue(1);
-        } else if ((int)jSpinner1.getValue() > 64) {
+        } else if ((int) jSpinner1.getValue() > 64) {
             jSpinner1.setValue(64);
         }
         modified = true;

@@ -11,12 +11,12 @@ import javax.swing.ImageIcon;
  * Plugin container class.
  */
 public class Plugin implements Serializable {
-    
+
     private static final long serialVersionUID = 13371L;
 
     public final int LANG_JS = 0;
     public final int LANG_PY = 1;
-    
+
     private ImageIcon icon;
     private String packageName = "";
     private String script = "";
@@ -28,38 +28,42 @@ public class Plugin implements Serializable {
     private String other = "";
     private String version = "";
     private int lang = LANG_JS;
-    
+
     public Plugin() {
-        
+
     }
-    
+
     /**
      * Get plugin version.
-     * @return 
+     *
+     * @return
      */
     public String getVersion() {
         return version;
     }
-    
+
     /**
      * Set plugin version.
-     * @param v 
+     *
+     * @param v
      */
     public void setVersion(String v) {
         version = v;
     }
-    
+
     /**
      * Get the plugin package name.
-     * @return 
+     *
+     * @return
      */
     public String getPackage() {
         return packageName;
     }
-    
+
     /**
      * Set the plugin package name.
-     * @param pkg 
+     *
+     * @param pkg
      */
     public void setPackage(String pkg) {
         packageName = pkg;
@@ -67,55 +71,62 @@ public class Plugin implements Serializable {
 
     /**
      * Get the plugin author name.
-     * @return 
+     *
+     * @return
      */
     public String getAuthor() {
         return author;
     }
-    
+
     /**
      * Set the plugin author name.
-     * @param s 
+     *
+     * @param s
      */
     public void setAuthor(String s) {
         author = s;
     }
-    
+
     /**
      * Get the plugin website.
-     * @return 
+     *
+     * @return
      */
     public String getWebsite() {
         return website;
     }
-    
+
     /**
      * Set the plugin website.
-     * @param url 
+     *
+     * @param url
      */
     public void setWebsite(String url) {
         website = url;
     }
-    
+
     /**
      * Get extra text data.
-     * @return 
+     *
+     * @return
      */
     public String getOther() {
         return other;
     }
-    
+
     /**
      * Set extra text data.
-     * @param o 
+     *
+     * @param o
      */
     public void setOther(String o) {
         other = o;
     }
-    
+
     /**
      * Get the plugin icon.
-     * @return 
+     *
+     * @return
      */
     public ImageIcon getIcon() {
         return icon;
@@ -123,7 +134,8 @@ public class Plugin implements Serializable {
 
     /**
      * Set the plugin icon.
-     * @param i 
+     *
+     * @param i
      */
     public void setIcon(ImageIcon i) {
         icon = i;
@@ -131,7 +143,8 @@ public class Plugin implements Serializable {
 
     /**
      * Get the plugin code.
-     * @return 
+     *
+     * @return
      */
     public String getScript() {
         return script;
@@ -139,7 +152,8 @@ public class Plugin implements Serializable {
 
     /**
      * Set the plugin code.
-     * @param s 
+     *
+     * @param s
      */
     public void setScript(String s) {
         script = s;
@@ -147,7 +161,8 @@ public class Plugin implements Serializable {
 
     /**
      * See getTitle().
-     * @return 
+     *
+     * @return
      */
     @Override
     public String toString() {
@@ -156,7 +171,8 @@ public class Plugin implements Serializable {
 
     /**
      * Get the plugin short name/title.
-     * @return 
+     *
+     * @return
      */
     public String getTitle() {
         return title;
@@ -164,7 +180,8 @@ public class Plugin implements Serializable {
 
     /**
      * Set the plugin short name/title.
-     * @param n 
+     *
+     * @param n
      */
     public void setTitle(String n) {
         title = n;
@@ -172,7 +189,8 @@ public class Plugin implements Serializable {
 
     /**
      * Get the plugin description text.
-     * @return 
+     *
+     * @return
      */
     public String getDesc() {
         return desc;
@@ -180,7 +198,8 @@ public class Plugin implements Serializable {
 
     /**
      * Set the plugin description text.
-     * @param d 
+     *
+     * @param d
      */
     public void setDesc(String d) {
         desc = d;
@@ -188,7 +207,8 @@ public class Plugin implements Serializable {
 
     /**
      * Get the long title/short description.
-     * @return 
+     *
+     * @return
      */
     public String getLongTitle() {
         return longtitle;
@@ -196,22 +216,25 @@ public class Plugin implements Serializable {
 
     /**
      * Set the long title/short description.
-     * @param t 
+     *
+     * @param t
      */
     public void setLongTitle(String t) {
         longtitle = t;
     }
-    
+
     /**
      * Get the script language.
+     *
      * @return LANG_JS or LANG_PY
      */
     public int getLang() {
         return lang;
     }
-    
+
     /**
      * Set the script language.
+     *
      * @param l LANG_JS or LANG_PY
      */
     public void setLang(int l) {

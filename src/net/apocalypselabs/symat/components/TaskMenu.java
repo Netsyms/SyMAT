@@ -53,6 +53,7 @@ public class TaskMenu extends javax.swing.JPanel {
 
     /**
      * Creates new TaskMenu
+     *
      * @param percent Task completion percentage.
      * @param name Task name
      * @param desc Task description
@@ -63,33 +64,35 @@ public class TaskMenu extends javax.swing.JPanel {
         nameBox.setText(name);
         descBox.setText(desc);
     }
-    
+
     /**
      * Creates new TaskMenu
      */
     public TaskMenu() {
         initComponents();
     }
-    
+
     public int getPercent() {
         return percentSlider.getValue();
     }
-    
+
     public boolean deleteMe() {
         return delCheck.isSelected();
     }
-    
+
     /**
      * Get the name of the task.
+     *
      * @return Task name.
      */
     @Override
     public String toString() {
         return nameBox.getText();
     }
-    
+
     /**
      * Get the task description.
+     *
      * @return The description.
      */
     public String getDesc() {
@@ -170,7 +173,6 @@ public class TaskMenu extends javax.swing.JPanel {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox delCheck;

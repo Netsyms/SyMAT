@@ -59,15 +59,15 @@ public class Task extends javax.swing.JPanel {
     public Task(boolean complete, String name, String desc) {
         this((complete ? 100 : 0), name, desc);
     }
-    
+
     public Task(int complete, String name, String desc) {
         this();
         percent = complete;
         setComplete(percent);
         taskName.setText(name);
-        taskDesc.setText(desc);        
+        taskDesc.setText(desc);
     }
-    
+
     @Override
     public String toString() {
         return taskName.getText();
@@ -76,10 +76,11 @@ public class Task extends javax.swing.JPanel {
     public String getDesc() {
         return taskDesc.getText();
     }
-    
+
     public int getComplete() {
         return percent;
     }
+
     /**
      * Creates new form Task
      */
@@ -96,7 +97,7 @@ public class Task extends javax.swing.JPanel {
                 )));
         statusLabel.setToolTipText(i == 100 ? "Complete" : "Incomplete");
         percentDone.setValue(i);
-        percentDone.setString(i+"%");
+        percentDone.setString(i + "%");
     }
 
     /**
@@ -182,7 +183,6 @@ public class Task extends javax.swing.JPanel {
             getParent().remove(this);
         }
     }//GEN-LAST:event_menuBtnActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;

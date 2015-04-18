@@ -69,7 +69,7 @@ public class Tasks extends javax.swing.JInternalFrame {
     private String tltitle = "Untitled";
 
     private final JFileChooser fc = new JFileChooser();
-    
+
     private File ondisk = null;
 
     /**

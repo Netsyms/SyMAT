@@ -58,7 +58,7 @@ public class Theme {
     private static final Color WHITE = Color.WHITE;
     private static final Color BLACK = Color.BLACK;
     private static final Color DBACK = new Color(41, 49, 52);
-    private static final Color LBACK = new Color(240,240,240);
+    private static final Color LBACK = new Color(240, 240, 240);
     private static final Color DGRAY = Color.DARK_GRAY;
     private static final Color LGRAY = Color.LIGHT_GRAY;
 
@@ -125,11 +125,11 @@ public class Theme {
     public static Color windowColor() {
         return (currentTheme == THEME_LIGHT) ? LGRAY : DGRAY;
     }
-    
+
     public static Color tabColor() {
         return (currentTheme == THEME_LIGHT) ? LBACK : DBACK;
     }
-    
+
     public static String editorTheme() {
         return (currentTheme == THEME_LIGHT) ? "default" : "dark";
     }
