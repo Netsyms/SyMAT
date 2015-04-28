@@ -162,13 +162,9 @@ public class Update extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (Desktop.isDesktopSupported()) {
-            try {
-                Desktop.getDesktop().browse(new URI("http://symatapp.com/"));
-            } catch (IOException | URISyntaxException ex) {
-                JOptionPane.showInternalMessageDialog(this, "Cannot open browser.  Please go to symatapp.com.");
-            }
-        } else {
+        try {
+            Desktop.getDesktop().browse(new URI(Main.API_URL + "dllink.php"));
+        } catch (Exception ex) {
             JOptionPane.showInternalMessageDialog(this, "Cannot open browser.  Please go to symatapp.com.");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
