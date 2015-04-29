@@ -46,10 +46,9 @@
 package net.apocalypselabs.symat;
 
 import java.awt.Desktop;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -67,6 +66,28 @@ public class Update extends javax.swing.JInternalFrame {
     public Update(String latest) {
         latestVersion = latest;
         initComponents();
+        (new ChangesThread()).start();
+    }
+
+    private class ChangesThread extends Thread {
+
+        @Override
+        public void run() {
+            final String html;
+            String content;
+            try {
+                content = FileUtils.getUrl(Main.API_URL + "changelog.php");
+            } catch (Exception ex) {
+                content = "Error, cannot get changes.";
+            }
+            html = content;
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    changelogBox.setText(html);
+                }
+            });
+        }
     }
 
     /**
@@ -84,6 +105,8 @@ public class Update extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        changelogBox = new javax.swing.JTextArea();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
@@ -96,7 +119,7 @@ public class Update extends javax.swing.JInternalFrame {
         jLabel1.setText("An update is available.");
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icon.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/96x96.png"))); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -104,7 +127,7 @@ public class Update extends javax.swing.JInternalFrame {
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Your version: "+Main.VERSION_NAME);
+        jLabel4.setText("Your version: "+net.apocalypselabs.symat.Main.VERSION_NAME);
 
         jButton1.setBackground(new java.awt.Color(51, 153, 255));
         jButton1.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
@@ -122,6 +145,13 @@ public class Update extends javax.swing.JInternalFrame {
             }
         });
 
+        changelogBox.setEditable(false);
+        changelogBox.setColumns(1);
+        changelogBox.setRows(1);
+        changelogBox.setTabSize(4);
+        changelogBox.setText("Loading changes...");
+        jScrollPane1.setViewportView(changelogBox);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -129,20 +159,21 @@ public class Update extends javax.swing.JInternalFrame {
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(120, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(81, 81, 81)
+                .addGap(83, 83, 83)
                 .addComponent(jLabel5)
                 .addContainerGap())
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -150,12 +181,13 @@ public class Update extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel5)))
-                .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addContainerGap())
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         pack();
@@ -175,11 +207,13 @@ public class Update extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jLabel5MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea changelogBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
