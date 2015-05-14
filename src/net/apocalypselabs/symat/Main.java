@@ -303,9 +303,9 @@ public class Main extends JRibbonFrame {
         });
 
         Map<RibbonElementPriority, Integer> galleryVisibleButtonCounts = new HashMap<>();
-        galleryVisibleButtonCounts.put(RibbonElementPriority.LOW, 1);
-        galleryVisibleButtonCounts.put(RibbonElementPriority.MEDIUM, 2);
-        galleryVisibleButtonCounts.put(RibbonElementPriority.TOP, 2);
+        galleryVisibleButtonCounts.put(RibbonElementPriority.LOW, 4);
+        galleryVisibleButtonCounts.put(RibbonElementPriority.MEDIUM, 4);
+        galleryVisibleButtonCounts.put(RibbonElementPriority.TOP, 4);
         List<StringValuePair<List<JCommandToggleButton>>> appGalleryButtons = new ArrayList<>();
         List<JCommandToggleButton> appGalleryButtonsList = new ArrayList<>();
         if (files != null) {
@@ -324,7 +324,7 @@ public class Main extends JRibbonFrame {
         appGalleryButtons.add(new StringValuePair<>("Plugins",
                 appGalleryButtonsList));
         pluginband.addRibbonGallery("Plugins", appGalleryButtons,
-                galleryVisibleButtonCounts, 5, 3,
+                galleryVisibleButtonCounts, 4, 3,
                 RibbonElementPriority.TOP);
     }
 
@@ -340,9 +340,22 @@ public class Main extends JRibbonFrame {
      * Load the ribbon in all its glory.
      */
     private void loadRibbon() {
-        setApplicationIcon(ImageWrapperResizableIcon.getIcon(
+        ResizableIcon appico = ImageWrapperResizableIcon.getIcon(
                 Main.class.getResource("icon32.png"),
-                new Dimension(32, 32)));
+                new Dimension(32, 32));
+        setApplicationIcon(appico);
+        int tries = 0; // no infinite loops for us!
+        while (tries < 20) {
+            try {
+                Thread.sleep(10);
+                if (getApplicationIcon().equals(appico)) {
+                    break;
+                }
+                setApplicationIcon(appico);
+            } catch (Exception ex) {
+            }
+            tries++;
+        }
         JRibbon ribbon = getRibbon();
         JRibbonBand coreband = new JRibbonBand("Core", null);
         JRibbonBand appsband = new JRibbonBand("Apps", null);

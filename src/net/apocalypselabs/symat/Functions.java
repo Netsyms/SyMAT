@@ -896,7 +896,7 @@ public class Functions {
      * @return The matrix result
      * @throws BadInputException if the matrix is not square or power is less
      * than 0
-     */
+     */   
     public double[][] mpower(double[][] a, int b) throws BadInputException {
         if (a.length != a[0].length) {
             throw new BadInputException("Matrix needs to be square.");
