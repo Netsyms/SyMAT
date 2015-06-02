@@ -110,7 +110,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
                 webEngine.loadContent(homepage());
             }
         });
-        getContentPane().add(jfxPanel, BorderLayout.CENTER);
+        browserBox.add(jfxPanel, BorderLayout.CENTER);
     }
 
     public WebBrowser(String title) {
@@ -168,6 +168,12 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         loadURL(url);
     }
 
+    public void showNavbar(boolean yesno) {
+        navBar.setVisible(yesno);
+        goBtn.setEnabled(yesno);
+        backBtn.setEnabled(yesno);
+    }
+
     public void loadURL(final String url) {
         Platform.runLater(new Runnable() {
             @Override
@@ -207,6 +213,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         backBtn = new javax.swing.JButton();
         urlBox = new javax.swing.JTextField();
         goBtn = new javax.swing.JButton();
+        browserBox = new javax.swing.JPanel();
 
         setClosable(true);
         setIconifiable(true);
@@ -293,6 +300,9 @@ public class WebBrowser extends javax.swing.JInternalFrame {
 
         getContentPane().add(navBar, java.awt.BorderLayout.PAGE_START);
 
+        browserBox.setLayout(new java.awt.BorderLayout());
+        getContentPane().add(browserBox, java.awt.BorderLayout.CENTER);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -344,15 +354,16 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                jfxPanel.setSize(getWidth(), getHeight());
-                browser.setPrefSize(getWidth() - 12, getHeight() - 32);
-                browser.resize(getWidth() - 12, getHeight() - 32);
+                jfxPanel.setSize(browserBox.getWidth(), browserBox.getHeight());
+                browser.setPrefSize(browserBox.getWidth(), browserBox.getHeight());
+                browser.resize(browserBox.getWidth(), browserBox.getHeight());
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backBtn;
+    private javax.swing.JPanel browserBox;
     private javax.swing.JButton goBtn;
     private javax.swing.JToolBar navBar;
     private javax.swing.JTextField urlBox;

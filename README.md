@@ -15,4 +15,4 @@ http://symatapp.com/
 
 Report a Bug
 ------
-To report bugs, go to: http://bugs.aplabs.us/thebuggenie/symat/issues/new
+To report bugs, go to: https://github.com/ApocalypseLaboratories/SyMAT/issues

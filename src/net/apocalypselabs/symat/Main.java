@@ -56,17 +56,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -104,7 +99,7 @@ public class Main extends JRibbonFrame {
     /**
      * Version name, as it should be displayed.
      */
-    public static final String VERSION_NAME = "2.0";
+    public static final String VERSION_NAME = "2.0.1";
 
     /**
      * The word "SyMAT".
@@ -117,7 +112,7 @@ public class Main extends JRibbonFrame {
     /**
      * Version number, for updates and //needs in scripts
      */
-    public static final double APP_CODE = 21;
+    public static final double APP_CODE = 22;
     /**
      * Base URL for building API calls
      */
@@ -139,6 +134,7 @@ public class Main extends JRibbonFrame {
 
     public static boolean updateAvailable = false; // Update available?
     public static String updateString = "";
+    public static boolean licValid = false; // License valid?
 
     /**
      * Application icon, for setting frame icons. Has different sizes.
@@ -205,47 +201,18 @@ public class Main extends JRibbonFrame {
             }
             loaded = true;
         }
-        boolean licValid = false;
-        if (PrefStorage.getSetting("license").equals("")
-                || PrefStorage.getSetting("licensetype").equals("demo")) {
-            if (PrefStorage.getSetting("licensetype").equals("demo")) {
-                Calendar c = Calendar.getInstance();
-                c.setTime(new Date());
-                try {
-                    long expire = Long.parseLong(PrefStorage.getSetting("license"));
-                    if (expire > c.getTimeInMillis()) {
-                        licValid = true;
-                    }
-                } catch (NumberFormatException e) {
 
-                }
-            }
-        } else {
-            try {
-                Debug.println("Checking license...");
-                URL url = new URL(API_URL + "liccheck.php?email="
-                        + PrefStorage.getSetting("license")
-                        + "&quick=1");
-                String line;
-                try (InputStream is = url.openStream();
-                        BufferedReader br
-                        = new BufferedReader(new InputStreamReader(is))) {
-                    line = br.readLine();
-                }
-                if (line.equals("ok")) {
-                    licValid = true;
-                }
-            } catch (Exception ex) {
-                // Assume valid
-                licValid = true;
-            }
-        }
         if (!licValid) {
             licenseRestrict(true);
-            loadFrame(new License());
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    loadFrame(new License());
+                }
+            });
             loaded = true;
         }
         // Only load shell if nothing else is going on
+
         if (argfile.equals("") && !loaded) {
             loadFrame(new Interpreter());
         }

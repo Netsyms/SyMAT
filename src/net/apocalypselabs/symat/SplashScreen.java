@@ -54,6 +54,8 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.SwingUtilities;
 import static net.apocalypselabs.symat.Main.API_URL;
 import static net.apocalypselabs.symat.Main.APP_CODE;
@@ -202,13 +204,16 @@ public class SplashScreen extends javax.swing.JFrame {
                 Debug.stacktrace(ex);
             }
 
+            setProgress("Checking license...");
+            checkLicense();
+            
             if (!PrefStorage.getSetting("skipupdates").equals("yes")) {
                 setProgress("Checking for updates...");
                 checkUpdates();
             }
 
             setProgress("Loading main interface...");
-            Main main = new Main();
+            new Main();
             setProgress("Done!");
             dispose();
         }
@@ -219,6 +224,43 @@ public class SplashScreen extends javax.swing.JFrame {
             method.setAccessible(true);
             method.invoke(ClassLoader.getSystemClassLoader(), new Object[]{file.toURI().toURL()});
             Debug.println("Loaded toolkit " + file.getName());
+        }
+
+        private void checkLicense() {
+            if (PrefStorage.getSetting("license").equals("")
+                    || PrefStorage.getSetting("licensetype").equals("demo")) {
+                if (PrefStorage.getSetting("licensetype").equals("demo")) {
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(new Date());
+                    try {
+                        long expire = Long.parseLong(PrefStorage.getSetting("license"));
+                        if (expire > c.getTimeInMillis()) {
+                            Main.licValid = true;
+                        }
+                    } catch (NumberFormatException e) {
+
+                    }
+                }
+            } else {
+                try {
+                    Debug.println("Checking license...");
+                    URL url = new URL(API_URL + "liccheck.php?email="
+                            + PrefStorage.getSetting("license")
+                            + "&quick=1");
+                    String line;
+                    try (InputStream is = url.openStream();
+                            BufferedReader br
+                            = new BufferedReader(new InputStreamReader(is))) {
+                        line = br.readLine();
+                    }
+                    if (line.equals("ok")) {
+                        Main.licValid = true;
+                    }
+                } catch (Exception ex) {
+                    // Assume valid
+                    Main.licValid = true;
+                }
+            }
         }
 
         private void checkUpdates() {
