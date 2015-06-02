@@ -74,6 +74,8 @@ public class Interpreter extends javax.swing.JInternalFrame {
     private CompletionProvider pycomp = new CodeCompleter("py").getProvider();
     private AutoCompletion jsac = new AutoCompletion(jscomp);
     private AutoCompletion pyac = new AutoCompletion(pycomp);
+    
+    private Interpreter thisobject;
 
     /**
      * Creates new form Interpreter
@@ -82,6 +84,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
      * "default".
      */
     public Interpreter(String useLang) {
+        thisobject = this;
         initComponents();
 
         // Setup code runner
@@ -96,8 +99,10 @@ public class Interpreter extends javax.swing.JInternalFrame {
             javascriptMenu.setSelected(false);
             pythonMenu.setSelected(true);
             pyac.install(inputBox);
+            setTitle("Shell [python]");
         } else {
             jsac.install(inputBox);
+            setTitle("Shell [javascript]");
         }
 
         // Set font
@@ -439,8 +444,11 @@ public class Interpreter extends javax.swing.JInternalFrame {
         private boolean doSpecialCommands() {
             switch (code) {
                 case "clc":
+                case "clear":
                     clrOutput();
                     return false;
+                case "exit":
+                    thisobject.dispose();
             }
 
             // Implement ans command

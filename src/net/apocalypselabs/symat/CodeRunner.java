@@ -231,6 +231,7 @@ public class CodeRunner {
                 res = "";
             }
             String result = res + sw.getBuffer().toString().trim();
+            sw.getBuffer().setLength(0);
             return result;
         } catch (ScriptException ex) {
             return formatEx(ex);
