@@ -110,7 +110,7 @@
               <Connection code="net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F)" type="code"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Apocalypse Laboratories"/>
+            <Property name="text" type="java.lang.String" value="Netsyms Technologies"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JLayeredPane.layer" type="java.lang.Integer" value="300"/>

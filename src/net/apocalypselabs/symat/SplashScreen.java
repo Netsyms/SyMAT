@@ -96,10 +96,8 @@ public class SplashScreen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SyMAT");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMaximumSize(new java.awt.Dimension(500, 400));
         setMinimumSize(new java.awt.Dimension(500, 400));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(500, 400));
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -132,7 +130,7 @@ public class SplashScreen extends javax.swing.JFrame {
 
         jLabel3.setFont(net.apocalypselabs.symat.Main.ubuntuRegular.deriveFont(12.0F));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel3.setText("Apocalypse Laboratories");
+        jLabel3.setText("Netsyms Technologies");
         jLayeredPane1.add(jLabel3);
         jLabel3.setBounds(10, 370, 250, 30);
         jLayeredPane1.setLayer(jLabel3, javax.swing.JLayeredPane.POPUP_LAYER);

@@ -43,82 +43,41 @@
  * contact Apocalypse Laboratories.  If Apocalypse Laboratories allows or denies
  * you permission, that decision is considered final and binding.
  */
-package net.apocalypselabs.symat;
+package net.apocalypselabs.symat.sync;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import net.apocalypselabs.symat.Debug;
+import static net.apocalypselabs.symat.Main.API_URL;
+import net.apocalypselabs.symat.PrefStorage;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 /**
+ * Perform settings sync in another thread.
  *
- * @author Skylar Ittner
+ * @author Skylar
  */
-public class PrefStorage {
+public class BackgroundSync extends Thread {
 
-    private static final Preferences prefs = Preferences.userNodeForPackage(PrefStorage.class);
-
-    public static void saveSetting(String key, String value) {
-        prefs.put(key, value);
-    }
-
-    public static boolean isset(String key) {
-        return !getSetting(key, "NULL").equals("NULL");
-    }
-
-    public static void unset(String key) {
-        saveSetting(key, "");
-        save();
-        prefs.remove(key);
-        save();
-    }
-
-    public static String getSetting(String key) {
-        return prefs.get(key, "");
-    }
-
-    public static String getSetting(String key, String emptyResponse) {
-        return prefs.get(key, emptyResponse);
-    }
-
-    public static boolean save() {
+    @Override
+    public void run() {
         try {
-            prefs.flush();
-        } catch (BackingStoreException ex) {
-            System.err.println("Settings could not be saved!");
-            return false;
+            Debug.println("Syncing profile...");
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpPost data = new HttpPost(API_URL + "sync.php");
+
+            data.setEntity(new UrlEncodedFormEntity(PrefStorage.syncdump()));
+            CloseableHttpResponse response = httpClient.execute(data);
+
+            
+        } catch (Exception e) {
+            Debug.stacktrace(e);
         }
-        return true;
     }
 
-    /**
-     * Wipe all settings.
-     *
-     * @throws java.util.prefs.BackingStoreException
-     */
-    public static void wipe() throws BackingStoreException {
-        prefs.clear();
-    }
-    
-    /**
-     * Get all settings in a List for a Sync.
-     * @return List of NameValuePairs.
-     * @throws BackingStoreException 
-     */
-    public static List syncdump() throws BackingStoreException {
-        String[] keys = prefs.keys();
-        List<NameValuePair> nvps = new ArrayList<>();
-        for (String key : keys) {
-            nvps.add(new BasicNameValuePair(key, prefs.get(key, "")));
-        }
-        return nvps;
-    }
+    public BackgroundSync() {
 
-    // xkcd 221 compliance.
-    int getRandomNumber() {
-        return 4; // chosen by fair dice roll.
-        // guaranteed to be random.
     }
 }
