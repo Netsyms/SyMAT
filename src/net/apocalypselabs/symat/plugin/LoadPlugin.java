@@ -1,6 +1,6 @@
 /*
  * CODE LICENSE =====================
- * Copyright (c) 2015, Apocalypse Laboratories
+ * Copyright (c) 2015, Netsyms Technologies
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification,
@@ -34,13 +34,13 @@
  * 
  * MEDIA LICENSE ====================
  * All images and other graphical files (the "graphics") included with this
- * software are copyright (c) 2015 Apocalypse Laboratories.  You may not distribute
+ * software are copyright (c) 2015 Netsyms Technologies.  You may not distribute
  * the graphics or any program, source code repository, or other digital storage 
- * media containing them without written permission from Apocalypse Laboratories.
+ * media containing them without written permission from Netsyms Technologies.
  * This ban on distribution only applies to publicly available systems.
  * A password-protected network file share, USB drive, or other storage scheme that
  * cannot be easily accessed by the public is generally allowed.  If in doubt,
- * contact Apocalypse Laboratories.  If Apocalypse Laboratories allows or denies
+ * contact Netsyms Technologies.  If Netsyms Technologies allows or denies
  * you permission, that decision is considered final and binding.
  */
 package net.apocalypselabs.symat.plugin;
