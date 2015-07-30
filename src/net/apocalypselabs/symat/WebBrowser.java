@@ -56,12 +56,18 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.web.PromptData;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
+import javafx.util.Callback;
 import javax.swing.ImageIcon;
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -79,12 +85,14 @@ public class WebBrowser extends javax.swing.JInternalFrame {
     public static final int WIKI_LOGO = 1;
     public static final int FORUM_LOGO = 2;
     public static final int PAD_LOGO = 3;
+    private JInternalFrame thisFrame;
 
     /**
      * Creates new form WebBrowser
      */
     public WebBrowser() {
         initComponents();
+        thisFrame = this;
         jfxPanel = new JFXPanel();
         Platform.runLater(new Runnable() {
             @Override
@@ -101,10 +109,44 @@ public class WebBrowser extends javax.swing.JInternalFrame {
                         new ChangeListener<State>() {
                             @Override
                             public void changed(ObservableValue ov, State oldState, State newState) {
-                                if (newState == Worker.State.SUCCEEDED) {
+                                if (newState == Worker.State.RUNNING) {
+                                    urlBox.setText("Loading...");
+                                } else if (newState == Worker.State.SCHEDULED
+                                || newState == Worker.State.READY) {
+
+                                } else {
                                     urlBox.setText(webEngine.getLocation());
                                 }
                             }
+                        });
+                webEngine.setOnAlert(
+                        new EventHandler<WebEvent<String>>() {
+                            @Override
+                            public void handle(WebEvent<String> t) {
+                                JOptionPane.showMessageDialog(thisFrame, t.getData(), "Message from webpage", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        });
+
+                webEngine.setPromptHandler(
+                        new Callback<PromptData, String>() {
+                            @Override
+                            public String call(PromptData p) {
+                                return JOptionPane.showInputDialog(thisFrame, p.getMessage(), "Question from webpage", JOptionPane.QUESTION_MESSAGE);
+                            }
+                        });
+                webEngine.setConfirmHandler(
+                        new Callback<String, Boolean>() {
+
+                            @Override
+                            public Boolean call(String p) {
+                                return (JOptionPane.showConfirmDialog(
+                                        thisFrame,
+                                        p,
+                                        "Question from webpage",
+                                        JOptionPane.OK_CANCEL_OPTION)
+                                == JOptionPane.OK_OPTION ? true : false);
+                            }
+
                         });
                 webEngine.setUserAgent("Mozilla/5.0 SyMAT/" + Main.VERSION_NAME);
                 webEngine.loadContent(homepage());
