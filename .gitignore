@@ -1,0 +1,6 @@
+bin/
+dist/
+*.exe
+/src/padkey
+/nbproject/private/
+/build/

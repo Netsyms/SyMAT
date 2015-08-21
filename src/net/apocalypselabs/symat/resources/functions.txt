@@ -1,0 +1,63 @@
+notify("")|Display a message in a box.
+ask("")|Ask a question in a box.  Supply question text.
+diff('',"x")|Find the derivative of the function passed with respect to the second argument.
+integrate('',"x")|Find the integral of the function passed with respect to the second argument.
+rad(0)|Convert a given number in degrees to radians.
+deg(0)|Convert a given number in radians to degrees.
+subs('',"x")|Solve an equation for the second argument.
+simplify('')|Simplify the given function.
+vpa('')|Computes numerical value or simplifies.
+plot()|Show the plot window.
+plot('')|Graph the given function.
+plotname("")|Sets the title of the graph window.
+plotname()|Gets the title of the graph window.
+xlim(min,max)|Sets the x-axis min and max values.  Cannot be used after a formula has been graphed.
+plotclr()|Reset the graph.
+drawdot(x, y)|Places a dot at the given coordinates.
+readfile("")|Read a text file from the given filename.
+savefile(data,"")|Save the text data to a file.
+save(key,val)|Save the text val to text key.
+load(key)|Load the saved text related to key.
+rand()|Random fraction from 0 (inclusive) to 1 (exclusive)
+rand(min,max)|Random number between min and max, inclusive
+randb()|Random boolean (true or false)
+perms(items)|Array of all possible combinations.
+add(n1,n2,...)|Add the given numbers.
+subtract(n1,n2,...)|Subtract the given numbers.
+times(n1,n2,...)|Multiply the given numbers.
+divide(n1,n2,...)|Divide the given numbers.
+mod(n1,n2,...)|Divide the numbers and return the remainder.
+factorial(n)|Get the factorial (n!) of n as a string.
+factor(n)|Get an array of all the factors of n.
+abs(0)|Absolute value of number.
+asin(0)|Arcsine of number.
+acos(0)|Arccosine of number.
+atan(0)|Arctangent of number.
+ceil(0)|Round the number up to the next integer.
+exp(0)|e^x.
+gcd(a,b)|Find greatest common divisor of a and b.
+floor(0)|Round the number down to the next integer.
+log(0)|Natural log of number.
+max(0,1,...)|Returns the highest number given.
+min(0,1,...)|Returns the lowest number given.
+powermod(a,b,m)|Find pow(a,b) mod m, or modular inverse if b=-1.
+pow(x,y)|Raise x to y and calculate.
+sin(0)|Find the sine.
+cos(0)|Find the cosine.
+tan(0)|Find the tangent.
+sinh(0)|Find the hyperbolic sine.
+cosh(0)|Find the hyperbolic cosine.
+tanh(0)|Find the hyperbolic tangent.
+sec(0)|Find the secant.
+csc(0)|Find the cosecant.
+cot(0)|Find the cotangent.
+sech(0)|Find the hyperbolic secant.
+csch(0)|Find the hyperbolic cosecant.
+coth(0)|Find the hyperbolic cotangent.
+print("")|Prints the supplied text or formula to the output.
+solve(f,'x',0)|Solve function f for 'x' when it equals 0.
+solve(f,'x')|Solve function f for 'x', assuming equal to 0.
+solve(f)|Solve function f, assuming 'x' and 0.
+printa(array)|Get array contents as text.
+primes(n)|Find all prime numbers up to n.
+filedialog()|Open a file chooser and return the chosen file path.

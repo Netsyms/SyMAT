@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>Commands</title>
+    </head>
+    <body>
+        <h1>Basic Command Reference</h1>
+        <p>
+            <b>notify(var)</b> Creates a popup box with the given content.
+            <br><b>ask(prompt)</b> Returns the entered text.
+            <br><b>print(text)</b> Outputs the given text to the screen.  Does not require special prefix in Python.
+            <br><b>diff("x^3", "x")</b> Returns the derivative of the function with respect to the second argument.
+            <br><b>integrate("3*x^2", "x")</b> Returns the integral of the function with respect to the second argument.
+            <br><b>$("command")</b> Parses the given text with the Symja library.
+            <br><b>simplify("expr")</b> Simplifies the given expression.
+            <br><b>vpa("expr")</b> Attempts to find the numerical value of "expr".
+            <br><b>replace("text", "find", "replace")</b> Returns "text" with all occurrences of "find" changed to "replace".
+            <br><b>subs("function", "var", "replace")</b> Replaces all occurrences of "var" with "replace" and solves.
+            Returns the answer or 0.0 if there is no numerical answer.
+            <br><b>plot("function")</b> Graphs the given function as if it were typed into a graph window.
+            Uses the graph window bound to the current action.
+            <br><b>plotname("name")</b> Set the window title of the bound graph window.
+            <br><b>plotname()</b> Get the name of the plot window.
+            <br><b>plotclr()</b> Clears all drawings from the plot window.
+            <br><b>plotscale({-1,0,1,2,3})</b> Scale the graph.  Erases content when scaled.
+            Smaller is farther out, larger closer.
+            <br><b>drawDot(x,y)</b> Draw a small red dot wherever you tell it.
+            <br><b>rad(degrees), deg(radians)</b> Convert degrees to radians and vice versa.  
+            Python has built-in radians(degrees) and degrees(radians) which work the same.
+            <br><b>pause(1000)</b> Pause script execution for a number of milliseconds.
+            <br><b>factorial(n)</b> Calculate (n!).
+            <br><b>factor(n)</b> Get an array (list) of all the factors of n.
+            <br><b>add(n1,n2,n3...)|add(n[])</b> Add together the given numbers or array of numbers.
+            <br><b>subtract(n1,n2,n3...)|subtract(n[])</b> Subtract the given numbers or array of numbers, as in (n1-n2-n3-...)
+            <br><b>times(n1,n2,n3...)|times(n[])</b> Multiply together the given numbers or array of numbers.
+            <br><b>divide(n1,n2,n3...)|divide(n[])</b> Divide the given numbers or array of numbers, as in (n1/n2/n3/...)
+            <br><b>perms(a,b,c...)|perms(items[])</b> Get an array of all possible combinations of the given items.
+            <br><b>rand()</b> Get a random fraction between 0 and 1.
+            <br><b>randb()</b> Get a random boolean (true or false).
+            <br><b>rand(min,max)</b> Get a random integer between min and max, inclusive.
+            <br><b>readfile(path)</b> Read the text file at path and return the contents.
+            <br><b>savefile(content,path)</b> Save the content in the file at path.
+        </p>
+        <p>
+            For more information, consult the Wiki or SyMAT's source code.
+        </p>
+    </body>
+</html>

@@ -1,0 +1,59 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Copyright (c) 2015, Netsyms Technologies
+${licensePrefix}All rights reserved.
+${licensePrefix}
+${licensePrefix}
+${licensePrefix}CODE LICENSE ==========
+${licensePrefix}Redistribution and use in source and binary forms, with or without modification,
+${licensePrefix}are permitted provided that the following conditions are met:
+${licensePrefix}
+${licensePrefix}1. Redistributions of source code must retain the above copyright notice, this 
+${licensePrefix}list of conditions and the following disclaimer.
+${licensePrefix}
+${licensePrefix}2. Redistributions in binary form must reproduce the above copyright notice, 
+${licensePrefix}this list of conditions and the following disclaimer in the documentation and/or
+${licensePrefix}other materials provided with the distribution.
+${licensePrefix}
+${licensePrefix}3. Neither the name of the copyright holder nor the names of its contributors 
+${licensePrefix}may be used to endorse or promote products derived from this software without 
+${licensePrefix}specific prior written permission.
+${licensePrefix}
+${licensePrefix}4. You adhere to the Media License detailed below.  If you do not, this license
+${licensePrefix}is automatically revoked and you must purge all copies of the software you
+${licensePrefix}possess, in source or binary form.
+${licensePrefix}
+${licensePrefix}THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+${licensePrefix}ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+${licensePrefix}WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+${licensePrefix}DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+${licensePrefix}ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+${licensePrefix}(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+${licensePrefix}LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON 
+${licensePrefix}ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+${licensePrefix}(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+${licensePrefix}SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+${licensePrefix}
+${licensePrefix}
+${licensePrefix}MEDIA LICENSE ==========
+${licensePrefix}All images and other graphical files ("media") included with this
+${licensePrefix}software are copyright (c) 2015 Netsyms Technologies.  You may not distribute
+${licensePrefix}the graphics or any program, source code repository, or other digital storage 
+${licensePrefix}media containing them without permission from Netsyms Technologies.
+${licensePrefix}This ban on distribution only applies to publicly available systems.
+${licensePrefix}A password-protected network file share, USB drive, or other storage scheme that
+${licensePrefix}cannot be easily accessed by the public is generally allowed.  If in doubt,
+${licensePrefix}contact Netsyms Technologies.  If Netsyms Technologies allows or denies
+${licensePrefix}you permission, that decision is considered final and binding.
+${licensePrefix}
+${licensePrefix}You may only use the media for personal, 
+${licensePrefix}non-commercial, non-educational use unless: 
+${licensePrefix}1, You have paid for the software and media via the SyMAT website,
+${licensePrefix}or 2, you are using it as part of the 15-day trial period.  
+${licensePrefix}Other uses are prohibited without permission.
+${licensePrefix}If any part of this license is deemed unenforcable, the remainder 
+${licensePrefix}of the license remains in full effect.
+<#if licenseLast??>
+${licenseLast}
+</#if>
