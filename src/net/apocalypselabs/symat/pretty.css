@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 Public domain.
 */
@@ -23,4 +24,31 @@ Public domain.
 .pun {
     color: black;
     font-weight: bold;
+=======
+/*
+Public domain.
+*/
+.header {
+
+}
+.com {
+    color: green;
+}
+
+.kwd {
+    color: blue;
+}
+
+.pln {
+    color: black;
+}
+
+.lit {
+    color: #0099cc;
+}
+
+.pun {
+    color: black;
+    font-weight: bold;
+>>>>>>> c1bd78b886a57d8f285747c749491ece75862a43
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* 
  * Copyright (c) 2015, Netsyms Technologies
  * All rights reserved.
@@ -52,6 +53,11 @@
  * Other uses are prohibited without permission.
  * If any part of this license is deemed unenforcable, the remainder 
  * of the license remains in full effect.
+=======
+/*
+ This code file defines a data storage standard.
+ It can be used for any purpose, and is hereby released into the public domain.
+>>>>>>> c1bd78b886a57d8f285747c749491ece75862a43
  */
 package net.apocalypselabs.symat.plugin;
 
