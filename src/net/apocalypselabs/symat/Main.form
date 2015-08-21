@@ -49,11 +49,7 @@
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
       <AuxValues>
-<<<<<<< HEAD
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="mainPane = new javax.swing.JDesktopPane() {&#xd;&#xa;    @Override&#xd;&#xa;    protected void paintComponent(Graphics g) {&#xd;&#xa;        super.paintComponent(g);&#xd;&#xa;        g.setColor(Theme.windowColor());&#xd;&#xa;        g.fillRect(0, 0, getWidth(), getHeight());&#xd;&#xa;    }&#xd;&#xa;}&#xd;&#xa;"/>
-=======
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="mainPane = new javax.swing.JDesktopPane() {&#xd;&#xa;    @Override&#xd;&#xa;    protected void paintComponent(Graphics g) {&#xd;&#xa;        super.paintComponent(g);&#xd;&#xa;        if (PrefStorage.getSetting(&quot;theme&quot;).equals(&quot;dark&quot;)) {&#xd;&#xa;            g.setColor(Color.DARK_GRAY);&#xd;&#xa;        } else {&#xd;&#xa;            g.setColor(Color.LIGHT_GRAY);&#xd;&#xa;        }&#xd;&#xa;        g.fillRect(0, 0, getWidth(), getHeight());&#xd;&#xa;    }&#xd;&#xa;}&#xd;&#xa;"/>
->>>>>>> c1bd78b886a57d8f285747c749491ece75862a43
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
       </AuxValues>
       <Constraints>

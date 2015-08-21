@@ -94,10 +94,7 @@
             <Property name="wrapStyleWord" type="boolean" value="true"/>
           </Properties>
           <Events>
-<<<<<<< HEAD
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="textBoxMouseClicked"/>
-=======
->>>>>>> c1bd78b886a57d8f285747c749491ece75862a43
             <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textBoxKeyTyped"/>
           </Events>
         </Component>
