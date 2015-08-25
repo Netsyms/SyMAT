@@ -162,7 +162,7 @@ public class Functions {
      * Quit SyMAT.
      */
     public void quitApplication() {
-        System.exit(0);
+        new ExitControl().windowClosing(null);
     }
 
     /*

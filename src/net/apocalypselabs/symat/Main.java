@@ -174,24 +174,7 @@ public class Main extends JRibbonFrame {
         setLocationRelativeTo(null);
 
         // Run things when app closed
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent we) {
-                int p = JOptionPane.showConfirmDialog(Main.mainPane,
-                        "Are you sure you want to exit SyMAT?",
-                        "Exit SyMAT",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
-                if (p == JOptionPane.YES_OPTION) {
-                    if (getExtendedState() == MAXIMIZED_BOTH) {
-                        PrefStorage.saveSetting("framemaxed", "yes");
-                    } else {
-                        PrefStorage.saveSetting("framemaxed", "no");
-                    }
-                    System.exit(0);
-                }
-            }
-        });
+        addWindowListener(new ExitControl());
 
         // Open initial windows
         boolean loaded = false;

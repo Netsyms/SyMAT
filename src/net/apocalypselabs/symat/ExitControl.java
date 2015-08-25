@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2015, Netsyms Technologies
  * All rights reserved.
  * 
@@ -55,81 +55,37 @@
  */
 package net.apocalypselabs.symat;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
 
 /**
+ * Runs closing logic, saves settings, prompts user, etc.
  *
- * @author Skylar Ittner
+ * @author Skylar
  */
-public class PrefStorage {
+public class ExitControl extends WindowAdapter {
 
-    private static final Preferences prefs = Preferences.userNodeForPackage(PrefStorage.class);
-
-    public static void saveSetting(String key, String value) {
-        prefs.put(key, value);
-    }
-
-    public static boolean isset(String key) {
-        return !getSetting(key, "NULL").equals("NULL");
-    }
-
-    public static void unset(String key) {
-        saveSetting(key, "");
-        save();
-        prefs.remove(key);
-        save();
-    }
-
-    public static String getSetting(String key) {
-        return prefs.get(key, "");
-    }
-
-    public static String getSetting(String key, String emptyResponse) {
-        return prefs.get(key, emptyResponse);
-    }
-
-    public static boolean save() {
-        try {
-            prefs.flush();
-            prefs.sync();
-        } catch (BackingStoreException ex) {
-            System.err.println("Settings could not be saved!");
-            return false;
+    @Override
+    public void windowClosing(WindowEvent we) {
+        int p = JOptionPane.showConfirmDialog(Main.mainPane,
+                "Are you sure you want to exit SyMAT?",
+                "Exit SyMAT",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+        if (p == JOptionPane.YES_OPTION) {
+            if (Main.maingui.getExtendedState() == MAXIMIZED_BOTH) {
+                PrefStorage.saveSetting("framemaxed", "yes");
+            } else {
+                PrefStorage.saveSetting("framemaxed", "no");
+                PrefStorage.saveSetting("framewidth", String.valueOf(Main.maingui.getWidth()));
+                PrefStorage.saveSetting("frameheight", String.valueOf(Main.maingui.getHeight()));
+                PrefStorage.saveSetting("framexpos", String.valueOf(Main.maingui.getLocationOnScreen().x));
+                PrefStorage.saveSetting("frameypos", String.valueOf(Main.maingui.getLocationOnScreen().y));
+            }
+            PrefStorage.save();
+            System.exit(0);
         }
-        return true;
-    }
-
-    /**
-     * Wipe all settings.
-     *
-     * @throws java.util.prefs.BackingStoreException
-     */
-    public static void wipe() throws BackingStoreException {
-        prefs.clear();
-    }
-    
-    /**
-     * Get all settings in a List for a Sync.
-     * @return List of NameValuePairs.
-     * @throws BackingStoreException 
-     */
-    public static List syncdump() throws BackingStoreException {
-        String[] keys = prefs.keys();
-        List<NameValuePair> nvps = new ArrayList<>();
-        for (String key : keys) {
-            nvps.add(new BasicNameValuePair(key, prefs.get(key, "")));
-        }
-        return nvps;
-    }
-
-    // xkcd 221 compliance.
-    int getRandomNumber() {
-        return 4; // chosen by fair dice roll.
-        // guaranteed to be random.
     }
 }
