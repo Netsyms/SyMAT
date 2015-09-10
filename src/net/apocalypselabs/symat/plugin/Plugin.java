@@ -61,12 +61,13 @@ import javax.swing.ImageIcon;
 /**
  * Plugin container class.
  */
-public class Plugin implements Serializable {
+public class Plugin extends PluginParent implements Serializable {
 
     private static final long serialVersionUID = 13371L;
 
     public final int LANG_JS = 0;
     public final int LANG_PY = 1;
+    public final int LANG_JAVA = 2;
 
     private ImageIcon icon;
     private String packageName = "";

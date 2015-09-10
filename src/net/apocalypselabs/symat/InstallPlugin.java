@@ -62,6 +62,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import net.apocalypselabs.symat.plugin.LoadPlugin;
 import net.apocalypselabs.symat.plugin.Plugin;
+import net.apocalypselabs.symat.plugin.PluginParent;
 import org.python.google.common.io.Files;
 
 /**

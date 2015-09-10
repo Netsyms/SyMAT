@@ -92,7 +92,7 @@ public class CodeRunner {
     }
 
     public CodeRunner(int lang) {
-        this(lang == 0 ? "js" : "py");
+        this(lang == 0 ? "js" : (lang == 2 ? "ja" : "py"));
     }
 
     public CodeRunner(String lang) {
@@ -130,6 +130,26 @@ public class CodeRunner {
                             + "_.setLang('py')\n\n"
                             + getFunctions("py")
                             + loadToolkits());
+                    // Allow engine access from scripts.
+                    se.put("engine", se);
+                    attachWriters();
+                } catch (Exception ex) {
+                    initError(ex);
+                }
+                break;
+            case "java":
+            case "ja":
+            case "beanshell":
+            case "bsh":
+                scriptLang = "java";
+                se = new ScriptEngineManager().getEngineByName("java");
+                try {
+                    // Add custom functions.
+                    /*se.eval("importClass(net.apocalypselabs.symat.Functions);"
+                     + "SyMAT_Functions = new net.apocalypselabs.symat.Functions();"
+                     + "SyMAT_Functions.setLang('js');\n"
+                     + getFunctions("js")
+                     + loadToolkits());*/
                     // Allow engine access from scripts.
                     se.put("engine", se);
                     attachWriters();
@@ -298,17 +318,20 @@ public class CodeRunner {
 
     private String getFunctions(String lang) {
         String text = "";
-        try {
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(
-                            CodeRunner.class
-                            .getResourceAsStream("functions." + lang)));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                text += line + "\n";
+        if (!lang.equals("java")) {
+            try {
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(
+                                CodeRunner.class
+                                .getResourceAsStream("functions." + lang)));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    text += line + "\n";
+                }
+            } catch (Exception e) {
             }
-        } catch (Exception e) {
+            return text;
         }
-        return text;
+        return "";
     }
 }

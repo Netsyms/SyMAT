@@ -293,7 +293,7 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Language:");
 
-        langSelect.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "JavaScript", "Python" }));
+        langSelect.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "JavaScript", "Python", "Java" }));
 
         codeBox.setColumns(20);
         codeBox.setRows(5);

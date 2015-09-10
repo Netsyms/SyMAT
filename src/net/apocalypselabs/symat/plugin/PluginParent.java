@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2015, Netsyms Technologies
  * All rights reserved.
  * 
@@ -55,92 +55,54 @@
  */
 package net.apocalypselabs.symat.plugin;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import net.apocalypselabs.symat.CodeRunner;
-import net.apocalypselabs.symat.Main;
-import org.pushingpixels.flamingo.api.common.JCommandButton;
-import org.pushingpixels.flamingo.api.common.JCommandToggleButton;
-import org.pushingpixels.flamingo.api.common.RichTooltip;
-import org.pushingpixels.flamingo.api.common.icon.ImageWrapperResizableIcon;
-import org.pushingpixels.flamingo.api.common.icon.ResizableIcon;
+import javax.swing.ImageIcon;
 
 /**
- * Plugin loader class.
  *
  * @author Skylar
  */
-public class LoadPlugin {
+public abstract class PluginParent {
 
-    private Plugin p;
+    public abstract String getVersion();
 
-    public LoadPlugin(File f) throws FileNotFoundException, IOException, ClassNotFoundException, InvalidClassException {
-        FileInputStream fin = new FileInputStream(f);
-        ObjectInputStream ois = new ObjectInputStream(fin);
-        p = (Plugin) ois.readObject();
-        ois.close();
-    }
+    public abstract void setVersion(String v);
 
-    public LoadPlugin(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
-        this(new File(path));
-    }
+    public abstract String getPackage();
 
-    private ResizableIcon getRibbonIcon() {
-        try {
-            ResizableIcon ico = ImageWrapperResizableIcon.getIcon(
-                    p.getIcon().getImage(),
-                    new Dimension(100, 76));
-            return ico;
-        } catch (Exception ex) {
-            return Main.getRibbonIcon("plugin");
-        }
-    }
+    public abstract void setPackage(String pkg);
 
-    public JCommandButton getRibbonBtn() {
-        JCommandButton b = new JCommandButton((p.getTitle().equals("") ? "Untitled" : p.getTitle()), getRibbonIcon());
-        if (!p.getLongTitle().equals("")) {
-            b.setActionRichTooltip(new RichTooltip(p.getLongTitle(),
-                    (p.getDesc().equals("") ? "   " : p.getDesc())));
-        }
-        b.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                exec();
-            }
-        });
-        b.setCommandButtonKind(JCommandButton.CommandButtonKind.ACTION_ONLY);
-        return b;
-    }
+    public abstract String getAuthor();
 
-    public JCommandToggleButton getGalleryBtn() {
-        JCommandToggleButton b = new JCommandToggleButton((p.getTitle().equals("") ? "Untitled" : p.getTitle()), getRibbonIcon());
-        if (!p.getLongTitle().equals("")) {
-            b.setActionRichTooltip(new RichTooltip(p.getLongTitle(),
-                    (p.getDesc().equals("") ? "   " : p.getDesc())));
-        }
-        b.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                exec();
-            }
-        });
-        return b;
-    }
+    public abstract void setAuthor(String s);
 
-    public void exec() {
-        CodeRunner cr = new CodeRunner(p.getLang());
-        cr.evalString(p.getScript());
-    }
+    public abstract String getWebsite();
 
-    public Plugin getPlugin() {
-        return p;
-    }
+    public abstract void setWebsite(String url);
+
+    public abstract String getOther();
+
+    public abstract void setOther(String o);
+
+    public abstract ImageIcon getIcon();
+
+    public abstract void setIcon(ImageIcon i);
+
+    public abstract String getScript();
+
+    public abstract void setScript(String s);
+
+    public abstract String getTitle();
+
+    public abstract void setTitle(String n);
+
+    public abstract String getDesc();
+
+    public abstract void setDesc(String d);
+
+    public abstract String getLongTitle();
+
+    public abstract void setLongTitle(String t);
+
+    public abstract int getLang();
 
 }

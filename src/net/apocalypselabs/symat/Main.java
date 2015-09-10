@@ -55,7 +55,6 @@
  */
 package net.apocalypselabs.symat;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -64,7 +63,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -108,7 +106,7 @@ public class Main extends JRibbonFrame {
     /**
      * Version name, as it should be displayed.
      */
-    public static final String VERSION_NAME = "2.0.2";
+    public static final String VERSION_NAME = "2.1";
 
     /**
      * The word "SyMAT".
@@ -121,7 +119,7 @@ public class Main extends JRibbonFrame {
     /**
      * Version number, for updates and //needs in scripts
      */
-    public static final double APP_CODE = 23;
+    public static final double APP_CODE = 24;
     /**
      * Base URL for building API calls
      */
@@ -133,7 +131,7 @@ public class Main extends JRibbonFrame {
 
     /**
      * Ubuntu font. Loaded from Ubuntu-R.ttf in the default package at runtime.
-     * May become default sans-serif if something bad happens.
+     * Becomes default sans-serif if something bad happens.
      */
     public static Font ubuntuRegular;
     public static boolean skipPython = false; // Skip python init on start?

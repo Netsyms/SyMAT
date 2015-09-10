@@ -115,8 +115,14 @@ public class Interpreter extends javax.swing.JInternalFrame {
         if (lang.equals("python")) {
             javascriptMenu.setSelected(false);
             pythonMenu.setSelected(true);
+            javaMenu.setSelected(false);
             pyac.install(inputBox);
             setTitle("Shell [python]");
+        } else if (lang.equals("java")) {
+            setTitle("Shell [java]");
+            javascriptMenu.setSelected(false);
+            pythonMenu.setSelected(false);
+            javaMenu.setSelected(true);
         } else {
             jsac.install(inputBox);
             setTitle("Shell [javascript]");
@@ -167,6 +173,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
         jMenu1 = new javax.swing.JMenu();
         javascriptMenu = new javax.swing.JRadioButtonMenuItem();
         pythonMenu = new javax.swing.JRadioButtonMenuItem();
+        javaMenu = new javax.swing.JRadioButtonMenuItem();
         setDefaultLang = new javax.swing.JMenuItem();
 
         setClosable(true);
@@ -278,6 +285,15 @@ public class Interpreter extends javax.swing.JInternalFrame {
             }
         });
         jMenu1.add(pythonMenu);
+
+        langGroup.add(javaMenu);
+        javaMenu.setText("Java");
+        javaMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                javaMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(javaMenu);
 
         langMenu.add(jMenu1);
 
@@ -407,6 +423,8 @@ public class Interpreter extends javax.swing.JInternalFrame {
         FileFilter filter;
         if (javascriptMenu.isSelected()) {
             filter = new FileNameExtensionFilter("SyMAT JavaScript (.syjs)", "syjs");
+        } else if (javaMenu.isSelected()) {
+            filter = new FileNameExtensionFilter("SyMAT Java (.syjava)", "syjava");            
         } else {
             filter = new FileNameExtensionFilter("SyMAT Python (.sypy)", "sypy");
         }
@@ -435,6 +453,13 @@ public class Interpreter extends javax.swing.JInternalFrame {
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
         inputBox.requestFocusInWindow();
     }//GEN-LAST:event_formFocusGained
+
+    private void javaMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javaMenuActionPerformed
+        if (!lang.equals("java")) {
+            Main.loadFrame(new Interpreter("java"));
+            dispose();
+        }
+    }//GEN-LAST:event_javaMenuActionPerformed
 
     private void doRunCode() {
         String code = inputBox.getText();
@@ -551,6 +576,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButtonMenuItem javaMenu;
     private javax.swing.JRadioButtonMenuItem javascriptMenu;
     private javax.swing.ButtonGroup langGroup;
     private javax.swing.JMenu langMenu;

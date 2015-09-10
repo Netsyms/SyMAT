@@ -96,6 +96,10 @@ public class Editor extends javax.swing.JInternalFrame {
     private AutoCompletion jsac = new AutoCompletion(jscomp);
     private AutoCompletion pyac = new AutoCompletion(pycomp);
 
+    public static final int JAVASCRIPT = 1;
+    public static final int PYTHON = 2;
+    public static final int JAVA = 3;
+
     private File filedata;
 
     private int font_size = 12;
@@ -103,14 +107,26 @@ public class Editor extends javax.swing.JInternalFrame {
     /**
      * @param python If true sets to Python
      */
+    @Deprecated
     public Editor(boolean python) {
+        this((python ? PYTHON : JAVASCRIPT));
+    }
+
+    /**
+     * @param lang Script language: 1 = javascript, 2 = python, 3 = java
+     */
+    public Editor(int lang) {
         initComponents();
 
-        FileFilter filter = new FileNameExtensionFilter("JavaScript (syjs, js)", "syjs", "js");
+        FileFilter filter = new FileNameExtensionFilter("All SyMAT Files", "syjs", "js", "sypy", "py", "syjava", "java");
         fc.setFileFilter(filter);
         fc.addChoosableFileFilter(filter);
         fc.addChoosableFileFilter(new FileNameExtensionFilter(
+                "JavaScript (syjs, js)", "syjs", "js"));
+        fc.addChoosableFileFilter(new FileNameExtensionFilter(
                 "Python (sypy, py)", "sypy", "py"));
+        fc.addChoosableFileFilter(new FileNameExtensionFilter(
+                "Java (syjava, java)", "syjava", "java"));
         fc.addChoosableFileFilter(new FileNameExtensionFilter(
                 "Plain Text (txt, text)", "txt", "text"));
 
@@ -136,39 +152,49 @@ public class Editor extends javax.swing.JInternalFrame {
             }
         });
 
-        if (python) {
+        if (lang == PYTHON) {
             pyac.install(codeBox);
             javascriptOption.setSelected(false);
             pythonOption.setSelected(true);
             codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
+        } else if (lang == JAVA) {
+            codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         } else {
             jsac.install(codeBox);
             codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
         }
-        sp.setVisible(true);
-        codeBox.setVisible(true);
+
+        sp.setVisible(
+                true);
+        codeBox.setVisible(
+                true);
         codeBox.requestFocus();
 
-        codeBox.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                changed();
-            }
+        codeBox.getDocument()
+                .addDocumentListener(new DocumentListener() {
+                    @Override
+                    public void changedUpdate(DocumentEvent e
+                    ) {
+                        changed();
+                    }
 
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                changed();
-            }
+                    @Override
+                    public void removeUpdate(DocumentEvent e
+                    ) {
+                        changed();
+                    }
 
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                changed();
-            }
+                    @Override
+                    public void insertUpdate(DocumentEvent e
+                    ) {
+                        changed();
+                    }
 
-            public void changed() {
-                fileChanged = true;
-            }
-        });
+                    public void changed() {
+                        fileChanged = true;
+                    }
+                }
+                );
     }
 
     /**
@@ -200,16 +226,18 @@ public class Editor extends javax.swing.JInternalFrame {
      *
      * @param openfile Nothing to see here, move along.
      */
-    public Editor(int openfile) {
+    public Editor(long openfile) {
         this("");
         openMenuActionPerformed(null);
+
     }
 
     private void setEditorTheme(String themeName) {
         try {
             Theme theme
                     = Theme.load(
-                            Editor.class.
+                            Editor.class
+                            .
                             getResourceAsStream(
                                     "resources/" + themeName + ".xml"),
                             new Font(Font.MONOSPACED, Font.PLAIN, font_size));
@@ -273,6 +301,7 @@ public class Editor extends javax.swing.JInternalFrame {
         codeLangMenu = new javax.swing.JMenu();
         javascriptOption = new javax.swing.JRadioButtonMenuItem();
         pythonOption = new javax.swing.JRadioButtonMenuItem();
+        javaOption = new javax.swing.JRadioButtonMenuItem();
 
         jMenuItem4.setText("jMenuItem4");
 
@@ -546,6 +575,15 @@ public class Editor extends javax.swing.JInternalFrame {
         });
         codeLangMenu.add(pythonOption);
 
+        langBtnGroup.add(javaOption);
+        javaOption.setText("Java");
+        javaOption.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                javaOptionActionPerformed(evt);
+            }
+        });
+        codeLangMenu.add(javaOption);
+
         runMenu.add(codeLangMenu);
 
         jMenuBar1.add(runMenu);
@@ -571,10 +609,11 @@ public class Editor extends javax.swing.JInternalFrame {
         if (r == JFileChooser.APPROVE_OPTION) {
             try {
                 File f = fc.getSelectedFile();
-                codeBox.setText(FileUtils.readFile(f.toString()));
-                isSaved = true;
-                filedata = f;
-                setTitle(f.getName());
+                /*codeBox.setText(FileUtils.readFile(f.toString()));
+                 isSaved = true;
+                 filedata = f;*/
+                openString(FileUtils.readFile(f.getAbsolutePath()),
+                        f.getAbsolutePath(), true);
             } catch (IOException ex) {
                 JOptionPane.showInternalMessageDialog(this,
                         "Error:  Cannot load file: " + ex.getMessage());
@@ -612,15 +651,24 @@ public class Editor extends javax.swing.JInternalFrame {
         isSaved = saved;
         fileChanged = false;
         setTitle((new File(file)).getName());
-        if (file.matches(".*\\.(js|mls|symt|syjs)")) {
+        if (file.matches(".*\\.(js|mls|symt|syjs)")) { // JavaScript
             javascriptOption.setSelected(true);
             pythonOption.setSelected(false);
+            javaOption.setSelected(false);
             codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
             pyac.uninstall();
             jsac.install(codeBox);
-        } else if (file.matches(".*\\.(sypy|py)")) {
+        } else if (file.matches(".*\\.(syjava|java)")) { // Java
+            javascriptOption.setSelected(false);
+            pythonOption.setSelected(false);
+            javaOption.setSelected(true);
+            codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+            //pyac.uninstall();
+            //jsac.install(codeBox);
+        } else if (file.matches(".*\\.(sypy|py)")) { // Python
             javascriptOption.setSelected(false);
             pythonOption.setSelected(true);
+            javaOption.setSelected(false);
             codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
             jsac.uninstall();
             pyac.install(codeBox);
@@ -672,6 +720,9 @@ public class Editor extends javax.swing.JInternalFrame {
             rt.start();
         } else if (pythonOption.isSelected()) {
             rt = new RunThread("python");
+            rt.start();
+        } else if (javaOption.isSelected()) {
+            rt = new RunThread("java");
             rt.start();
         }
     }//GEN-LAST:event_runCodeBtnActionPerformed
@@ -743,6 +794,7 @@ public class Editor extends javax.swing.JInternalFrame {
         uo.start();
         cr.evalCode(script);
         uo.kill();
+
     }
 
     private class UpdateOutput extends Thread {
@@ -855,7 +907,7 @@ public class Editor extends javax.swing.JInternalFrame {
     }
 
     private void exportMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuActionPerformed
-        String lang = pythonOption.isSelected() ? "python" : "js";
+        String lang = pythonOption.isSelected() ? "python" : (javaOption.isSelected() ? "java" : "js");
         Main.loadFrame(new CodeExport(codeBox.getText(), lang, outputBox.getText()));
     }//GEN-LAST:event_exportMenuActionPerformed
 
@@ -928,7 +980,7 @@ public class Editor extends javax.swing.JInternalFrame {
 
     private void packPluginMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_packPluginMenuActionPerformed
         Main.loadFrame(new PackagePlugin(codeBox.getText(),
-                javascriptOption.isSelected() ? 0 : 1
+                javascriptOption.isSelected() ? 0 : pythonOption.isSelected() ? 1 : 2
         ));
     }//GEN-LAST:event_packPluginMenuActionPerformed
 
@@ -941,6 +993,12 @@ public class Editor extends javax.swing.JInternalFrame {
                 + "\nScript killed"
                 + "\n=============\n");
     }//GEN-LAST:event_killButtonActionPerformed
+
+    private void javaOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javaOptionActionPerformed
+        codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+        //pyac.uninstall();
+        //jsac.install(codeBox);
+    }//GEN-LAST:event_javaOptionActionPerformed
 
     private void createShared(String id) {
         try {
@@ -972,6 +1030,7 @@ public class Editor extends javax.swing.JInternalFrame {
             ext = "py";
         }
         String text = "";
+
         try {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(
@@ -1030,6 +1089,7 @@ public class Editor extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JRadioButtonMenuItem javaOption;
     private javax.swing.JRadioButtonMenuItem javascriptOption;
     private javax.swing.JMenuItem killButton;
     private javax.swing.ButtonGroup langBtnGroup;
