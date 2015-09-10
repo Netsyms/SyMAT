@@ -61,7 +61,7 @@ import javax.swing.ImageIcon;
 /**
  * Plugin container class.
  */
-public class Plugin extends PluginParent implements Serializable {
+public class Plugin implements Serializable {
 
     private static final long serialVersionUID = 13371L;
 
