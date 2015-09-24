@@ -87,6 +87,9 @@ public class BackgroundSync extends Thread {
         }
     }
 
+    /**
+     *
+     */
     public BackgroundSync() {
 
     }

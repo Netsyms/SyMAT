@@ -65,6 +65,9 @@ import java.util.Map;
  */
 public class SingleInstanceServer extends NanoHTTPD {
 
+    /**
+     *
+     */
     public SingleInstanceServer() {
         super(26879);
     }

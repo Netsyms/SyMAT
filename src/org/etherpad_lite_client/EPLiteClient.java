@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.HashMap;
 
 /**
- * A client for talking to Etherpad Lite's HTTP JSON API.<br />
- * <br />
- * Example:<br />
- * <br />
+ * A client for talking to Etherpad Lite's HTTP JSON API.<br>
+ * <br>
+ * Example:<br>
+ * <br>
  * <code>
- * EPLiteClient api = new EPLiteClient("http://etherpad.mysite.com", "FJ7jksalksdfj83jsdflkj");<br />
- * HashMap pad = api.getText("my_pad");<br />
+ * EPLiteClient api = new EPLiteClient("http://etherpad.mysite.com", "FJ7jksalksdfj83jsdflkj");<br>
+ * HashMap pad = api.getText("my_pad");<br>
  * String pad = pad.get("text").toString();
  * </code>
  */
@@ -217,15 +217,15 @@ public class EPLiteClient {
 
     /**
      * Create a new session for the given author in the given group, valid until the given UNIX time.
-     * The session id will be returned in "sessionID".<br />
-     * <br />
-     * Example:<br />
-     * <br />
+     * The session id will be returned in "sessionID".<br>
+     * <br>
+     * Example:<br>
+     * <br>
      * <code>
-     * import java.util.Date;<br />
-     * ...<br />
-     * Date now = new Date();<br />
-     * long in1Hour = (now.getTime() + (60L * 60L * 1000L) / 1000L);<br />
+     * import java.util.Date;<br>
+     * ...<br>
+     * Date now = new Date();<br>
+     * long in1Hour = (now.getTime() + (60L * 60L * 1000L) / 1000L);<br>
      * String sessID1 = api.createSession(groupID, authorID, in1Hour).get("sessionID").toString();
      * </code>
      * 
@@ -244,18 +244,18 @@ public class EPLiteClient {
 
     /**
      * Create a new session for the given author in the given group valid for the given number of hours.
-     * The session id will be returned in "sessionID".<br />
-     * <br />
-     * Example:<br />
-     * <br />
+     * The session id will be returned in "sessionID".<br>
+     * <br>
+     * Example:<br>
+     * <br>
      * <code>
-     * // in 2 hours<br />
+     * // in 2 hours<br>
      * String sessID1 = api.createSession(groupID, authorID, 2).get("sessionID").toString();
      * </code>
      * 
      * @param groupID string
      * @param authorID string
-     * @param validUntil int length of session in hours
+     * @param length int length of session in hours
      * @return HashMap
      */
     public HashMap createSession(String groupID, String authorID, int length) {
@@ -265,19 +265,19 @@ public class EPLiteClient {
 
     /**
      * Create a new session for the given author in the given group, valid until the given datetime.
-     * The session id will be returned in "sessionID".<br />
-     * <br />
-     * Example:<br />
-     * <br />
+     * The session id will be returned in "sessionID".<br>
+     * <br>
+     * Example:<br>
+     * <br>
      * <code>
-     * import java.util.Date;<br />
-     * import java.text.DateFormat;<br />
-     * import java.text.SimpleDateFormat;<br />
-     * import java.util.TimeZone;<br />
-     * ...<br />
-     * DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");<br />
-     * dfm.setTimeZone(TimeZone.getTimeZone("GMT-5"));<br />
-     * Date longTime = dfm.parse("2056-01-15 20:15:00");<br />
+     * import java.util.Date;<br>
+     * import java.text.DateFormat;<br>
+     * import java.text.SimpleDateFormat;<br>
+     * import java.util.TimeZone;<br>
+     * ...<br>
+     * DateFormat dfm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");<br>
+     * dfm.setTimeZone(TimeZone.getTimeZone("GMT-5"));<br>
+     * Date longTime = dfm.parse("2056-01-15 20:15:00");<br>
      * String sessID = api.createSession(groupID, authorID, longTime).get("sessionID").toString();
      * </code>
      * 
@@ -562,10 +562,10 @@ public class EPLiteClient {
 
     /**
      * Gets the pad's public status. The boolean is in "publicStatus".
-     * This is only applicable to group pads.<br />
-     * <br />
-     * Example:<br />
-     * <br />
+     * This is only applicable to group pads.<br>
+     * <br>
+     * Example:<br>
+     * <br>
      * <code>
      * Boolean is_public = (Boolean)api.getPublicStatus("g.kjsdfj7ask$foo").get("publicStatus");
      * </code>
@@ -594,10 +594,10 @@ public class EPLiteClient {
 
     /**
      * Checks whether the pad is password-protected or not. The boolean is in "isPasswordProtected".
-     * This is only applicable to group pads.<br />
-     * <br />
-     * Example:<br />
-     * <br />
+     * This is only applicable to group pads.<br>
+     * <br>
+     * Example:<br>
+     * <br>
      * <code>
      * Boolean pass = (Boolean)api.isPasswordProtected("g.kjsdfj7ask$foo").get("isPasswordProtected");
      * </code>

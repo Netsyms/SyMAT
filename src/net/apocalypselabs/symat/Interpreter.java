@@ -145,6 +145,9 @@ public class Interpreter extends javax.swing.JInternalFrame {
         inputBox.requestFocus();
     }
 
+    /**
+     *
+     */
     public Interpreter() {
         this("default");
     }

@@ -24,6 +24,10 @@ import syntaxhighlight.ParseResult;
 import syntaxhighlight.Style;
 import syntaxhighlight.Theme;
 
+/**
+ *
+ * @author Skylar
+ */
 public class PrettifyToHtml {
 
     private static final String MAIN_CLASS = "prettyprint";
@@ -58,6 +62,11 @@ public class PrettifyToHtml {
         return sb.toString();
     }
 
+    /**
+     *
+     * @param theme
+     * @return
+     */
     public static String toCss(Theme theme) {
         StringBuilder sb = new StringBuilder();
         sb.append("." + MAIN_CLASS + "  {");

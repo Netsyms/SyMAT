@@ -70,14 +70,28 @@ public class PrefStorage {
 
     private static final Preferences prefs = Preferences.userNodeForPackage(PrefStorage.class);
 
+    /**
+     *
+     * @param key
+     * @param value
+     */
     public static void saveSetting(String key, String value) {
         prefs.put(key, value);
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public static boolean isset(String key) {
         return !getSetting(key, "NULL").equals("NULL");
     }
 
+    /**
+     *
+     * @param key
+     */
     public static void unset(String key) {
         saveSetting(key, "");
         save();
@@ -85,14 +99,29 @@ public class PrefStorage {
         save();
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public static String getSetting(String key) {
         return prefs.get(key, "");
     }
 
+    /**
+     *
+     * @param key
+     * @param emptyResponse
+     * @return
+     */
     public static String getSetting(String key, String emptyResponse) {
         return prefs.get(key, emptyResponse);
     }
 
+    /**
+     *
+     * @return
+     */
     public static boolean save() {
         try {
             prefs.flush();

@@ -124,6 +124,12 @@ public class CodeExport extends javax.swing.JInternalFrame {
         codeLang = lang;
     }
 
+    /**
+     *
+     * @param code
+     * @param lang
+     * @param out
+     */
     public CodeExport(String code, String lang, String out) {
         this(code, lang);
         outputTxt = out;

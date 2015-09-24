@@ -92,10 +92,18 @@ public class TaskMenu extends javax.swing.JPanel {
         loadTheme();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getPercent() {
         return percentSlider.getValue();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean deleteMe() {
         return delCheck.isSelected();
     }

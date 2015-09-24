@@ -95,6 +95,9 @@ import org.python.core.PyList;
  */
 public class Functions {
 
+    /**
+     *
+     */
     public static final HashMap<String, Object> GLOBALS = new HashMap<>();
 
     private final EvalUtilities util = new EvalUtilities(true, true);
@@ -151,7 +154,7 @@ public class Functions {
     }
 
     /**
-     * @see pause()
+     * @see pause(long millis)
      * @param millis
      */
     public void sleep(long millis) {
@@ -222,6 +225,12 @@ public class Functions {
         return in.modPow(new BigInteger(b), new BigInteger(m)).toString();
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public long gcd(long a, long b) {
         if (b == 0) {
             return a;
@@ -229,6 +238,12 @@ public class Functions {
         return gcd(b, a % b);
     }
 
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
     public String gcd(String a, String b) {
         return (new BigInteger(a).gcd(new BigInteger(b)).toString());
     }
@@ -255,11 +270,25 @@ public class Functions {
         return diff(function, "x");
     }
 
+    /**
+     *
+     * @param function
+     * @param idv
+     * @return
+     * @deprecated
+     */
     @Deprecated
     public String D(String function, String idv) {
         return diff(function, idv);
     }
 
+    /**
+     *
+     * @param function
+     * @param idv
+     * @param eq
+     * @return
+     */
     public double[] solve(String function, String idv, int eq) {
         String res = $("Solve[" + function + "==" + eq + ", " + idv + "]");
         res = res.substring(1, res.length() - 1);
@@ -287,10 +316,21 @@ public class Functions {
         return out;
     }
 
+    /**
+     *
+     * @param function
+     * @param idv
+     * @return
+     */
     public double[] solve(String function, String idv) {
         return solve(function, idv, 0);
     }
 
+    /**
+     *
+     * @param function
+     * @return
+     */
     public double[] solve(String function) {
         return solve(function, "x");
     }
@@ -322,6 +362,11 @@ public class Functions {
         return out;
     }
 
+    /**
+     *
+     * @param o
+     * @return
+     */
     public String printa(Object o) {
         String out = "[";
         if (o instanceof int[]) {
@@ -401,6 +446,11 @@ public class Functions {
         return integrate(function, "x");
     }
 
+    /**
+     *
+     * @param function
+     * @return
+     */
     public String factor(String function) {
         return sym("Factor(" + function + ")");
     }
@@ -415,6 +465,11 @@ public class Functions {
         return sym("Simplify(" + expr + ")");
     }
 
+    /**
+     *
+     * @param expr
+     * @return
+     */
     public Object vpa(String expr) {
         IExpr ans = util.evaluate("N(" + expr + ")");
         if (ans.isNumber()) {
@@ -423,6 +478,11 @@ public class Functions {
         return ans.toString();
     }
 
+    /**
+     *
+     * @param in
+     * @return
+     */
     public int[] primes(int in) {
         boolean[] prime = new boolean[in];
         for (int i = 0; i < prime.length; i++) {
@@ -450,50 +510,110 @@ public class Functions {
         return out;
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public double sec(double d) {
         return 1.0 / Math.cos(d);
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public double csc(double d) {
         return 1.0 / Math.sin(d);
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public double cot(double d) {
         return 1.0 / Math.tan(d);
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public double asec(double d) {
         return Math.acos(1.0 / d);
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public double acsc(double d) {
         return Math.asin(1.0 / d);
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public double acot(double d) {
         return Math.atan(1.0 / d);
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public double sinh(double d) {
         return Math.sinh(d);
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public double cosh(double d) {
         return Math.cosh(d);
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public double tanh(double d) {
         return Math.tanh(d);
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public double sech(double d) {
         return pow(Math.cosh(d), -1);
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public double csch(double d) {
         return pow(Math.sinh(d), -1);
     }
 
+    /**
+     *
+     * @param d
+     * @return
+     */
     public double coth(double d) {
         return Math.cosh(d) / Math.sinh(d);
     }
@@ -610,6 +730,7 @@ public class Functions {
      * Add the given numbers together.
      *
      * @param a numbers. Calculates first + second + third, etc.
+     * @param b
      * @return The sum of the numbers or the value of input if there is only one
      * input.
      */
@@ -640,6 +761,7 @@ public class Functions {
      * Subtract the given numbers.
      *
      * @param a numbers. Calculates (first - second) - third, etc.
+     * @param b
      * @return The difference of the numbers or the value of input if there is
      * only one input.
      */
@@ -649,6 +771,11 @@ public class Functions {
         return ans.toString();
     }
 
+    /**
+     *
+     * @param a
+     * @return
+     */
     public double[][] minvert(double a[][]) {
         int n = a.length;
         double x[][] = new double[n][n];
@@ -762,6 +889,11 @@ public class Functions {
         return a;
     }
 
+    /**
+     *
+     * @param n
+     * @return
+     */
     public boolean isprime(long n) {
         int i = 2;
         while (i <= sqrt(n)) {
@@ -773,6 +905,11 @@ public class Functions {
         return true;
     }
 
+    /**
+     *
+     * @param nn
+     * @return
+     */
     public boolean isprime(String nn) {
         BigInteger n = new BigInteger(nn);
         BigInteger i = new BigInteger("2");
@@ -902,7 +1039,7 @@ public class Functions {
      * Multiply the given matrix by itself b times.
      *
      * @param a Square matrix
-     * @param b Power ( >= 0 )
+     * @param b Power ( &gt;= 0 )
      * @return The matrix result
      * @throws BadInputException if the matrix is not square or power is less
      * than 0
@@ -947,6 +1084,11 @@ public class Functions {
         return radians * (180 / PI);
     }
 
+    /**
+     *
+     * @param input
+     * @return
+     */
     public String sym(String input) {
         return util.evaluate(input).toString();
     }
@@ -976,7 +1118,7 @@ public class Functions {
     /**
      * Substitute newvar for variable in function and attempt to calculate a
      * numerical answer.
-     * <br />Example: subs('32*x','x',2) = 64.0
+     * <br>Example: subs('32*x','x',2) = 64.0
      *
      * @param function Function
      * @param variable Variable to substitute
@@ -1004,10 +1146,21 @@ public class Functions {
     /*
      Graphing interfaces
      */
+
+    /**
+     *
+     * @param xmin
+     * @param xmax
+     */
+    
     public void xlim(double xmin, double xmax) {
         graphwin.setRange(xmin, xmax);
     }
 
+    /**
+     *
+     * @param function
+     */
     public void plot(String function) {
         showGraph();
         if (!function.equals("")) {
@@ -1015,35 +1168,75 @@ public class Functions {
         }
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void plot(double[] x, double[] y) {
         graphwin.plotPoints(x, y);
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param name
+     */
     public void plot(double[] x, double[] y, String name) {
         graphwin.plotPoints(x, y, name);
     }
 
+    /**
+     *
+     * @param function
+     * @param xmin
+     * @param xmax
+     */
     public void plot(String function, double xmin, double xmax) {
         graphwin.setRange(xmin, xmax);
         plot(function);
     }
 
+    /**
+     *
+     * @param f
+     */
     public void ezplot(String f) {
         plot(f);
     }
 
+    /**
+     *
+     * @param function
+     * @param xmin
+     * @param xmax
+     */
     public void ezplot(String function, double xmin, double xmax) {
         plot(function, xmin, xmax);
     }
 
+    /**
+     *
+     * @param f
+     */
     public void graph(String f) {
         plot(f);
     }
 
+    /**
+     *
+     * @return
+     */
     public String plotname() {
         return graphwin.getTitle();
     }
 
+    /**
+     *
+     * @param t
+     * @return
+     */
     public String plotname(String t) {
         if (t.equals("symatpythonnullplotname")) {
             return graphwin.getTitle();
@@ -1054,31 +1247,60 @@ public class Functions {
         }
     }
 
+    /**
+     *
+     */
     public void plot() {
         showGraph();
     }
 
+    /**
+     *
+     */
     public void plotclr() {
         graphwin.clearDraw();
     }
 
+    /**
+     *
+     */
     public void clearplot() {
         plotclr();
     }
 
+    /**
+     *
+     */
     public void plotclear() {
         plotclr();
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void drawdot(double x, double y) {
         showGraph();
         graphwin.drawDot(x, y);
     }
 
+    /**
+     *
+     * @param path
+     * @return
+     * @throws IOException
+     */
     public String readfile(String path) throws IOException {
         return FileUtils.readFile(path);
     }
 
+    /**
+     *
+     * @param content
+     * @param path
+     * @throws IOException
+     */
     public void savefile(String content, String path) throws IOException {
         FileUtils.saveFile(content, path, false);
     }
@@ -1098,10 +1320,20 @@ public class Functions {
         return "";
     }
 
+    /**
+     *
+     * @param data
+     * @return
+     */
     public String md5sum(String data) {
         return FileUtils.MD5(data);
     }
 
+    /**
+     *
+     * @param key
+     * @param val
+     */
     public void save(String key, String val) {
         Preferences prefs = Preferences.userNodeForPackage(Functions.class);
         prefs.put(key, val);
@@ -1112,6 +1344,11 @@ public class Functions {
         }
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public String load(String key) {
         Preferences prefs = Preferences.userNodeForPackage(Functions.class);
         return prefs.get(key, "");
@@ -1120,6 +1357,12 @@ public class Functions {
     /*
      Other
      */
+
+    /**
+     *
+     * @return
+     */
+    
     public String sysinfo() {
         String info = "==Java Information==\n";
         info += "Java version: " + System.getProperty("java.version");
@@ -1145,6 +1388,10 @@ public class Functions {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public String license() {
         String expires = "Error";
         if (PrefStorage.getSetting("licensetype").equals("demo")) {
@@ -1191,10 +1438,18 @@ public class Functions {
         graphwin.toFront();
     }
 
+    /**
+     *
+     * @return
+     */
     public TextBox textbox() {
         return new TextBox();
     }
 
+    /**
+     *
+     * @return
+     */
     public WebBrowser browser() {
         return new WebBrowser();
     }
@@ -1202,10 +1457,17 @@ public class Functions {
      Constructor.
      */
 
+    /**
+     *
+     */
     public Functions() {
         Main.loadFrame(graphwin, false);
     }
 
+    /**
+     *
+     * @param l
+     */
     public void setLang(String l) {
         lang = l;
     }

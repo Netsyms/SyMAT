@@ -134,13 +134,32 @@ public class Main extends JRibbonFrame {
      * Becomes default sans-serif if something bad happens.
      */
     public static Font ubuntuRegular;
+
+    /**
+     *
+     */
     public static boolean skipPython = false; // Skip python init on start?
+
+    /**
+     *
+     */
     public static boolean skipEditor = false; // Skip editor init on start?
 
     private static boolean recentItemsMinimized = false;
 
+    /**
+     *
+     */
     public static boolean updateAvailable = false; // Update available?
+
+    /**
+     *
+     */
     public static String updateString = "";
+
+    /**
+     *
+     */
     public static boolean licValid = false; // License valid?
 
     /**
@@ -153,8 +172,14 @@ public class Main extends JRibbonFrame {
      */
     public static SingleInstanceServer sisrv;
 
+    /**
+     *
+     */
     public static Main maingui;
 
+    /**
+     *
+     */
     public JRibbonBand pluginband;
 
     /**
@@ -440,12 +465,22 @@ public class Main extends JRibbonFrame {
         ribbon.addTask(plugintask);
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     public static ResizableIcon getRibbonIcon(String name) {
         return ImageWrapperResizableIcon.getIcon(
                 Main.class.getResource("images/" + name + ".png"),
                 new Dimension(100, 76));
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     public static ResizableIcon getTinyRibbonIcon(String name) {
         int d = 32;
         return ImageWrapperResizableIcon.getIcon(
@@ -453,6 +488,10 @@ public class Main extends JRibbonFrame {
                 new Dimension(d, d));
     }
 
+    /**
+     *
+     * @param restricted
+     */
     public static void licenseRestrict(boolean restricted) {
         graphbtn.setEnabled(!restricted);
         padsbtn.setEnabled(!restricted);
@@ -474,6 +513,10 @@ public class Main extends JRibbonFrame {
                 mainPane.getWidth(), mainPane.getHeight());
     }
 
+    /**
+     *
+     * @param recent
+     */
     public static void loadRibbonMenu(RibbonApplicationMenuEntrySecondary[] recent) {
         RibbonApplicationMenuEntryPrimary helpbtn
                 = new RibbonApplicationMenuEntryPrimary(
@@ -1074,24 +1117,63 @@ public class Main extends JRibbonFrame {
         });
     }
 
+    /**
+     *
+     */
     public static JCommandButton shellbtn
             = new JCommandButton("Shell", getRibbonIcon("shell"));
+
+    /**
+     *
+     */
     public static JCommandButton editorbtn
             = new JCommandButton("Editor", getRibbonIcon("editor"));
+
+    /**
+     *
+     */
     public static JCommandButton graphbtn
             = new JCommandButton("Graph", getRibbonIcon("graph"));
+
+    /**
+     *
+     */
     public static JCommandButton notepadbtn
             = new JCommandButton("Notepad", getRibbonIcon("notepad"));
+
+    /**
+     *
+     */
     public static JCommandButton wikibtn
             = new JCommandButton("Wiki", getRibbonIcon("wiki"));
+
+    /**
+     *
+     */
     public static JCommandButton forumbtn
             = new JCommandButton("Forum", getRibbonIcon("forum"));
+
+    /**
+     *
+     */
     public static JCommandButton padsbtn
             = new JCommandButton("Pads", getRibbonIcon("pads"));
+
+    /**
+     *
+     */
     public static JCommandButton tasksbtn
             = new JCommandButton("Tasks", getRibbonIcon("tasks"));
+
+    /**
+     *
+     */
     public static JCommandButton installpluginbtn
             = new JCommandButton("Install", getRibbonIcon("installplugin"));
+
+    /**
+     *
+     */
     public static RibbonApplicationMenuEntryPrimary openbtn;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

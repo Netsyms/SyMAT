@@ -131,6 +131,10 @@ public class Theme {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public static String getTheme() {
         switch (currentTheme) {
             case THEME_DARK:
@@ -143,6 +147,10 @@ public class Theme {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public static Color textColor() {
         if (currentTheme == THEME_NEO) {
             return Color.GREEN;
@@ -150,22 +158,42 @@ public class Theme {
         return (currentTheme == THEME_LIGHT) ? BLACK : WHITE;
     }
 
+    /**
+     *
+     * @return
+     */
     public static Color boxColor() {
         return (currentTheme == THEME_LIGHT) ? WHITE : DBACK;
     }
     
+    /**
+     *
+     * @return
+     */
     public static Color notepadColor() {
         return (currentTheme == THEME_LIGHT) ? NTPAD : DBACK;
     }
 
+    /**
+     *
+     * @return
+     */
     public static Color windowColor() {
         return (currentTheme == THEME_LIGHT) ? LGRAY : DGRAY;
     }
 
+    /**
+     *
+     * @return
+     */
     public static Color tabColor() {
         return (currentTheme == THEME_LIGHT) ? LBACK : DBACK;
     }
 
+    /**
+     *
+     * @return
+     */
     public static String editorTheme() {
         if (currentTheme == THEME_NEO) {
             return "neo";

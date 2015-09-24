@@ -87,14 +87,25 @@ public class CodeRunner {
     // What codez are we speaking?
     private String scriptLang = "";
 
+    /**
+     *
+     */
     public CodeRunner() {
         this("javascript");
     }
 
+    /**
+     *
+     * @param lang
+     */
     public CodeRunner(int lang) {
         this(lang == 0 ? "js" : (lang == 2 ? "ja" : "py"));
     }
 
+    /**
+     *
+     * @param lang
+     */
     public CodeRunner(String lang) {
         scriptLang = lang;
         switch (lang) {
@@ -162,6 +173,13 @@ public class CodeRunner {
         }
     }
 
+    /**
+     *
+     * @param name
+     * @param classLoader
+     * @return
+     * @throws IOException
+     */
     public static List<InputStream> loadResources(final String name,
             final ClassLoader classLoader) throws IOException {
         final List<InputStream> list = new ArrayList<InputStream>();
@@ -205,6 +223,12 @@ public class CodeRunner {
         return out;
     }
 
+    /**
+     *
+     * @param lang
+     * @param shell
+     * @deprecated
+     */
     @Deprecated
     public CodeRunner(String lang, boolean shell) {
         this(lang);
@@ -227,14 +251,26 @@ public class CodeRunner {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public StringWriter getStringWriter() {
         return sw;
     }
 
+    /**
+     *
+     * @return
+     */
     public PrintWriter getPrintWriter() {
         return pw;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getBufferDump() {
         String dump = sw.toString();
         sw.getBuffer().setLength(0);
@@ -308,10 +344,20 @@ public class CodeRunner {
         return eval;
     }
 
+    /**
+     *
+     * @param var
+     * @param val
+     */
     public void setVar(String var, Object val) {
         se.put(var, val);
     }
 
+    /**
+     *
+     * @param var
+     * @return
+     */
     public Object getVar(String var) {
         return se.get(var);
     }

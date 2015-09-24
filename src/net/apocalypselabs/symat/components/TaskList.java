@@ -70,6 +70,10 @@ public class TaskList implements Serializable {
     private final ArrayList<SingleTask> tasks = new ArrayList<>();
     private String title = "Untitled";
 
+    /**
+     *
+     * @param t
+     */
     public void addTask(Task t) {
         SingleTask st = new SingleTask();
         st.name = t.toString();
@@ -78,6 +82,10 @@ public class TaskList implements Serializable {
         tasks.add(st);
     }
 
+    /**
+     *
+     * @return
+     */
     public Task[] getTasks() {
         Task[] a = new Task[tasks.size()];
         for (int i = 0; i < tasks.size(); i++) {
@@ -89,14 +97,25 @@ public class TaskList implements Serializable {
         return a;
     }
 
+    /**
+     *
+     * @param t
+     */
     public void setTitle(String t) {
         title = t;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     *
+     */
     public TaskList() {
 
     }

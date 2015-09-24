@@ -77,18 +77,33 @@ public class TextBox extends javax.swing.JInternalFrame {
         textBox.setFont(Main.ubuntuRegular.deriveFont((float) font_size));
     }
 
+    /**
+     *
+     * @param txt
+     */
     public void set(String txt) {
         textBox.setText(txt);
     }
 
+    /**
+     *
+     * @return
+     */
     public String get() {
         return textBox.getText();
     }
 
+    /**
+     *
+     * @param is
+     */
     public void edit(boolean is) {
         textBox.setEditable(is);
     }
 
+    /**
+     *
+     */
     public void open() {
         Main.loadFrame(this, true);
     }

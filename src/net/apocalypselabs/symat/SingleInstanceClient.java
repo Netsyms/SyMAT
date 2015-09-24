@@ -68,6 +68,10 @@ import java.net.URL;
  */
 public class SingleInstanceClient {
 
+    /**
+     *
+     * @param arg
+     */
     public SingleInstanceClient(String arg) {
         String response = "";
         String args = (arg.equals("") ? "" : "?arg=" + arg);

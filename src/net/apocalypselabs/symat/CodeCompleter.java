@@ -81,6 +81,10 @@ public class CodeCompleter {
         provider = makeCompletions();
     }
 
+    /**
+     *
+     * @return
+     */
     public CompletionProvider getProvider() {
         return provider;
     }

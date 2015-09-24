@@ -78,6 +78,7 @@ public class Start extends javax.swing.JPanel {
 
     /**
      * Creates new form Start
+     * @param parent
      */
     public Start(JInternalFrame parent) {
         parentComponent = parent;

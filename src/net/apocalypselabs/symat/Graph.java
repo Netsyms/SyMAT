@@ -99,6 +99,10 @@ public class Graph extends javax.swing.JInternalFrame {
         init();
     }
 
+    /**
+     *
+     * @param isInternal
+     */
     public Graph(boolean isInternal) {
         init();
         standalone = !isInternal;
@@ -125,6 +129,9 @@ public class Graph extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     *
+     */
     public void forceClose() {
         dispose();
     }
@@ -379,10 +386,21 @@ public class Graph extends javax.swing.JInternalFrame {
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
     }//GEN-LAST:event_formComponentShown
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void plotPoints(double[] x, double[] y) {
         plotPoints(x, y, "Points");
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param name
+     */
     public void plotPoints(double[] x, double[] y, String name) {
         plot.addLinePlot(name, x, y);
     }
@@ -398,6 +416,11 @@ public class Graph extends javax.swing.JInternalFrame {
         return 15.0;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     */
     public void drawDot(double x, double y) {
         double[] xpt = {x};
         double[] ypt = {y};
@@ -455,6 +478,11 @@ public class Graph extends javax.swing.JInternalFrame {
         return range;
     }
 
+    /**
+     *
+     * @param min
+     * @param max
+     */
     public void setRange(double min, double max) {
         xmin = min;
         xmax = max;
@@ -486,6 +514,10 @@ public class Graph extends javax.swing.JInternalFrame {
         plotBtnActionPerformed(null);
     }
 
+    /**
+     *
+     * @param label
+     */
     public void setLabel(String label) {
         lbl.setText(label);
     }

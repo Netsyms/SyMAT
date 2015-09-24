@@ -314,11 +314,19 @@ public class License extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     *
+     * @param email
+     * @return
+     */
     public static boolean checkEmail(String email) {
         String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]+$";
         return (email.matches(regex));
     }
 
+    /**
+     *
+     */
     public void exit() {
         dispose();
     }

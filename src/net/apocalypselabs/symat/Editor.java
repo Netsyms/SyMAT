@@ -96,8 +96,19 @@ public class Editor extends javax.swing.JInternalFrame {
     private AutoCompletion jsac = new AutoCompletion(jscomp);
     private AutoCompletion pyac = new AutoCompletion(pycomp);
 
+    /**
+     * The JavaScript language.
+     */
     public static final int JAVASCRIPT = 1;
+
+    /**
+     * The Python language.
+     */
     public static final int PYTHON = 2;
+
+    /**
+     * The Javs language.
+     */
     public static final int JAVA = 3;
 
     private File filedata;
@@ -217,6 +228,9 @@ public class Editor extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     *
+     */
     public Editor() {
         this(false);
     }
@@ -1026,7 +1040,9 @@ public class Editor extends javax.swing.JInternalFrame {
      */
     private void openSample(String name) {
         String ext = "js";
-        if (!javascriptOption.isSelected()) {
+        if (javaOption.isSelected()) {
+            ext = "java.txt";
+        } else if (pythonOption.isSelected()) {
             ext = "py";
         }
         String text = "";
@@ -1042,10 +1058,10 @@ public class Editor extends javax.swing.JInternalFrame {
             }
         } catch (Exception e) {
             text = "Error: Could not open embedded sample file.";
-            if (ext.equals("js")) {
+            if (ext.startsWith("j")) {
                 text = "/* " + text + " */";
             } else {
-                text = "# " + text;
+                text = "## " + text;
             }
         }
         openString(text, name + "." + ext, false);

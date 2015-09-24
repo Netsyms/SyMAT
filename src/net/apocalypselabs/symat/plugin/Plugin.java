@@ -65,8 +65,19 @@ public class Plugin implements Serializable {
 
     private static final long serialVersionUID = 13371L;
 
+    /**
+     *
+     */
     public final int LANG_JS = 0;
+
+    /**
+     *
+     */
     public final int LANG_PY = 1;
+
+    /**
+     *
+     */
     public final int LANG_JAVA = 2;
 
     private ImageIcon icon;
@@ -81,6 +92,9 @@ public class Plugin implements Serializable {
     private String version = "";
     private int lang = LANG_JS;
 
+    /**
+     *
+     */
     public Plugin() {
 
     }

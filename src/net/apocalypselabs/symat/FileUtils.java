@@ -113,6 +113,13 @@ public class FileUtils {
         return file;
     }
 
+    /**
+     *
+     * @param content
+     * @param path
+     * @param addToRecent
+     * @throws IOException
+     */
     public static void saveFile(String content, String path, boolean addToRecent)
             throws IOException {
         try (PrintStream out = new PrintStream(new FileOutputStream(path))) {
@@ -146,6 +153,13 @@ public class FileUtils {
         return null;
     }
 
+    /**
+     *
+     * @param url
+     * @return
+     * @throws MalformedURLException
+     * @throws IOException
+     */
     public static String getUrl(String url) throws MalformedURLException, IOException {
         String out;
         try (Scanner sc = new Scanner(new URL(url).openStream(), "UTF-8")) {

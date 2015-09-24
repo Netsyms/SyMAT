@@ -63,7 +63,14 @@ package net.apocalypselabs.symat.sync;
 
 public class UserLogin extends javax.swing.JPanel {
 
+    /**
+     *
+     */
     public static final int LOGIN_MODE = 0;
+
+    /**
+     *
+     */
     public static final int SIGNUP_MODE = 1;
     private static final String signup_help = "Sign up for a Sync acount.";
     /**
@@ -77,10 +84,18 @@ public class UserLogin extends javax.swing.JPanel {
         }
     } 
     
+    /**
+     *
+     * @return
+     */
     public String getEmail() {
         return emailBox.getText();
     }
     
+    /**
+     *
+     * @return
+     */
     public String getPassword() {
         return new String(passwdBox.getPassword());
     }

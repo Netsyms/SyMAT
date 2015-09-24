@@ -75,6 +75,11 @@ public class PackagePlugin extends javax.swing.JInternalFrame {
     private final JFileChooser fcexp = new JFileChooser();
     private ImageIcon icon;
 
+    /**
+     *
+     * @param code
+     * @param lang
+     */
     public PackagePlugin(String code, int lang) {
         this();
         try {

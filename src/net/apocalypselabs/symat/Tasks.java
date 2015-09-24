@@ -91,6 +91,10 @@ public class Tasks extends javax.swing.JInternalFrame {
         initComponents();
     }
 
+    /**
+     *
+     * @param f
+     */
     public Tasks(File f) {
         this();
         try {

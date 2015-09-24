@@ -69,6 +69,9 @@ import org.etherpad_lite_client.EPLiteException;
  */
 public class Pads extends javax.swing.JInternalFrame {
 
+    /**
+     * URL of the pad server.
+     */
     public static final String PADS_URL = "http://pad.symatapp.com";
 
     /**
@@ -113,7 +116,7 @@ public class Pads extends javax.swing.JInternalFrame {
 
     /**
      * Delete the pad with the given ID from local memory.
-     * <br />It will still exist online.
+     * <br>It will still exist online.
      *
      * @param id the pad ID.
      */
@@ -179,8 +182,8 @@ public class Pads extends javax.swing.JInternalFrame {
 
     /**
      * Generate a random pad ID with length 15.
-     * <br />There are about 1.217 x 10^26 possibilities (121 septillion).
-     * <br />If this starts giving out used IDs, I'll be too rich to care.
+     * <br>There are about 1.217 x 10^26 possibilities (121 septillion).
+     * <br>If this starts giving out used IDs, I'll be too rich to care.
      *
      * @return the ID.
      */

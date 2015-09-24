@@ -70,6 +70,10 @@ public class FontOptions extends javax.swing.JPanel {
         initComponents();
     }
 
+    /**
+     *
+     * @param size
+     */
     public FontOptions(int size) {
         this();
         jSpinner1.setValue(size);
@@ -130,10 +134,18 @@ public class FontOptions extends javax.swing.JPanel {
         modified = true;
     }//GEN-LAST:event_jSpinner1StateChanged
 
+    /**
+     *
+     * @return
+     */
     public int getResult() {
         return (int) jSpinner1.getValue();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isModified() {
         return modified;
     }

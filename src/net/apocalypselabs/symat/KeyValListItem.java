@@ -67,14 +67,26 @@ public class KeyValListItem {
     private String VAL = "";
     private String KEY = "";
 
+    /**
+     *
+     */
     public KeyValListItem() {
 
     }
 
+    /**
+     *
+     * @param key
+     */
     public KeyValListItem(String key) {
         KEY = key;
     }
 
+    /**
+     *
+     * @param key
+     * @param val
+     */
     public KeyValListItem(String key, String val) {
         KEY = key;
         VAL = val;

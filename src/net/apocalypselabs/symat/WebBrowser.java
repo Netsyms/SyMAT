@@ -91,9 +91,24 @@ public class WebBrowser extends javax.swing.JInternalFrame {
     private Group root;
     private Scene scene;
 
+    /**
+     *
+     */
     public static final int DEFAULT_LOGO = 0;
+
+    /**
+     *
+     */
     public static final int WIKI_LOGO = 1;
+
+    /**
+     *
+     */
     public static final int FORUM_LOGO = 2;
+
+    /**
+     *
+     */
     public static final int PAD_LOGO = 3;
     private JInternalFrame thisFrame;
 
@@ -165,12 +180,20 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         browserBox.add(jfxPanel, BorderLayout.CENTER);
     }
 
+    /**
+     *
+     * @param title
+     */
     public WebBrowser(String title) {
         this();
         setTitle(title);
         loadURL("http://wiki.symatapp.com/");
     }
 
+    /**
+     *
+     * @return
+     */
     public String homepage() {
         try {
             String text = "";
@@ -188,12 +211,23 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     *
+     * @param title
+     * @param url
+     */
     public WebBrowser(String title, String url) {
         this();
         setTitle(title);
         loadURL(url);
     }
 
+    /**
+     *
+     * @param title
+     * @param url
+     * @param icon
+     */
     public WebBrowser(String title, String url, int icon) {
         this(title, url);
         switch (icon) {
@@ -215,17 +249,30 @@ public class WebBrowser extends javax.swing.JInternalFrame {
 
     }
 
+    /**
+     *
+     * @param url
+     * @param isurl
+     */
     public WebBrowser(String url, boolean isurl) {
         this();
         loadURL(url);
     }
 
+    /**
+     *
+     * @param yesno
+     */
     public void showNavbar(boolean yesno) {
         navBar.setVisible(yesno);
         goBtn.setEnabled(yesno);
         backBtn.setEnabled(yesno);
     }
 
+    /**
+     *
+     * @param url
+     */
     public void loadURL(final String url) {
         Platform.runLater(new Runnable() {
             @Override
@@ -237,10 +284,17 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         urlBox.setText(url);
     }
 
+    /**
+     *
+     */
     public void open() {
         Main.loadFrame(this, true);
     }
 
+    /**
+     *
+     * @param content
+     */
     public void loadString(final String content) {
         Platform.runLater(new Runnable() {
             @Override

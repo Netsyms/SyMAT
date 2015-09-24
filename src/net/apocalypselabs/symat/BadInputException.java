@@ -63,10 +63,17 @@ package net.apocalypselabs.symat;
  */
 public class BadInputException extends Exception {
 
+    /**
+     *
+     */
     public BadInputException() {
         super();
     }
 
+    /**
+     *
+     * @param msg
+     */
     public BadInputException(String msg) {
         super(msg);
     }

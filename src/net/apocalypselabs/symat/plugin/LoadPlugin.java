@@ -81,6 +81,14 @@ public class LoadPlugin {
 
     private Plugin p;
 
+    /**
+     *
+     * @param f
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws InvalidClassException
+     */
     public LoadPlugin(File f) throws FileNotFoundException, IOException, ClassNotFoundException, InvalidClassException {
         FileInputStream fin = new FileInputStream(f);
         ObjectInputStream ois = new ObjectInputStream(fin);
@@ -88,6 +96,13 @@ public class LoadPlugin {
         ois.close();
     }
 
+    /**
+     *
+     * @param path
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public LoadPlugin(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
         this(new File(path));
     }
@@ -103,6 +118,10 @@ public class LoadPlugin {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public JCommandButton getRibbonBtn() {
         JCommandButton b = new JCommandButton((p.getTitle().equals("") ? "Untitled" : p.getTitle()), getRibbonIcon());
         if (!p.getLongTitle().equals("")) {
@@ -119,6 +138,10 @@ public class LoadPlugin {
         return b;
     }
 
+    /**
+     *
+     * @return
+     */
     public JCommandToggleButton getGalleryBtn() {
         JCommandToggleButton b = new JCommandToggleButton((p.getTitle().equals("") ? "Untitled" : p.getTitle()), getRibbonIcon());
         if (!p.getLongTitle().equals("")) {
@@ -134,11 +157,18 @@ public class LoadPlugin {
         return b;
     }
 
+    /**
+     *
+     */
     public void exec() {
         CodeRunner cr = new CodeRunner(p.getLang());
         cr.evalString(p.getScript());
     }
 
+    /**
+     *
+     * @return
+     */
     public Plugin getPlugin() {
         return p;
     }

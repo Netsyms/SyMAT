@@ -84,6 +84,10 @@ public class InstallPlugin extends javax.swing.JInternalFrame {
         initComponents();
     }
 
+    /**
+     *
+     * @param f
+     */
     public InstallPlugin(File f) {
         this();
         openPlugin(f);

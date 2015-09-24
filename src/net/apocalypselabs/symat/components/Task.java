@@ -67,10 +67,22 @@ public class Task extends javax.swing.JPanel {
 
     private int percent = 0;
 
+    /**
+     *
+     * @param complete
+     * @param name
+     * @param desc
+     */
     public Task(boolean complete, String name, String desc) {
         this((complete ? 100 : 0), name, desc);
     }
 
+    /**
+     *
+     * @param complete
+     * @param name
+     * @param desc
+     */
     public Task(int complete, String name, String desc) {
         this();
         percent = complete;
@@ -92,10 +104,18 @@ public class Task extends javax.swing.JPanel {
         return taskName.getText();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDesc() {
         return taskDesc.getText();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getComplete() {
         return percent;
     }

@@ -149,6 +149,10 @@ public class TasksExport extends javax.swing.JInternalFrame {
         });
     }
 
+    /**
+     *
+     * @param content
+     */
     public void loadString(final String content) {
         Platform.runLater(new Runnable() {
             @Override
