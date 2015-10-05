@@ -348,10 +348,14 @@ public class License extends javax.swing.JInternalFrame {
                 System.out.println("Checking license...");
                 URL url = new URL(API_URL + "liccheck.php?email=" + email);
                 String line;
+                //String line2 = "";
+                //boolean line2ok = false;
                 try (InputStream is = url.openStream();
                         BufferedReader br
                         = new BufferedReader(new InputStreamReader(is))) {
                     line = br.readLine();
+                    // line2 = br.readLine();
+                    // line2ok = true;
                 }
 
                 switch (line) {
@@ -367,7 +371,12 @@ public class License extends javax.swing.JInternalFrame {
                     default:
                         fail();
                 }
-            } catch (IOException e) {
+                /*if (line2ok) {
+                 if (line2.equals("pro")) {
+                        
+                 }
+                 }*/
+            } catch (Exception e) {
                 Debug.printerr("License check failed.");
                 Debug.stacktrace(e);
                 ioerror();
@@ -425,7 +434,9 @@ public class License extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(Main.mainPane,
                     "An error occured while verifying your license.  "
                     + "Ensure you have an Internet connection and "
-                    + "try again later.",
+                    + "try again later.  If the problem persists, "
+                    + "contact Netsyms Technologies Licensing at "
+                    + "software@netsyms.com.",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         }

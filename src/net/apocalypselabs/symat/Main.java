@@ -323,7 +323,7 @@ public class Main extends JRibbonFrame {
      */
     private void loadRibbon() {
         ResizableIcon appico = ImageWrapperResizableIcon.getIcon(
-                Main.class.getResource("icon32.png"),
+                Main.class.getResource("32x32.png"),
                 new Dimension(32, 32));
         setApplicationIcon(appico);
         int tries = 0; // no infinite loops for us!
