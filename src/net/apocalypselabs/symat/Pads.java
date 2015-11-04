@@ -289,9 +289,7 @@ public class Pads extends javax.swing.JInternalFrame {
         } else {
             theme += "default";
         }
-        Main.loadFrame(new WebBrowser("Pad " + pad,
-                PADS_URL + "/p/" + pad + theme,
-                WebBrowser.PAD_LOGO));
+        Main.loadFrame(new PadEditor(PADS_URL + "/p/" + pad + theme, pad));
     }
 
     /**
@@ -549,7 +547,13 @@ public class Pads extends javax.swing.JInternalFrame {
     }
 
     private void updateList() {
+        int sel = padPane.getSelectedIndex();
         padPane.setListData(getPads());
+        try {
+            padPane.setSelectedIndex(sel);
+        } catch (Exception ex) {
+            
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
