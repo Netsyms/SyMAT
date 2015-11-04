@@ -156,11 +156,11 @@ public class CodeRunner {
                 se = new ScriptEngineManager().getEngineByName("java");
                 try {
                     // Add custom functions.
-                    /*se.eval("importClass(net.apocalypselabs.symat.Functions);"
-                     + "SyMAT_Functions = new net.apocalypselabs.symat.Functions();"
-                     + "SyMAT_Functions.setLang('js');\n"
-                     + getFunctions("js")
-                     + loadToolkits());*/
+                    se.eval("import net.apocalypselabs.symat.Functions;"
+                            + "Functions SyMAT_Functions = new Functions();"
+                            + "SyMAT_Functions.setLang(\"java\");\n"
+                            + getFunctions("java")
+                            + loadToolkits());
                     // Allow engine access from scripts.
                     se.put("engine", se);
                     attachWriters();
@@ -364,20 +364,20 @@ public class CodeRunner {
 
     private String getFunctions(String lang) {
         String text = "";
-        if (!lang.equals("java")) {
-            try {
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(
-                                CodeRunner.class
-                                .getResourceAsStream("functions." + lang)));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    text += line + "\n";
-                }
-            } catch (Exception e) {
+        //if (!lang.equals("java")) {
+        try {
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            CodeRunner.class
+                            .getResourceAsStream("functions." + (lang.equals("java") ? "java.txt" : lang))));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                text += line + "\n";
             }
-            return text;
+        } catch (Exception e) {
         }
-        return "";
+        return text;
+        //}
+        //return "";
     }
 }

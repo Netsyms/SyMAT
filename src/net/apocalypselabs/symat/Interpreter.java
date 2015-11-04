@@ -82,8 +82,10 @@ public class Interpreter extends javax.swing.JInternalFrame {
 
     private CompletionProvider jscomp = new CodeCompleter("js").getProvider();
     private CompletionProvider pycomp = new CodeCompleter("py").getProvider();
+    private CompletionProvider javacomp = new CodeCompleter("java").getProvider();
     private AutoCompletion jsac = new AutoCompletion(jscomp);
     private AutoCompletion pyac = new AutoCompletion(pycomp);
+    private AutoCompletion javaac = new AutoCompletion(javacomp);
 
     private Interpreter thisobject;
 
@@ -123,6 +125,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
             javascriptMenu.setSelected(false);
             pythonMenu.setSelected(false);
             javaMenu.setSelected(true);
+            javaac.install(inputBox);
         } else {
             jsac.install(inputBox);
             setTitle("Shell [javascript]");
@@ -386,6 +389,8 @@ public class Interpreter extends javax.swing.JInternalFrame {
         String pref = "javascript";
         if (pythonMenu.isSelected()) {
             pref = "python";
+        } else if (javaMenu.isSelected()) {
+            pref = "java";
         }
         PrefStorage.saveSetting("shellLang", pref);
         PrefStorage.save();
@@ -427,7 +432,7 @@ public class Interpreter extends javax.swing.JInternalFrame {
         if (javascriptMenu.isSelected()) {
             filter = new FileNameExtensionFilter("SyMAT JavaScript (.syjs)", "syjs");
         } else if (javaMenu.isSelected()) {
-            filter = new FileNameExtensionFilter("SyMAT Java (.syjava)", "syjava");            
+            filter = new FileNameExtensionFilter("SyMAT Java (.syjava)", "syjava");
         } else {
             filter = new FileNameExtensionFilter("SyMAT Python (.sypy)", "sypy");
         }

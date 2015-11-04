@@ -74,7 +74,7 @@ public class CodeCompleter {
 
     /**
      *
-     * @param language Either js or py.
+     * @param language Either js, py, or java.
      */
     public CodeCompleter(String language) {
         lang = language;
