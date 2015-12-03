@@ -56,6 +56,7 @@
 package net.apocalypselabs.symat;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -76,6 +77,8 @@ import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
 import javafx.util.Callback;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
@@ -558,6 +561,24 @@ public class WebBrowser extends javax.swing.JInternalFrame {
                 browser.resize(browserBox.getWidth(), browserBox.getHeight());
             }
         });
+    }
+    
+    /**
+     * Add a component to the toolbar.
+     * @param btn The JComponent to add.
+     */
+    public void addButton(JComponent btn) {
+        buttonBar.add(btn);
+    }
+    
+    /**
+     * Add a button to the toolbar.
+     * @param btn The JButton to add.
+     * @param action An ActionListener to handle actions.
+     */
+    public void addButton(JButton btn, ActionListener action) {
+        buttonBar.add(btn);
+        btn.addActionListener(action);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
