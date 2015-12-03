@@ -426,15 +426,21 @@ public class PadEditor extends javax.swing.JInternalFrame implements RunScriptLi
     }
 
     private void javascriptOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javascriptOptionActionPerformed
-
+        pythonOption.setSelected(false);
+        javaOption.setSelected(false);
+        javascriptOption.setSelected(true);
     }//GEN-LAST:event_javascriptOptionActionPerformed
 
     private void pythonOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pythonOptionActionPerformed
-
+        pythonOption.setSelected(true);
+        javaOption.setSelected(false);
+        javascriptOption.setSelected(false);
     }//GEN-LAST:event_pythonOptionActionPerformed
 
     private void javaOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javaOptionActionPerformed
-
+        pythonOption.setSelected(false);
+        javaOption.setSelected(true);
+        javascriptOption.setSelected(false);
     }//GEN-LAST:event_javaOptionActionPerformed
 
     private void browserBoxComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_browserBoxComponentResized
