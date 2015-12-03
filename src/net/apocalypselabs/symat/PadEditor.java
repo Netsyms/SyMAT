@@ -219,8 +219,11 @@ public class PadEditor extends javax.swing.JInternalFrame implements RunScriptLi
 
         jSplitPane1 = new javax.swing.JSplitPane();
         browserBox = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         outputBox = new javax.swing.JTextArea();
+        clearBtn = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         statusBar = new javax.swing.JToolBar();
         statusLbl = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -239,7 +242,7 @@ public class PadEditor extends javax.swing.JInternalFrame implements RunScriptLi
         setTitle("Pad Editor");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/editor.png"))); // NOI18N
         setMinimumSize(new java.awt.Dimension(300, 300));
-        setPreferredSize(new java.awt.Dimension(480, 400));
+        setPreferredSize(new java.awt.Dimension(550, 391));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -266,9 +269,10 @@ public class PadEditor extends javax.swing.JInternalFrame implements RunScriptLi
             }
         });
 
-        jSplitPane1.setDividerLocation(260);
+        jSplitPane1.setDividerLocation(200);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         jSplitPane1.setResizeWeight(0.7);
+        jSplitPane1.setPreferredSize(new java.awt.Dimension(550, 375));
 
         browserBox.setMinimumSize(new java.awt.Dimension(100, 25));
         browserBox.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -284,7 +288,37 @@ public class PadEditor extends javax.swing.JInternalFrame implements RunScriptLi
         outputBox.setTabSize(4);
         jScrollPane1.setViewportView(outputBox);
 
-        jSplitPane1.setRightComponent(jScrollPane1);
+        clearBtn.setText("Clear");
+        clearBtn.setToolTipText("");
+        clearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Output:");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 437, Short.MAX_VALUE)
+                .addComponent(clearBtn))
+            .addComponent(jScrollPane1)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+        );
+
+        jSplitPane1.setBottomComponent(jPanel1);
 
         getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
@@ -447,6 +481,10 @@ public class PadEditor extends javax.swing.JInternalFrame implements RunScriptLi
         resizeAll();
     }//GEN-LAST:event_browserBoxComponentResized
 
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+        outputBox.setText("");
+    }//GEN-LAST:event_clearBtnActionPerformed
+
     private void resizeAll() {
         Platform.runLater(new Runnable() {
             @Override
@@ -460,8 +498,11 @@ public class PadEditor extends javax.swing.JInternalFrame implements RunScriptLi
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel browserBox;
+    private javax.swing.JButton clearBtn;
     private javax.swing.JMenu codeLangMenu;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JRadioButtonMenuItem javaOption;
