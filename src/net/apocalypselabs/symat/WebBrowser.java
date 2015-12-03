@@ -192,27 +192,6 @@ public class WebBrowser extends javax.swing.JInternalFrame {
 
     /**
      *
-     * @return
-     */
-    public String homepage() {
-        try {
-            String text = "";
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(
-                            WebBrowser.class
-                            .getResourceAsStream("resources/homepage.html")));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                text += line;
-            }
-            return text;
-        } catch (IOException ex) {
-            return "Error: " + ex.getMessage();
-        }
-    }
-
-    /**
-     *
      * @param title
      * @param url
      */
@@ -274,14 +253,90 @@ public class WebBrowser extends javax.swing.JInternalFrame {
      * @param url
      */
     public void loadURL(final String url) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                webEngine.load(url);
-                resizeAll();
+        if (url.startsWith("about:")) {
+            final String action = url.replace("about:", "");
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    switch (action) {
+                        case "home":
+                            webEngine.loadContent(homepage());
+                            break;
+                        case "blank":
+                            webEngine.loadContent("");
+                            break;
+                        case "new":
+                            Main.loadFrame(new WebBrowser());
+                            break;
+                        default:
+                            webEngine.loadContent(errorpage("Invalid URL", "That isn't a valid address."));
+                    }
+                    resizeAll();
+                }
+            });
+            urlBox.setText(url);
+        } else {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    webEngine.load(url);
+                    resizeAll();
+                }
+            });
+            urlBox.setText(url);
+        }
+    }
+
+    /**
+     * Get the homepage/startpage HTML.
+     *
+     * @return
+     */
+    public String homepage() {
+        try {
+            String text = "";
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            WebBrowser.class
+                            .getResourceAsStream("resources/homepage.html")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                text += line;
             }
-        });
-        urlBox.setText(url);
+            return text;
+        } catch (IOException ex) {
+            return errorpage("Error: " + ex.getMessage(), ex.toString());
+        }
+    }
+
+    /**
+     * Returns a webpage suitable for showing error messages.
+     *
+     * @param error Short error message
+     * @param details Error information
+     * @return HTML page content
+     */
+    public String errorpage(String error, String details) {
+        try {
+            String text = "";
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            WebBrowser.class
+                            .getResourceAsStream("resources/errorpage.html")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                text += line;
+            }
+            text = text.replaceAll("<<<ERROR>>>", error);
+            text = text.replaceAll("<<<DETAILS>>>", details);
+            return text;
+        } catch (IOException ex) {
+            return "Oh, no!  Something bad happened:<br />"
+                    + error
+                    + "<br />Also, an error occured "
+                    + "while displaying the error page: "
+                    + ex.getMessage();
+        }
     }
 
     /**
@@ -437,7 +492,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         if (urlBox.getText().equals("about:home")) {
             loadString(homepage());
         } else {
-            if (!urlBox.getText().startsWith("http")) {
+            if (!urlBox.getText().startsWith("http") && !urlBox.getText().startsWith("about:")) {
                 urlBox.setText("http://" + urlBox.getText());
             }
             loadURL(urlBox.getText());
