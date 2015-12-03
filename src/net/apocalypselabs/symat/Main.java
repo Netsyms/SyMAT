@@ -339,9 +339,9 @@ public class Main extends JRibbonFrame {
             tries++;
         }
         JRibbon ribbon = getRibbon();
-        JRibbonBand coreband = new JRibbonBand("Core", null);
-        JRibbonBand appsband = new JRibbonBand("Apps", null);
-        JRibbonBand webband = new JRibbonBand("Online", null);
+        JRibbonBand codeband = new JRibbonBand("Code", null);
+        JRibbonBand toolsband = new JRibbonBand("Tools", null);
+        JRibbonBand webband = new JRibbonBand("Web", null);
         JRibbonBand collabband = new JRibbonBand("Team", null);
 
         try {
@@ -420,23 +420,21 @@ public class Main extends JRibbonFrame {
         tasksbtn.setActionRichTooltip(new RichTooltip("Task List",
                 "Manage tasks and to-do lists for projects."));
 
-        coreband.addCommandButton(shellbtn, RibbonElementPriority.TOP);
-        coreband.addCommandButton(editorbtn, RibbonElementPriority.TOP);
+        codeband.addCommandButton(shellbtn, RibbonElementPriority.TOP);
+        codeband.addCommandButton(editorbtn, RibbonElementPriority.TOP);
 
-        appsband.addCommandButton(graphbtn, RibbonElementPriority.MEDIUM);
-        appsband.addCommandButton(notepadbtn, RibbonElementPriority.MEDIUM);
-        appsband.addCommandButton(tasksbtn, RibbonElementPriority.MEDIUM);
+        toolsband.addCommandButton(graphbtn, RibbonElementPriority.MEDIUM);
+        toolsband.addCommandButton(notepadbtn, RibbonElementPriority.MEDIUM);
+        toolsband.addCommandButton(tasksbtn, RibbonElementPriority.MEDIUM);
 
-        webband.addCommandButton(wikibtn, RibbonElementPriority.LOW);
-        webband.addCommandButton(browserbtn, RibbonElementPriority.LOW);
-        webband.addCommandButton(padsbtn, RibbonElementPriority.MEDIUM);
+        webband.addCommandButton(padsbtn, RibbonElementPriority.TOP);
+        webband.addCommandButton(browserbtn, RibbonElementPriority.MEDIUM);
+        webband.addCommandButton(wikibtn, RibbonElementPriority.MEDIUM);
 
-        coreband.setResizePolicies((List) Arrays.asList(
-                new CoreRibbonResizePolicies.None(coreband.getControlPanel()),
-                new IconRibbonBandResizePolicy(coreband.getControlPanel())));
-        appsband.setResizePolicies((List) Arrays.asList(
-                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
-                new IconRibbonBandResizePolicy(appsband.getControlPanel())));
+        codeband.setResizePolicies((List) Arrays.asList(new CoreRibbonResizePolicies.None(codeband.getControlPanel()),
+                new IconRibbonBandResizePolicy(codeband.getControlPanel())));
+        toolsband.setResizePolicies((List) Arrays.asList(new CoreRibbonResizePolicies.None(toolsband.getControlPanel()),
+                new IconRibbonBandResizePolicy(toolsband.getControlPanel())));
         webband.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.None(webband.getControlPanel()),
                 new IconRibbonBandResizePolicy(webband.getControlPanel())));
@@ -450,7 +448,7 @@ public class Main extends JRibbonFrame {
 //                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
 //                new IconRibbonBandResizePolicy(pluginband.getControlPanel())));
 
-        RibbonTask hometask = new RibbonTask("Home", coreband, appsband, webband);
+        RibbonTask hometask = new RibbonTask("Apps", codeband, toolsband, webband);
         //RibbonTask webtask = new RibbonTask("Tools", webband, collabband);
         RibbonTask plugintask = new RibbonTask("Plugins", pluginband);
 
@@ -1158,7 +1156,7 @@ public class Main extends JRibbonFrame {
      *
      */
     public static JCommandButton browserbtn
-            = new JCommandButton("Web", getRibbonIcon("browser"));
+            = new JCommandButton("Browser", getRibbonIcon("browser"));
 
     /**
      *
