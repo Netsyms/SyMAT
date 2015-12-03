@@ -559,7 +559,7 @@ public class Main extends JRibbonFrame {
                         new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent evt) {
-                                loadFrame(new Editor());
+                                loadFrame(new Editor(Editor.JAVASCRIPT));
                             }
                         },
                         JCommandButton.CommandButtonKind.ACTION_ONLY);
@@ -570,7 +570,18 @@ public class Main extends JRibbonFrame {
                         new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent evt) {
-                                loadFrame(new Editor(true));
+                                loadFrame(new Editor(Editor.PYTHON));
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntrySecondary newjavabtn
+                = new RibbonApplicationMenuEntrySecondary(
+                        getTinyRibbonIcon("jaicon"),
+                        "Java",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                loadFrame(new Editor(Editor.JAVA));
                             }
                         },
                         JCommandButton.CommandButtonKind.ACTION_ONLY);
@@ -637,7 +648,7 @@ public class Main extends JRibbonFrame {
         } else {
             openbtn.addSecondaryMenuGroup("Recent Files", recent);
         }
-        newbtn.addSecondaryMenuGroup("Code File", newjsbtn, newpybtn);
+        newbtn.addSecondaryMenuGroup("Code File", newjsbtn, newpybtn, newjavabtn);
         newbtn.addSecondaryMenuGroup("Other", newtaskbtn);
 
         RibbonApplicationMenuEntryFooter displaybtn
