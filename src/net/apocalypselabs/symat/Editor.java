@@ -171,6 +171,9 @@ public class Editor extends javax.swing.JInternalFrame {
             pythonOption.setSelected(true);
             codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
         } else if (lang == JAVA) {
+            javaac.install(codeBox);
+            javascriptOption.setSelected(false);
+            javaOption.setSelected(true);
             codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         } else {
             jsac.install(codeBox);
