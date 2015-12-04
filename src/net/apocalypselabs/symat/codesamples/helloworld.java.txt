@@ -1,6 +1,9 @@
 public class HelloWorld {
 	public static void main(String[] args) {
-		print("Hello world");
+		String message = "Hello World!";
+                int x = 5;
+                print(message);
+                symat.notify(message + "  X is " + x + ".");
 	}
 }
 

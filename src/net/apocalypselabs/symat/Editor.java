@@ -92,9 +92,11 @@ public class Editor extends javax.swing.JInternalFrame {
     private boolean fileChanged = false;
 
     private CompletionProvider jscomp = new CodeCompleter("js").getProvider();
+    private CompletionProvider javacomp = new CodeCompleter("java").getProvider();
     private CompletionProvider pycomp = new CodeCompleter("py").getProvider();
     private AutoCompletion jsac = new AutoCompletion(jscomp);
     private AutoCompletion pyac = new AutoCompletion(pycomp);
+    private AutoCompletion javaac = new AutoCompletion(javacomp);
 
     /**
      * The JavaScript language.
@@ -169,6 +171,9 @@ public class Editor extends javax.swing.JInternalFrame {
             pythonOption.setSelected(true);
             codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
         } else if (lang == JAVA) {
+            javaac.install(codeBox);
+            javascriptOption.setSelected(false);
+            javaOption.setSelected(true);
             codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         } else {
             jsac.install(codeBox);
@@ -928,12 +933,14 @@ public class Editor extends javax.swing.JInternalFrame {
     private void javascriptOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javascriptOptionActionPerformed
         codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
         pyac.uninstall();
+        javaac.uninstall();
         jsac.install(codeBox);
     }//GEN-LAST:event_javascriptOptionActionPerformed
 
     private void pythonOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pythonOptionActionPerformed
         codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
         jsac.uninstall();
+        javaac.uninstall();
         pyac.install(codeBox);
     }//GEN-LAST:event_pythonOptionActionPerformed
 
@@ -1010,8 +1017,9 @@ public class Editor extends javax.swing.JInternalFrame {
 
     private void javaOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_javaOptionActionPerformed
         codeBox.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
-        //pyac.uninstall();
-        //jsac.install(codeBox);
+        pyac.uninstall();
+        jsac.uninstall();
+        javaac.install(codeBox);
     }//GEN-LAST:event_javaOptionActionPerformed
 
     private void createShared(String id) {
@@ -1057,14 +1065,15 @@ public class Editor extends javax.swing.JInternalFrame {
                 text += line + "\n";
             }
         } catch (Exception e) {
-            text = "Error: Could not open embedded sample file.";
-            if (ext.startsWith("j")) {
-                text = "/* " + text + " */";
-            } else {
-                text = "## " + text;
-            }
+            outputBox.setText("Error: Could not open embedded sample file.");
+//            if (ext.startsWith("j")) {
+//                text = "/* " + text + " */";
+//            } else {
+//                text = "## " + text;
+//            }
         }
-        openString(text, name + "." + ext, false);
+        // Open it and remove the .txt ending on Java files
+        openString(text, name + "." + ext.replace(".txt", ""), false);
     }
 
     @Override

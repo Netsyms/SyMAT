@@ -95,6 +95,7 @@ public class Update extends javax.swing.JInternalFrame {
                 @Override
                 public void run() {
                     changelogBox.setText(html);
+                    changelogBox.setCaretPosition(0);
                 }
             });
         }

@@ -339,11 +339,10 @@ public class Main extends JRibbonFrame {
             tries++;
         }
         JRibbon ribbon = getRibbon();
-        JRibbonBand coreband = new JRibbonBand("Core", null);
-        JRibbonBand appsband = new JRibbonBand("Apps", null);
-        JRibbonBand webband = new JRibbonBand("Community", null);
+        JRibbonBand codeband = new JRibbonBand("Code", null);
+        JRibbonBand toolsband = new JRibbonBand("Tools", null);
+        JRibbonBand webband = new JRibbonBand("Web", null);
         JRibbonBand collabband = new JRibbonBand("Team", null);
-        //JRibbonBand getpluginband = new JRibbonBand("Install", null);
 
         try {
             loadPlugins();
@@ -385,12 +384,10 @@ public class Main extends JRibbonFrame {
                         WebBrowser.WIKI_LOGO));
             }
         });
-        forumbtn.addActionListener(new ActionListener() {
+        browserbtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                loadFrame(new WebBrowser("Community Forum",
-                        "http://forum.symatapp.com/",
-                        WebBrowser.FORUM_LOGO));
+                loadFrame(new WebBrowser());
             }
         });
         padsbtn.addActionListener(new ActionListener() {
@@ -416,31 +413,28 @@ public class Main extends JRibbonFrame {
                 "Write quick notes on a virtual napkin."));
         wikibtn.setActionRichTooltip(new RichTooltip("SyMAT Wiki",
                 "View and edit online documentation and tutorials."));
-        forumbtn.setActionRichTooltip(new RichTooltip("Support Forum",
-                "Discuss and share with the SyMAT community."));
+        browserbtn.setActionRichTooltip(new RichTooltip("Web Browser",
+                "Go online and browse the web."));
         padsbtn.setActionRichTooltip(new RichTooltip("Code Pads",
                 "Collaborate over the Internet on projects."));
         tasksbtn.setActionRichTooltip(new RichTooltip("Task List",
                 "Manage tasks and to-do lists for projects."));
 
-        coreband.addCommandButton(shellbtn, RibbonElementPriority.TOP);
-        coreband.addCommandButton(editorbtn, RibbonElementPriority.TOP);
+        codeband.addCommandButton(shellbtn, RibbonElementPriority.TOP);
+        codeband.addCommandButton(editorbtn, RibbonElementPriority.TOP);
 
-        appsband.addCommandButton(graphbtn, RibbonElementPriority.MEDIUM);
-        appsband.addCommandButton(notepadbtn, RibbonElementPriority.MEDIUM);
+        toolsband.addCommandButton(graphbtn, RibbonElementPriority.MEDIUM);
+        toolsband.addCommandButton(notepadbtn, RibbonElementPriority.MEDIUM);
+        toolsband.addCommandButton(tasksbtn, RibbonElementPriority.MEDIUM);
 
-        webband.addCommandButton(wikibtn, RibbonElementPriority.LOW);
-        webband.addCommandButton(forumbtn, RibbonElementPriority.LOW);
+        webband.addCommandButton(padsbtn, RibbonElementPriority.TOP);
+        webband.addCommandButton(browserbtn, RibbonElementPriority.MEDIUM);
+        webband.addCommandButton(wikibtn, RibbonElementPriority.MEDIUM);
 
-        collabband.addCommandButton(padsbtn, RibbonElementPriority.MEDIUM);
-        collabband.addCommandButton(tasksbtn, RibbonElementPriority.MEDIUM);
-
-        coreband.setResizePolicies((List) Arrays.asList(
-                new CoreRibbonResizePolicies.None(coreband.getControlPanel()),
-                new IconRibbonBandResizePolicy(coreband.getControlPanel())));
-        appsband.setResizePolicies((List) Arrays.asList(
-                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
-                new IconRibbonBandResizePolicy(appsband.getControlPanel())));
+        codeband.setResizePolicies((List) Arrays.asList(new CoreRibbonResizePolicies.None(codeband.getControlPanel()),
+                new IconRibbonBandResizePolicy(codeband.getControlPanel())));
+        toolsband.setResizePolicies((List) Arrays.asList(new CoreRibbonResizePolicies.None(toolsband.getControlPanel()),
+                new IconRibbonBandResizePolicy(toolsband.getControlPanel())));
         webband.setResizePolicies((List) Arrays.asList(
                 new CoreRibbonResizePolicies.None(webband.getControlPanel()),
                 new IconRibbonBandResizePolicy(webband.getControlPanel())));
@@ -454,14 +448,14 @@ public class Main extends JRibbonFrame {
 //                new CoreRibbonResizePolicies.None(appsband.getControlPanel()),
 //                new IconRibbonBandResizePolicy(pluginband.getControlPanel())));
 
-        RibbonTask hometask = new RibbonTask("Home", coreband, appsband);
-        RibbonTask webtask = new RibbonTask("Tools", webband, collabband);
+        RibbonTask hometask = new RibbonTask("Apps", codeband, toolsband, webband);
+        //RibbonTask webtask = new RibbonTask("Tools", webband, collabband);
         RibbonTask plugintask = new RibbonTask("Plugins", pluginband);
 
         loadRibbonMenu(null);
 
         ribbon.addTask(hometask);
-        ribbon.addTask(webtask);
+        //ribbon.addTask(webtask);
         ribbon.addTask(plugintask);
     }
 
@@ -559,7 +553,7 @@ public class Main extends JRibbonFrame {
                         new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent evt) {
-                                loadFrame(new Editor());
+                                loadFrame(new Editor(Editor.JAVASCRIPT));
                             }
                         },
                         JCommandButton.CommandButtonKind.ACTION_ONLY);
@@ -570,7 +564,18 @@ public class Main extends JRibbonFrame {
                         new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent evt) {
-                                loadFrame(new Editor(true));
+                                loadFrame(new Editor(Editor.PYTHON));
+                            }
+                        },
+                        JCommandButton.CommandButtonKind.ACTION_ONLY);
+        RibbonApplicationMenuEntrySecondary newjavabtn
+                = new RibbonApplicationMenuEntrySecondary(
+                        getTinyRibbonIcon("jaicon"),
+                        "Java",
+                        new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent evt) {
+                                loadFrame(new Editor(Editor.JAVA));
                             }
                         },
                         JCommandButton.CommandButtonKind.ACTION_ONLY);
@@ -637,7 +642,7 @@ public class Main extends JRibbonFrame {
         } else {
             openbtn.addSecondaryMenuGroup("Recent Files", recent);
         }
-        newbtn.addSecondaryMenuGroup("Code File", newjsbtn, newpybtn);
+        newbtn.addSecondaryMenuGroup("Code File", newjsbtn, newpybtn, newjavabtn);
         newbtn.addSecondaryMenuGroup("Other", newtaskbtn);
 
         RibbonApplicationMenuEntryFooter displaybtn
@@ -1150,8 +1155,8 @@ public class Main extends JRibbonFrame {
     /**
      *
      */
-    public static JCommandButton forumbtn
-            = new JCommandButton("Forum", getRibbonIcon("forum"));
+    public static JCommandButton browserbtn
+            = new JCommandButton("Browser", getRibbonIcon("browser"));
 
     /**
      *

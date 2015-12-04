@@ -127,7 +127,11 @@ public class Help extends javax.swing.JInternalFrame {
                 setBackground(Color.LIGHT_GRAY);
                 styleloaded = 0;
             }
-            loadTopic(topicList.getSelectedValue().toString().toLowerCase());
+            try {
+                loadTopic(topicList.getSelectedValue().toString().toLowerCase());
+            } catch (Exception ex) {
+                loadTopic("welcome");
+            }
         }
     }
 
@@ -172,7 +176,7 @@ public class Help extends javax.swing.JInternalFrame {
         jSplitPane1.setResizeWeight(0.1);
 
         topicList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Welcome", "Basics", "Editor", "Pads", "Graphing", "Tasks", "Commands", "Licenses" };
+            String[] strings = { "Welcome", "Basics", "Editor", "Pads", "Graphing", "Notepad", "Tasks", "Commands", "Licenses" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });

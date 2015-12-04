@@ -46,10 +46,15 @@ you permission, that decision is considered final and binding.
 -->
 <html>
     <head>
-        <title>SyMAT Homepage</title>
+        <title>SyMAT Browser</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
+            html, body {
+                background-color: #0099cc;
+                color: #fff;
+            }
+            
             .main {
                 text-align: center;
                 font-family: ubuntu, arial, sans-serif;
@@ -57,25 +62,28 @@ you permission, that decision is considered final and binding.
 
             a {
                 text-decoration: none;
-                color: #000;
+                color: #fff;
             }
 
             a:hover {
                 text-decoration: underline;
-                color: #000;
+                color: #fff;
             }
 
             a:visited {
-                color: #000;
+                color: #fff;
             }
         </style>
     </head>
     <body>
         <div class="main">
-            <h1>SyMAT</h1>
-            <p><a href="http://symatapp.com">Home</a> |
-                <a href="http://wiki.symatapp.com/doku.php">Wiki</a> |
-                <a href="http://forum.symatapp.com">Forums</a></p>
+            <h1>Welcome to SyMAT!</h1>
+            <form action="https://duckduckgo.com/" method="GET">
+                <input type="text" name="q" placeholder="Web Search" />
+                <input type="submit" value="Search" />
+            </form>
+            <p><a href="http://wiki.symatapp.com/doku.php">SyMAT Wiki</a> | <a href="http://m.wolframalpha.com/">WolframAlpha</a> | <a href="http://apis.symatapp.com/changelog.php">Changelogs</a></p>
+            
         </div>
     </body>
 </html>

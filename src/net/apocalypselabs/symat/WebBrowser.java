@@ -56,6 +56,7 @@
 package net.apocalypselabs.symat;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -76,6 +77,8 @@ import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
 import javafx.util.Callback;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
@@ -192,27 +195,6 @@ public class WebBrowser extends javax.swing.JInternalFrame {
 
     /**
      *
-     * @return
-     */
-    public String homepage() {
-        try {
-            String text = "";
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(
-                            WebBrowser.class
-                            .getResourceAsStream("resources/homepage.html")));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                text += line;
-            }
-            return text;
-        } catch (IOException ex) {
-            return "Error: " + ex.getMessage();
-        }
-    }
-
-    /**
-     *
      * @param title
      * @param url
      */
@@ -232,15 +214,21 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         this(title, url);
         switch (icon) {
             case WIKI_LOGO:
+                homeBtn.setVisible(false);
+                sepBar.setVisible(false);
                 setFrameIcon(new ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/wiki.png")));
                 break;
             case FORUM_LOGO:
+                homeBtn.setVisible(false);
+                sepBar.setVisible(false);
                 setFrameIcon(new ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/forum.png")));
                 break;
             case PAD_LOGO:
                 navBar.setVisible(false);
                 goBtn.setEnabled(false);
                 backBtn.setEnabled(false);
+                homeBtn.setVisible(false);
+                sepBar.setVisible(false);
                 setFrameIcon(new ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/editor.png")));
                 break;
             default:
@@ -274,14 +262,90 @@ public class WebBrowser extends javax.swing.JInternalFrame {
      * @param url
      */
     public void loadURL(final String url) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                webEngine.load(url);
-                resizeAll();
+        if (url.startsWith("about:")) {
+            final String action = url.replace("about:", "");
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    switch (action) {
+                        case "home":
+                            webEngine.loadContent(homepage());
+                            break;
+                        case "blank":
+                            webEngine.loadContent("");
+                            break;
+                        case "new":
+                            Main.loadFrame(new WebBrowser());
+                            break;
+                        default:
+                            webEngine.loadContent(errorpage("Invalid URL", "That isn't a valid address."));
+                    }
+                    resizeAll();
+                }
+            });
+            urlBox.setText(url);
+        } else {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    webEngine.load(url);
+                    resizeAll();
+                }
+            });
+            urlBox.setText(url);
+        }
+    }
+
+    /**
+     * Get the homepage/startpage HTML.
+     *
+     * @return
+     */
+    public String homepage() {
+        try {
+            String text = "";
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            WebBrowser.class
+                            .getResourceAsStream("resources/homepage.html")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                text += line;
             }
-        });
-        urlBox.setText(url);
+            return text;
+        } catch (IOException ex) {
+            return errorpage("Error: " + ex.getMessage(), ex.toString());
+        }
+    }
+
+    /**
+     * Returns a webpage suitable for showing error messages.
+     *
+     * @param error Short error message
+     * @param details Error information
+     * @return HTML page content
+     */
+    public String errorpage(String error, String details) {
+        try {
+            String text = "";
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            WebBrowser.class
+                            .getResourceAsStream("resources/errorpage.html")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                text += line;
+            }
+            text = text.replaceAll("<<<ERROR>>>", error);
+            text = text.replaceAll("<<<DETAILS>>>", details);
+            return text;
+        } catch (IOException ex) {
+            return "Oh, no!  Something bad happened:<br />"
+                    + error
+                    + "<br />Also, an error occured "
+                    + "while displaying the error page: "
+                    + ex.getMessage();
+        }
     }
 
     /**
@@ -318,7 +382,10 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         navBar = new javax.swing.JToolBar();
         backBtn = new javax.swing.JButton();
         urlBox = new javax.swing.JTextField();
+        buttonBar = new javax.swing.JToolBar();
         goBtn = new javax.swing.JButton();
+        sepBar = new javax.swing.JToolBar.Separator();
+        homeBtn = new javax.swing.JButton();
         browserBox = new javax.swing.JPanel();
 
         setClosable(true);
@@ -360,10 +427,11 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         navBar.setLayout(new java.awt.BorderLayout());
 
         backBtn.setFont(Main.ubuntuRegular.deriveFont(16.0f));
-        backBtn.setText("<");
+        backBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/arrow-left.png"))); // NOI18N
+        backBtn.setToolTipText("Go back a page");
         backBtn.setFocusable(false);
         backBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        backBtn.setMaximumSize(new java.awt.Dimension(30, 21));
+        backBtn.setMaximumSize(new java.awt.Dimension(50, 50));
         backBtn.setMinimumSize(new java.awt.Dimension(30, 21));
         backBtn.setPreferredSize(new java.awt.Dimension(30, 21));
         backBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -387,21 +455,45 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         navBar.add(urlBox);
         */
 
-        goBtn.setText("Go");
-        goBtn.setFocusable(false);
+        buttonBar.setFloatable(false);
+        buttonBar.setRollover(true);
+        buttonBar.setBorderPainted(false);
+        navBar.add(buttonBar, BorderLayout.EAST);
+
+        goBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/goarrow.png"))); // NOI18N
+        goBtn.setToolTipText("Navigate");
         goBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        goBtn.setMaximumSize(new java.awt.Dimension(30, 21));
+        goBtn.setMaximumSize(new java.awt.Dimension(50, 50));
         goBtn.setMinimumSize(new java.awt.Dimension(30, 21));
-        goBtn.setPreferredSize(new java.awt.Dimension(30, 21));
+        goBtn.setPreferredSize(new java.awt.Dimension(30, 30));
         goBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        navBar.add(goBtn, java.awt.BorderLayout.EAST);
+        buttonBar.add(goBtn);
         goBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 goBtnActionPerformed(evt);
             }
         });
         /*
-        navBar.add(goBtn);
+        buttonBar.add(goBtn);
+        */
+        buttonBar.add(sepBar);
+
+        homeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/net/apocalypselabs/symat/icons/home.png"))); // NOI18N
+        homeBtn.setToolTipText("Go to homepage");
+        homeBtn.setFocusable(false);
+        homeBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        homeBtn.setMaximumSize(new java.awt.Dimension(50, 50));
+        homeBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        homeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeBtnActionPerformed(evt);
+            }
+        });
+        buttonBar.add(homeBtn);
+
+        /*
+
+        navBar.add(buttonBar);
         */
 
         getContentPane().add(navBar, java.awt.BorderLayout.PAGE_START);
@@ -437,7 +529,7 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         if (urlBox.getText().equals("about:home")) {
             loadString(homepage());
         } else {
-            if (!urlBox.getText().startsWith("http")) {
+            if (!urlBox.getText().startsWith("http") && !urlBox.getText().startsWith("about:")) {
                 urlBox.setText("http://" + urlBox.getText());
             }
             loadURL(urlBox.getText());
@@ -456,6 +548,10 @@ public class WebBrowser extends javax.swing.JInternalFrame {
         });
     }//GEN-LAST:event_backBtnActionPerformed
 
+    private void homeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeBtnActionPerformed
+        loadURL("about:home");
+    }//GEN-LAST:event_homeBtnActionPerformed
+
     private void resizeAll() {
         Platform.runLater(new Runnable() {
             @Override
@@ -466,12 +562,33 @@ public class WebBrowser extends javax.swing.JInternalFrame {
             }
         });
     }
+    
+    /**
+     * Add a component to the toolbar.
+     * @param btn The JComponent to add.
+     */
+    public void addButton(JComponent btn) {
+        buttonBar.add(btn);
+    }
+    
+    /**
+     * Add a button to the toolbar.
+     * @param btn The JButton to add.
+     * @param action An ActionListener to handle actions.
+     */
+    public void addButton(JButton btn, ActionListener action) {
+        buttonBar.add(btn);
+        btn.addActionListener(action);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backBtn;
     private javax.swing.JPanel browserBox;
+    public javax.swing.JToolBar buttonBar;
     private javax.swing.JButton goBtn;
+    private javax.swing.JButton homeBtn;
     private javax.swing.JToolBar navBar;
+    private javax.swing.JToolBar.Separator sepBar;
     private javax.swing.JTextField urlBox;
     // End of variables declaration//GEN-END:variables
 }
