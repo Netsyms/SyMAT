@@ -1,5 +1,5 @@
-import net.apocalypselabs.symat.Functions;
-Functions symat = new Functions();
+import net.apocalypselabs.symat.JavaFunctions;
+JavaFunctions symat = new JavaFunctions();
 public static final double E = java.lang.Math.E;
 public static final double PI = java.lang.Math.PI;
 public static final double SQRT1_2 = java.lang.Math.sqrt(0.5);

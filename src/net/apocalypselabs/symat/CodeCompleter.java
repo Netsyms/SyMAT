@@ -94,18 +94,21 @@ public class CodeCompleter {
         try {
             String[] files = {"functions", "constants"};
             for (String fileid : files) {
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(
-                                CodeCompleter.class.getResourceAsStream("resources/" + (fileid.equals(files[0]) ? "" : lang) + fileid + ".txt")));
+                BufferedReader reader;
+                if (lang.equals("java")) {
+                    reader = new BufferedReader(
+                            new InputStreamReader(
+                                    CodeCompleter.class.getResourceAsStream("resources/" + (fileid.equals(files[0]) ? "" : lang) + fileid + (fileid.equals(files[0]) ? "_java" : "") + ".txt")));
+                } else {
+                    reader = new BufferedReader(
+                            new InputStreamReader(
+                                    CodeCompleter.class.getResourceAsStream("resources/" + (fileid.equals(files[0]) ? "" : lang) + fileid + ".txt")));
+                }
                 String line;
                 while ((line = reader.readLine()) != null) {
                     switch (fileid) {
                         case "functions":
                             String[] args = line.split("\\|");
-                            // Prefix symat to Java commands
-                            if (lang.equals("java")) {
-                                args[0] = "symat." + args[0];
-                            }
                             if (args.length == 2) {
                                 provider.addCompletion(new BasicCompletion(provider, args[0], args[1]));
                             } else if (args.length == 3) {

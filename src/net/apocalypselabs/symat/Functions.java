@@ -711,6 +711,23 @@ public class Functions {
         return (new BigInteger(a).mod(new BigInteger(b))).toString();
     }
 
+    public double[] intArrayToDouble(int[] a) {
+        double out[] = new double[a.length];
+        for (int i = 0; i < a.length; i++) {
+            out[i] = a[i];
+        }
+        return out;
+    }
+    
+    public int[] doubleArrayToInt(double[] a) {
+        int out[] = new int[a.length];
+        for (int i = 0; i < a.length; i++) {
+            out[i] = Math.round((float) a[i]);
+        }
+        return out;
+    }
+
+    
     /**
      * Add the given numbers together.
      *
@@ -1043,7 +1060,7 @@ public class Functions {
      * @return The matrix result
      * @throws BadInputException if the matrix is not square or power is less
      * than 0
-     */   
+     */
     public double[][] mpower(double[][] a, int b) throws BadInputException {
         if (a.length != a[0].length) {
             throw new BadInputException("Matrix needs to be square.");
@@ -1146,13 +1163,11 @@ public class Functions {
     /*
      Graphing interfaces
      */
-
     /**
      *
      * @param xmin
      * @param xmax
      */
-    
     public void xlim(double xmin, double xmax) {
         graphwin.setRange(xmin, xmax);
     }
@@ -1357,12 +1372,10 @@ public class Functions {
     /*
      Other
      */
-
     /**
      *
      * @return
      */
-    
     public String sysinfo() {
         String info = "==Java Information==\n";
         info += "Java version: " + System.getProperty("java.version");

@@ -4,7 +4,7 @@ diff('',"x")|Find the derivative of the function passed with respect to the seco
 integrate('',"x")|Find the integral of the function passed with respect to the second argument.
 rad(0)|Convert a given number in degrees to radians.
 deg(0)|Convert a given number in radians to degrees.
-subs('',"x")|Solve an equation for the second argument.
+subs("","x","0")|Solve an equation by replacing the second argument with the third.
 simplify('')|Simplify the given function.
 vpa('')|Computes numerical value or simplifies.
 plot()|Show the plot window.
