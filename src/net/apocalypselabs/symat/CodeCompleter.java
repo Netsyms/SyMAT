@@ -109,10 +109,6 @@ public class CodeCompleter {
                     switch (fileid) {
                         case "functions":
                             String[] args = line.split("\\|");
-                            // Prefix symat to Java commands
-                            if (lang.equals("java")) {
-                                args[0] = "symat." + args[0];
-                            }
                             if (args.length == 2) {
                                 provider.addCompletion(new BasicCompletion(provider, args[0], args[1]));
                             } else if (args.length == 3) {
